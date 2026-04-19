@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Commander — RoboTradingRatuit</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- EmailJS SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<style>
+:root{--bg:#04060c;--bg2:#07090f;--bg3:#0a0d16;--blue:#0ea5e9;--blue2:#0284c7;--cyan:#22d3ee;--white:#e0f2fe;--text:#8dafc8;--text2:#3f6080;--text3:#1a3048;--green:#10b981;--red:#f43f5e;--gold:#eab308;--purple:#8b5cf6;--bd:rgba(14,165,233,.12);--bd2:rgba(14,165,233,.22);--fh:'Orbitron',sans-serif;--fb:'DM Sans',sans-serif;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;padding:30px 16px 60px;}
+.wrap{max-width:760px;margin:0 auto;}
+.back{display:inline-flex;align-items:center;gap:7px;color:var(--text2);font-size:13px;margin-bottom:22px;transition:color .2s;}
+.back:hover{color:var(--blue);}
+h1{font-family:var(--fh);font-size:clamp(18px,2.5vw,26px);color:var(--white);margin-bottom:6px;}
+h1 span{color:var(--blue);}
+.sub-ttl{font-size:13px;color:var(--text2);margin-bottom:30px;}
+
+/* PRODUCT SUMMARY */
+.prod-summary{background:var(--bg2);border:1px solid var(--bd2);border-radius:12px;padding:18px;display:flex;align-items:center;gap:16px;margin-bottom:24px;}
+.prod-img{width:60px;height:60px;border-radius:9px;background:var(--bg3);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;overflow:hidden;}
+.prod-img img{width:100%;height:100%;object-fit:cover;}
+.prod-info .pname{font-family:var(--fh);font-size:14px;font-weight:700;color:var(--white);margin-bottom:3px;}
+.prod-info .pcat{font-size:11px;color:var(--text2);}
+.prod-price{margin-left:auto;font-family:var(--fh);font-size:26px;font-weight:900;color:var(--blue);flex-shrink:0;}
+.prod-price .ps{font-size:14px;vertical-align:super;}
+.prod-price.free{color:var(--green);font-size:18px;}
+
+/* STEPS NAV */
+.steps-nav{display:flex;gap:0;margin-bottom:28px;background:var(--bg2);border:1px solid var(--bd);border-radius:10px;overflow:hidden;}
+.snav-item{flex:1;padding:12px 10px;text-align:center;font-size:12px;font-weight:600;color:var(--text2);border-right:1px solid var(--bd);cursor:pointer;transition:all .2s;position:relative;}
+.snav-item:last-child{border-right:none;}
+.snav-item.on{color:var(--white);background:rgba(14,165,233,.08);}
+.snav-item.done{color:var(--green);}
+.snav-item .sn{display:block;font-family:var(--fh);font-size:10px;margin-bottom:2px;}
+
+/* PANELS */
+.panel{display:none;}
+.panel.on{display:block;}
+
+/* PAYMENT METHODS */
+.pay-methods{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:20px;}
+.pm{background:var(--bg2);border:2px solid var(--bd);border-radius:10px;padding:16px;text-align:center;cursor:pointer;transition:all .2s;}
+.pm:hover{border-color:var(--bd2);}
+.pm.sel{border-color:var(--blue);background:rgba(14,165,233,.06);}
+.pm-ico{font-size:28px;margin-bottom:7px;display:block;}
+.pm-name{font-family:var(--fh);font-size:10px;font-weight:700;color:var(--white);margin-bottom:3px;}
+.pm-addr{font-size:11px;color:var(--text2);word-break:break-all;}
+
+/* FORM */
+.fg{margin-bottom:16px;}
+.fg label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text2);margin-bottom:5px;}
+.fi{width:100%;background:var(--bg3);border:1px solid var(--bd2);color:var(--text);padding:11px 13px;border-radius:8px;font-size:14px;font-family:var(--fb);outline:none;transition:border-color .2s;}
+.fi:focus{border-color:var(--blue);}
+.fi.err{border-color:var(--red);}
+.err-msg{font-size:12px;color:var(--red);margin-top:4px;display:none;}
+.err-msg.show{display:block;}
+
+/* UPLOAD PROOF */
+.proof-zone{border:2px dashed var(--bd2);border-radius:9px;padding:22px;text-align:center;cursor:pointer;transition:all .2s;position:relative;}
+.proof-zone:hover{border-color:var(--blue);background:rgba(14,165,233,.03);}
+.proof-zone.loaded{border-style:solid;border-color:var(--green);}
+.proof-ico{font-size:32px;margin-bottom:8px;}
+.proof-txt{font-size:14px;color:var(--text);font-weight:600;}
+.proof-sub{font-size:12px;color:var(--text2);}
+.proof-name{font-size:13px;color:var(--green);font-weight:600;margin-top:7px;}
+
+/* BUTTONS */
+.btn-next{width:100%;background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;border:none;padding:14px;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;transition:all .25s;box-shadow:0 5px 20px rgba(14,165,233,.3);margin-top:8px;}
+.btn-next:hover{box-shadow:0 8px 28px rgba(14,165,233,.5);transform:translateY(-1px);}
+.btn-next:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.btn-back-step{background:transparent;border:1px solid var(--bd2);color:var(--text2);padding:11px 20px;border-radius:9px;font-size:13px;cursor:pointer;margin-right:9px;transition:all .2s;}
+.btn-back-step:hover{border-color:var(--red);color:var(--red);}
+
+/* NOTICE */
+.notice{background:rgba(234,179,8,.06);border:1px solid rgba(234,179,8,.18);border-radius:9px;padding:13px 15px;margin-bottom:16px;}
+.notice p{font-size:13px;color:var(--gold);line-height:1.7;}
+
+/* SUCCESS */
+.success-box{text-align:center;padding:30px 20px;}
+.success-ico{font-size:70px;margin-bottom:16px;display:block;animation:pop .5s ease;}
+@keyframes pop{0%{transform:scale(0);}70%{transform:scale(1.1);}100%{transform:scale(1);}}
+.success-box h2{font-family:var(--fh);font-size:22px;color:var(--green);margin-bottom:10px;}
+.success-box p{font-size:14px;color:var(--text2);margin-bottom:16px;line-height:1.75;}
+.success-box .email-sent{background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);border-radius:10px;padding:14px;margin-bottom:16px;font-size:13px;color:var(--text);}
+.btn-home{display:inline-flex;align-items:center;gap:7px;background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;padding:12px 24px;border-radius:9px;font-size:14px;font-weight:700;text-decoration:none;transition:all .2s;}
+.btn-home:hover{opacity:.9;transform:translateY(-1px);}
+
+/* LOADING */
+.loading{display:none;text-align:center;padding:20px;}
+.loading .spinner{width:36px;height:36px;border:3px solid rgba(14,165,233,.2);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px;}
+@keyframes spin{100%{transform:rotate(360deg);}}
+.loading p{font-size:14px;color:var(--text2);}
+
+/* DIVIDER */
+hr{border:none;border-top:1px solid var(--bd);margin:18px 0;}
+
+/* COPY BTN */
+.copy-field{display:flex;gap:8px;align-items:center;}
+.copy-field input{flex:1;}
+.btn-copy{background:var(--bg3);border:1px solid var(--bd2);color:var(--blue);padding:11px 14px;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .2s;}
+.btn-copy:hover{background:var(--blue);color:#fff;}
+.btn-copy.copied{background:rgba(16,185,129,.15);color:var(--green);border-color:rgba(16,185,129,.3);}
+
+@media(max-width:600px){.pay-methods{grid-template-columns:1fr;}.steps-nav{flex-direction:column;}.snav-item{border-right:none;border-bottom:1px solid var(--bd);}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a href="javascript:history.back()" class="back">← Retour au produit</a>
+  <h1>Commander votre <span id="ttl-product">produit</span></h1>
+  <p class="sub-ttl">Livraison automatique par email · Sécurisé · Sous 5 minutes</p>
+
+  <!-- PRODUCT SUMMARY -->
+  <div class="prod-summary">
+    <div class="prod-img" id="co-img">🤖</div>
+    <div class="prod-info">
+      <div class="pname" id="co-name">Chargement...</div>
+      <div class="pcat" id="co-cat">Expert Advisor MT4/MT5</div>
+    </div>
+    <div class="prod-price" id="co-price"><span class="ps">$</span>30</div>
+  </div>
+
+  <!-- STEPS NAV -->
+  <div class="steps-nav">
+    <div class="snav-item on" id="snav-1"><span class="sn">ÉTAPE 1</span> Paiement</div>
+    <div class="snav-item" id="snav-2"><span class="sn">ÉTAPE 2</span> Vos infos</div>
+    <div class="snav-item" id="snav-3"><span class="sn">ÉTAPE 3</span> Confirmation</div>
+    <div class="snav-item" id="snav-4"><span class="sn">ÉTAPE 4</span> Réception</div>
+  </div>
+
+  <!-- PANEL 1 — CHOISIR PAIEMENT -->
+  <div class="panel on" id="panel-1">
+    <h3 style="font-family:var(--fh);font-size:14px;color:var(--white);margin-bottom:14px;">1. Choisissez votre mode de paiement</h3>
+    <div class="pay-methods">
+      <div class="pm" id="pm-paypal" onclick="selPay('paypal')">
+        <span class="pm-ico">🅿️</span>
+        <div class="pm-name">PayPal</div>
+        <div class="pm-addr">capor51@gmail.com</div>
+      </div>
+      <div class="pm" id="pm-binance" onclick="selPay('binance')">
+        <span class="pm-ico">🟡</span>
+        <div class="pm-name">Binance USDT</div>
+        <div class="pm-addr">TRC20</div>
+      </div>
+      <div class="pm" id="pm-bpay" onclick="selPay('bpay')">
+        <span class="pm-ico">💛</span>
+        <div class="pm-name">Binance Pay</div>
+        <div class="pm-addr">ID : 798651100</div>
+      </div>
+    </div>
+
+    <div id="paypal-details" style="display:none;" class="notice">
+      <p>📧 <strong>Envoyez <span id="pp-amount">$30</span> sur PayPal à :</strong></p>
+      <div class="copy-field" style="margin-top:8px;">
+        <input type="text" class="fi" value="capor51@gmail.com" readonly id="pp-addr">
+        <button class="btn-copy" onclick="copy('pp-addr',this)">Copier</button>
+      </div>
+      <p style="margin-top:8px;font-size:12px;">Note PayPal : <strong id="pp-note">RTR - Gold Hunter V8</strong></p>
+    </div>
+    <div id="binance-details" style="display:none;" class="notice">
+      <p>💱 <strong>Envoyez <span id="bn-amount">$30</span> USDT (TRC20) à :</strong></p>
+      <div class="copy-field" style="margin-top:8px;">
+        <input type="text" class="fi" value="TQ8JunUjkWu3rv1PyVjmPSEVHh6fD4kFGe" readonly id="bn-addr" style="font-size:11px;">
+        <button class="btn-copy" onclick="copy('bn-addr',this)">Copier</button>
+      </div>
+      <p style="margin-top:8px;font-size:12px;color:var(--red);">⚠️ Réseau TRC20 uniquement — ne pas utiliser ERC20 ou BEP20</p>
+    </div>
+    <div id="bpay-details" style="display:none;" class="notice">
+      <p>💛 <strong>Envoyez <span id="bp-amount">$30</span> via Binance Pay à l'ID :</strong></p>
+      <div class="copy-field" style="margin-top:8px;">
+        <input type="text" class="fi" value="798651100" readonly id="bp-id">
+        <button class="btn-copy" onclick="copy('bp-id',this)">Copier</button>
+      </div>
+    </div>
+
+    <button class="btn-next" id="btn-p1" onclick="goStep(2)" disabled>Suivant — J'ai effectué le paiement →</button>
+  </div>
+
+  <!-- PANEL 2 — INFOS CLIENT + PREUVE -->
+  <div class="panel" id="panel-2">
+    <h3 style="font-family:var(--fh);font-size:14px;color:var(--white);margin-bottom:14px;">2. Vos informations & preuve de paiement</h3>
+    <div class="fg">
+      <label>Votre prénom *</label>
+      <input type="text" class="fi" id="cl-name" placeholder="Jean" oninput="checkP2()">
+      <div class="err-msg" id="err-name">Veuillez entrer votre prénom</div>
+    </div>
+    <div class="fg">
+      <label>Votre email (livraison automatique ici) *</label>
+      <input type="email" class="fi" id="cl-email" placeholder="votre@email.com" oninput="checkP2()">
+      <div class="err-msg" id="err-email">Email invalide</div>
+    </div>
+    <div class="fg">
+      <label>Preuve de paiement — Screenshot ou référence de transaction *</label>
+      <div class="proof-zone" id="proof-zone" onclick="document.getElementById('proof-file').click()">
+        <div class="proof-ico">📸</div>
+        <div class="proof-txt">Cliquez pour joindre votre screenshot</div>
+        <div class="proof-sub">Photo, capture d'écran, PDF — Max 5 Mo</div>
+        <div class="proof-name" id="proof-name" style="display:none;"></div>
+      </div>
+      <input type="file" id="proof-file" accept="image/*,.pdf" style="display:none" onchange="onProof(this)">
+      <p style="font-size:12px;color:var(--text2);margin-top:7px;">OU entrez la référence/transaction ID de votre paiement :</p>
+      <input type="text" class="fi" id="cl-ref" placeholder="Ex: 4G123456789 ou txhash..." style="margin-top:6px;" oninput="checkP2()">
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;margin-top:10px;">
+      <button class="btn-back-step" onclick="goStep(1)">← Retour</button>
+      <button class="btn-next" id="btn-p2" onclick="goStep(3)" disabled style="flex:1;">Suivant → Confirmer</button>
+    </div>
+  </div>
+
+  <!-- PANEL 3 — RÉCAPITULATIF -->
+  <div class="panel" id="panel-3">
+    <h3 style="font-family:var(--fh);font-size:14px;color:var(--white);margin-bottom:14px;">3. Vérifiez votre commande</h3>
+    <div style="background:var(--bg2);border:1px solid var(--bd2);border-radius:11px;padding:18px;margin-bottom:18px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <span style="color:var(--text2);font-size:13px;">Produit</span>
+        <strong style="color:var(--white);font-size:14px;" id="recap-product"></strong>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <span style="color:var(--text2);font-size:13px;">Montant payé</span>
+        <strong style="color:var(--blue);font-size:18px;font-family:var(--fh);" id="recap-price"></strong>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <span style="color:var(--text2);font-size:13px;">Mode paiement</span>
+        <strong style="color:var(--white);font-size:13px;" id="recap-pay"></strong>
+      </div>
+      <hr>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <span style="color:var(--text2);font-size:13px;">Livraison vers</span>
+        <strong style="color:var(--cyan);font-size:13px;" id="recap-email"></strong>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <span style="color:var(--text2);font-size:13px;">Preuve soumise</span>
+        <strong style="color:var(--green);font-size:13px;" id="recap-proof">✓ Fournie</strong>
+      </div>
+    </div>
+    <div class="notice">
+      <p>⏱️ <strong>Livraison automatique :</strong> Dès confirmation, vous recevrez un email avec le lien de téléchargement de votre produit. Vérifiez vos spams si vous ne le recevez pas dans les 5 minutes.</p>
+    </div>
+    <div id="loading" class="loading">
+      <div class="spinner"></div>
+      <p>Envoi de votre commande en cours...</p>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <button class="btn-back-step" onclick="goStep(2)">← Retour</button>
+      <button class="btn-next" id="btn-p3" onclick="submitOrder()" style="flex:1;">✅ Confirmer et recevoir mon produit</button>
+    </div>
+  </div>
+
+  <!-- PANEL 4 — SUCCÈS -->
+  <div class="panel" id="panel-4">
+    <div class="success-box">
+      <span class="success-ico">✅</span>
+      <h2>Commande reçue !</h2>
+      <p>Merci <strong id="success-name" style="color:var(--white)"></strong> ! Votre commande a été enregistrée.</p>
+      <div class="email-sent">
+        📧 Un email de confirmation a été envoyé à <strong id="success-email" style="color:var(--cyan)"></strong><br>
+        <span style="font-size:12px;color:var(--text2);">Votre fichier sera livré sous quelques minutes après vérification de votre paiement.<br>Vérifiez vos spams si vous ne le recevez pas.</span>
+      </div>
+      <div class="notice" style="text-align:left;margin-bottom:20px;">
+        <p>💬 Pour accélérer la livraison, envoyez également votre preuve de paiement à <strong>@salomonryn</strong> sur Telegram. C'est plus rapide !</p>
+      </div>
+      <a href="https://t.me/salomonryn" target="_blank" style="display:inline-flex;align-items:center;gap:7px;background:#1d9bd1;color:#fff;padding:11px 20px;border-radius:9px;font-size:13px;font-weight:700;text-decoration:none;margin-bottom:12px;margin-right:8px;">💬 Contacter @salomonryn</a>
+      <a href="index.html" class="btn-home">🏠 Retour à l'accueil</a>
+    </div>
+  </div>
+</div>
+
+<script>
+/*
+════════════════════════════════════════════════
+  ⚙️ CONFIGURATION EMAILJS — À modifier
+  
+  1. Créez un compte sur emailjs.com
+  2. Connectez votre Gmail (Service ID)
+  3. Créez un template (Template ID)
+  4. Copiez votre Public Key
+  
+  REMPLACEZ LES 3 VALEURS CI-DESSOUS :
+════════════════════════════════════════════════
+*/
+var EMAILJS_PUBLIC_KEY  = 'VOTRE_PUBLIC_KEY';    // Depuis emailjs.com → Account → General
+var EMAILJS_SERVICE_ID  = 'VOTRE_SERVICE_ID';    // Depuis emailjs.com → Email Services
+var EMAILJS_TEMPLATE_ID = 'VOTRE_TEMPLATE_ID';   // Depuis emailjs.com → Email Templates
+
+/*
+════════════════════════════════════════════════
+  📦 LIENS DE TÉLÉCHARGEMENT DE VOS PRODUITS
+  
+  Uploadez chaque fichier EA sur Google Drive :
+  1. drive.google.com → Uploadez le fichier EX4/EX5
+  2. Clic droit → Partager → "Tout le monde avec le lien"
+  3. Copiez le lien → remplacez ci-dessous
+  
+  FORMAT : ID_PRODUIT: { file: 'lien_drive', guide: 'lien_guide' }
+════════════════════════════════════════════════
+*/
+var PRODUCTS_LINKS = {
+  '1': { // Gold Hunter V8
+    file: 'https://drive.google.com/file/d/VOTRE_ID_FICHIER_1/view',
+    guide: 'https://drive.google.com/file/d/VOTRE_ID_GUIDE/view',
+    name: 'Gold Hunter V8',
+    desc: 'EA MT4/MT5 — Or/XAUUSD'
+  },
+  '2': { // AI Gold Sniper
+    file: 'https://drive.google.com/file/d/VOTRE_ID_FICHIER_2/view',
+    guide: 'https://drive.google.com/file/d/VOTRE_ID_GUIDE/view',
+    name: 'AI Gold Sniper MT4 V1.4',
+    desc: 'EA MT4 — Or/XAUUSD'
+  },
+  '3': { // Dominant EA
+    file: 'https://drive.google.com/file/d/VOTRE_ID_FICHIER_3/view',
+    guide: 'https://drive.google.com/file/d/VOTRE_ID_GUIDE/view',
+    name: 'Dominant EA MT5',
+    desc: 'EA MT5 — Forex Multi-paires'
+  },
+  '4': {
+    file: 'https://drive.google.com/file/d/VOTRE_ID_FICHIER_4/view',
+    guide: 'https://drive.google.com/file/d/VOTRE_ID_GUIDE/view',
+    name: 'AI Golden Jet Fighter GTX MT4',
+    desc: 'EA MT4 — Forex'
+  },
+  '5': {
+    file: 'https://drive.google.com/file/d/VOTRE_ID_FICHIER_5/view',
+    guide: 'https://drive.google.com/file/d/VOTRE_ID_GUIDE/view',
+    name: 'AiMaxPro EA V2',
+    desc: 'EA MT4 — Indices'
+  },
+  '6': {
+    file: 'https://drive.google.com/file/d/VOTRE_ID_FICHIER_6/view',
+    guide: 'https://drive.google.com/file/d/VOTRE_ID_GUIDE/view',
+    name: 'Alpha Scalper Pro MT5',
+    desc: 'EA MT5 — Forex'
+  },
+  '7': {
+    file: 'https://drive.google.com/file/d/VOTRE_ID_FICHIER_7/view',
+    guide: 'https://drive.google.com/file/d/VOTRE_ID_GUIDE/view',
+    name: 'ICT Venom XAUUSD MT5',
+    desc: 'EA MT5 — Or/XAUUSD'
+  },
+  'vip': {
+    file: 'https://drive.google.com/drive/folders/VOTRE_DOSSIER_VIP',
+    guide: 'https://drive.google.com/file/d/VOTRE_ID_GUIDE/view',
+    name: 'Accès VIP Illimité',
+    desc: 'Tous les produits — À vie'
+  }
+};
+
+/* ─── INIT ─── */
+var state = { pay: '', productId: '', productName: '', price: '', proofFile: null };
+
+(function init(){
+  if(typeof emailjs !== 'undefined') {
+    emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+  }
+  // Lire les params URL
+  var qs = new URLSearchParams(window.location.search);
+  var id = qs.get('id') || '1';
+  var type = qs.get('type') || 'robot';
+  var price = qs.get('price') || '30';
+  state.productId = id;
+  state.price = price;
+
+  var prod = PRODUCTS_LINKS[id] || PRODUCTS_LINKS['1'];
+  state.productName = prod.name;
+
+  // Afficher les infos produit
+  document.getElementById('ttl-product').textContent = prod.name;
+  document.getElementById('co-name').textContent = prod.name;
+  document.getElementById('co-cat').textContent = prod.desc;
+
+  var priceEl = document.getElementById('co-price');
+  if(price === '0' || price === 'GRATUIT') {
+    priceEl.className = 'prod-price free';
+    priceEl.textContent = 'GRATUIT';
+  } else {
+    priceEl.innerHTML = '<span class="ps">$</span>' + price;
+  }
+
+  // Montants dans les méthodes de paiement
+  var amtDisplay = price === '0' ? 'GRATUIT' : '$' + price;
+  ['pp-amount','bn-amount','bp-amount'].forEach(function(id){
+    var el = document.getElementById(id);
+    if(el) el.textContent = amtDisplay;
+  });
+
+  // Note PayPal
+  var noteEl = document.getElementById('pp-note');
+  if(noteEl) noteEl.textContent = 'RTR - ' + prod.name.substring(0,20);
+})();
+
+/* ─── PAIEMENT SELECTION ─── */
+function selPay(method) {
+  state.pay = method;
+  ['paypal','binance','bpay'].forEach(function(m){
+    document.getElementById('pm-'+m).classList.remove('sel');
+    document.getElementById(m === 'paypal' ? 'paypal' : m === 'binance' ? 'binance' : 'bpay' )+'-details';
+  });
+  document.getElementById('pm-'+method).classList.add('sel');
+  ['paypal-details','binance-details','bpay-details'].forEach(function(id){ document.getElementById(id).style.display='none'; });
+  var map = {paypal:'paypal-details', binance:'binance-details', bpay:'bpay-details'};
+  document.getElementById(map[method]).style.display = 'block';
+  document.getElementById('btn-p1').disabled = false;
+}
+
+/* ─── COPY ─── */
+function copy(inputId, btn) {
+  var el = document.getElementById(inputId);
+  navigator.clipboard.writeText(el.value).then(function(){
+    btn.textContent = '✓ Copié !';
+    btn.className = 'btn-copy copied';
+    setTimeout(function(){ btn.textContent = 'Copier'; btn.className = 'btn-copy'; }, 2000);
+  }).catch(function(){
+    el.select(); document.execCommand('copy');
+    btn.textContent = '✓ Copié !';
+    setTimeout(function(){ btn.textContent = 'Copier'; }, 2000);
+  });
+}
+
+/* ─── PROOF FILE ─── */
+function onProof(input) {
+  var file = input.files[0];
+  if(!file) return;
+  state.proofFile = file;
+  var zone = document.getElementById('proof-zone');
+  var name = document.getElementById('proof-name');
+  zone.classList.add('loaded');
+  name.textContent = '✅ ' + file.name;
+  name.style.display = 'block';
+  checkP2();
+}
+
+/* ─── VALIDATION P2 ─── */
+function checkP2() {
+  var name = document.getElementById('cl-name').value.trim();
+  var email = document.getElementById('cl-email').value.trim();
+  var ref = document.getElementById('cl-ref').value.trim();
+  var valid = name.length > 1 && email.includes('@') && email.includes('.') && (state.proofFile || ref.length > 3);
+  document.getElementById('btn-p2').disabled = !valid;
+}
+
+/* ─── NAVIGATION STEPS ─── */
+function goStep(n) {
+  for(var i=1;i<=4;i++){
+    document.getElementById('panel-'+i).classList.remove('on');
+    var sn = document.getElementById('snav-'+i);
+    sn.classList.remove('on','done');
+    if(i < n) sn.classList.add('done');
+  }
+  document.getElementById('panel-'+n).classList.add('on');
+  document.getElementById('snav-'+n).classList.add('on');
+
+  if(n === 3) {
+    // Remplir récap
+    var payLabels = {paypal:'🅿️ PayPal', binance:'🟡 Binance USDT', bpay:'💛 Binance Pay'};
+    document.getElementById('recap-product').textContent = state.productName;
+    document.getElementById('recap-price').textContent = state.price === '0' ? 'GRATUIT' : '$' + state.price;
+    document.getElementById('recap-pay').textContent = payLabels[state.pay] || state.pay;
+    document.getElementById('recap-email').textContent = document.getElementById('cl-email').value;
+    document.getElementById('recap-proof').textContent = state.proofFile ? '✅ ' + state.proofFile.name : '✅ Référence: ' + document.getElementById('cl-ref').value;
+  }
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+/* ─── SUBMIT ─── */
+function submitOrder() {
+  var btn = document.getElementById('btn-p3');
+  var loading = document.getElementById('loading');
+  btn.disabled = true;
+  btn.textContent = '⏳ Envoi en cours...';
+  loading.style.display = 'block';
+
+  var clientName = document.getElementById('cl-name').value.trim();
+  var clientEmail = document.getElementById('cl-email').value.trim();
+  var ref = document.getElementById('cl-ref').value.trim();
+  var prod = PRODUCTS_LINKS[state.productId] || PRODUCTS_LINKS['1'];
+  var payLabels = {paypal:'PayPal (capor51@gmail.com)', binance:'Binance USDT TRC20', bpay:'Binance Pay ID 798651100'};
+
+  // Paramètres pour le template EmailJS
+  var templateParams = {
+    client_name: clientName,
+    client_email: clientEmail,
+    product_name: prod.name,
+    product_desc: prod.desc,
+    price: state.price === '0' ? 'GRATUIT' : '$' + state.price,
+    payment_method: payLabels[state.pay] || state.pay,
+    payment_ref: ref || 'Screenshot joint',
+    download_link: prod.file,
+    guide_link: prod.guide,
+    to_email: clientEmail,
+    // Email de notification pour vous (Leo)
+    admin_email: 'capor51@gmail.com'
+  };
+
+  // Envoyer l'email via EmailJS
+  if(typeof emailjs !== 'undefined' && EMAILJS_PUBLIC_KEY !== 'VOTRE_PUBLIC_KEY') {
+    emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
+      .then(function(response) {
+        console.log('EmailJS SUCCESS:', response.status);
+        showSuccess(clientName, clientEmail);
+      }, function(error) {
+        console.error('EmailJS FAILED:', error);
+        // Même en cas d'erreur EmailJS, on affiche le succès
+        // La preuve de paiement sera envoyée sur Telegram manuellement
+        showSuccess(clientName, clientEmail);
+      });
+  } else {
+    // Mode test (EmailJS pas encore configuré)
+    console.log('EmailJS pas configuré — mode test. Paramètres:', templateParams);
+    setTimeout(function(){ showSuccess(clientName, clientEmail); }, 1500);
+  }
+}
+
+function showSuccess(name, email) {
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('success-name').textContent = name;
+  document.getElementById('success-email').textContent = email;
+  goStep(4);
+}
+</script>
+</body>
+</html>

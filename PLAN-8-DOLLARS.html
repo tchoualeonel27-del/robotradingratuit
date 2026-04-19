@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan Complet $8 — RoboTradingRatuit</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#04060c;--bg2:#07090f;--bg3:#0a0d16;--blue:#0ea5e9;--cyan:#22d3ee;--white:#e0f2fe;--text:#8dafc8;--text2:#3f6080;--text3:#1a3048;--green:#10b981;--red:#f43f5e;--gold:#eab308;--orange:#f97316;--purple:#8b5cf6;--bd:rgba(14,165,233,.12);--fh:'Orbitron',sans-serif;--fb:'DM Sans',sans-serif;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);line-height:1.7;font-size:15px;padding:30px 16px 60px;}
+.wrap{max-width:860px;margin:0 auto;}
+h1{font-family:var(--fh);font-size:clamp(20px,3vw,30px);color:var(--white);text-align:center;margin-bottom:8px;}
+h1 span{background:linear-gradient(90deg,var(--blue),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.sub{text-align:center;font-size:14px;color:var(--text2);margin-bottom:40px;}
+/* BUDGET BOX */
+.budget{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:36px;}
+.bcard{background:var(--bg2);border:1px solid var(--bd);border-radius:12px;padding:18px;text-align:center;}
+.bcard .val{font-family:var(--fh);font-size:22px;font-weight:900;margin-bottom:4px;}
+.bcard .lbl{font-size:12px;color:var(--text2);}
+.g{color:var(--green);}.b{color:var(--blue);}.r{color:var(--red);}
+/* SECTION */
+.section{margin-bottom:32px;}
+.section-hd{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+.step-n{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-size:14px;font-weight:900;flex-shrink:0;}
+.sn-blue{background:rgba(14,165,233,.15);color:var(--blue);}
+.sn-green{background:rgba(16,185,129,.15);color:var(--green);}
+.sn-gold{background:rgba(234,179,8,.15);color:var(--gold);}
+.sn-purple{background:rgba(139,92,246,.15);color:var(--purple);}
+.sn-red{background:rgba(244,63,94,.15);color:var(--red);}
+.sn-orange{background:rgba(249,115,22,.15);color:var(--orange);}
+.section-ttl{font-family:var(--fh);font-size:15px;font-weight:700;color:var(--white);}
+.section-sub{font-size:12px;color:var(--text2);margin-top:2px;}
+.box{background:var(--bg2);border:1px solid var(--bd);border-radius:10px;padding:18px;margin-bottom:12px;}
+.box h4{font-size:13px;font-weight:700;color:var(--white);margin-bottom:9px;display:flex;align-items:center;gap:6px;}
+.box p,.box li{font-size:13px;color:var(--text2);line-height:1.8;margin-bottom:5px;}
+.box ul{list-style:none;padding:0;}
+.box ul li{padding:3px 0;display:flex;align-items:flex-start;gap:8px;}
+.box ul li::before{content:'▸';color:var(--blue);font-size:10px;flex-shrink:0;margin-top:4px;}
+.box ul li strong{color:var(--text);}
+code{background:var(--bg3);border:1px solid rgba(14,165,233,.2);color:var(--cyan);padding:2px 7px;border-radius:4px;font-size:12px;font-family:monospace;}
+.ok{background:rgba(16,185,129,.07);border:1px solid rgba(16,185,129,.18);border-radius:9px;padding:13px 17px;margin-bottom:12px;}
+.ok p{color:var(--text);font-size:13px;}
+.ok strong{color:var(--green);}
+.warn{background:rgba(234,179,8,.06);border:1px solid rgba(234,179,8,.18);border-radius:9px;padding:12px 16px;margin-bottom:12px;}
+.warn p{color:var(--gold);font-size:13px;}
+.steps-list{list-style:none;counter-reset:sc;}
+.steps-list li{counter-increment:sc;display:flex;align-items:flex-start;gap:11px;padding:11px;background:var(--bg3);border-radius:8px;margin-bottom:8px;border:1px solid var(--bd);}
+.steps-list li::before{content:counter(sc);background:linear-gradient(135deg,var(--blue),var(--cyan));color:#000;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:11px;flex-shrink:0;margin-top:1px;}
+.steps-list li .st{font-size:13px;color:var(--text);line-height:1.7;}
+.steps-list li .st strong{color:var(--white);}
+.steps-list li .st code{font-size:11px;}
+table.t{width:100%;border-collapse:collapse;font-size:13px;}
+table.t th{background:var(--bg3);color:var(--white);padding:9px 12px;text-align:left;font-weight:600;border-bottom:1px solid var(--bd);}
+table.t td{padding:9px 12px;border-bottom:1px solid rgba(14,165,233,.04);color:var(--text2);}
+table.t td strong{color:var(--white);}
+table.t tr:hover td{background:rgba(14,165,233,.02);}
+.tag{padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;text-transform:uppercase;}
+.tg{background:rgba(16,185,129,.1);color:var(--green);}
+.tb{background:rgba(14,165,233,.1);color:var(--blue);}
+.to{background:rgba(249,115,22,.1);color:var(--orange);}
+.final{background:linear-gradient(135deg,rgba(139,92,246,.1),rgba(60,15,120,.07));border:1.5px solid rgba(139,92,246,.25);border-radius:14px;padding:26px;text-align:center;margin-top:36px;}
+.final h2{font-family:var(--fh);font-size:20px;color:var(--white);margin-bottom:10px;}
+.final p{font-size:14px;color:var(--text2);margin-bottom:16px;line-height:1.75;}
+a.btn{display:inline-flex;align-items:center;gap:7px;padding:11px 22px;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;margin:4px;transition:all .2s;}
+a.btn:hover{transform:translateY(-1px);}
+.btn-tg{background:#1d9bd1;color:#fff;}
+.btn-vip{background:linear-gradient(135deg,var(--purple),#6d28d9);color:#fff;}
+@media(max-width:600px){.budget{grid-template-columns:1fr 1fr;}.wrap{padding:0;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Plan Complet avec <span>$8 de Budget</span></h1>
+<p class="sub">Livraison automatique par email · Vérification affiliés · Site en ligne aujourd'hui · Zéro serveur</p>
+
+<!-- BUDGET -->
+<div class="budget">
+  <div class="bcard"><div class="val g">$0</div><div class="lbl">Hébergement (Cloudflare Pages — gratuit pour toujours)</div></div>
+  <div class="bcard"><div class="val g">$0</div><div class="lbl">SSL/HTTPS (inclus automatiquement)</div></div>
+  <div class="bcard"><div class="val g">$0</div><div class="lbl">Email auto (EmailJS — 200 emails/mois gratuit)</div></div>
+  <div class="bcard"><div class="val b">$7–8</div><div class="lbl">Domaine .com via Namecheap (1 an)</div></div>
+  <div class="bcard"><div class="val g">$0</div><div class="lbl">Vérif affiliés (système intégré au site)</div></div>
+  <div class="bcard"><div class="val g" style="font-size:16px;">✅ En ligne</div><div class="lbl">Dès aujourd'hui avec votre $8</div></div>
+</div>
+
+<!-- STEP 1 — HÉBERGEMENT GRATUIT -->
+<div class="section">
+  <div class="section-hd">
+    <div class="step-n sn-blue">1</div>
+    <div><div class="section-ttl">Hébergement GRATUIT sur Cloudflare Pages</div><div class="section-sub">Meilleur que Netlify pour votre budget — 100% gratuit, pas d'overage, domaine custom inclus</div></div>
+  </div>
+  <div class="ok"><p><strong>Pourquoi Cloudflare Pages et pas Netlify ?</strong> Cloudflare ne facture JAMAIS de surplus. Netlify peut envoyer des factures énormes si votre site devient viral. Cloudflare = gratuit illimité pour les sites statiques comme le vôtre.</p></div>
+  <ul class="steps-list">
+    <li><div class="st"><strong>Créez un compte gratuit</strong> sur <code>pages.cloudflare.com</code> avec votre email</div></li>
+    <li><div class="st"><strong>Créez un dépôt GitHub gratuit</strong> sur <code>github.com</code> → "New repository" → nommez-le <code>robotradingratuit</code></div></li>
+    <li><div class="st"><strong>Uploadez vos fichiers HTML</strong> sur GitHub : cliquez "Add file" → "Upload files" → glissez TOUS vos fichiers HTML + la photo logo</div></li>
+    <li><div class="st"><strong>Dans Cloudflare Pages</strong> → "Create a project" → "Connect to Git" → sélectionnez votre repo GitHub → "Save and Deploy"</div></li>
+    <li><div class="st">Votre site est en ligne en 2 minutes sur <code>robotradingratuit.pages.dev</code> — GRATUIT et HTTPS automatique</div></li>
+  </ul>
+</div>
+
+<!-- STEP 2 — DOMAINE -->
+<div class="section">
+  <div class="section-hd">
+    <div class="step-n sn-gold">2</div>
+    <div><div class="section-ttl">Acheter votre domaine .com (~$7-8) sur Namecheap</div><div class="section-sub">Votre seule dépense — l'adresse professionnelle qui donne confiance aux acheteurs</div></div>
+  </div>
+  <ul class="steps-list">
+    <li><div class="st">Allez sur <code>namecheap.com</code> et cherchez <strong>robotradingratuit.com</strong></div></li>
+    <li><div class="st">Si disponible : ajoutez au panier. <strong>Prix : ~$7-8 pour 1 an</strong>. Payez par carte ou PayPal</div></li>
+    <li><div class="st">Dans Namecheap → "Domain List" → votre domaine → "Manage" → "Advanced DNS"</div></li>
+    <li><div class="st">Ajoutez un enregistrement CNAME : <strong>Name =</strong> <code>@</code> et <strong>Value =</strong> <code>robotradingratuit.pages.dev</code></div></li>
+    <li><div class="st">Dans Cloudflare Pages → Settings → Custom Domains → entrez <code>robotradingratuit.com</code> → Cloudflare configure le SSL automatiquement</div></li>
+    <li><div class="st">Attendez 10-30 minutes → votre site est sur <strong>https://robotradingratuit.com</strong> ✅</div></li>
+  </ul>
+  <div class="warn"><p>⚠️ Si <em>robotradingratuit.com</em> est pris, essayez : <strong>robotradingratuit.net</strong> (~$10) ou <strong>lementorforex.com</strong> (~$8) ou <strong>freetradingtools.net</strong> (~$8)</p></div>
+</div>
+
+<!-- STEP 3 — EMAIL AUTO -->
+<div class="section">
+  <div class="section-hd">
+    <div class="step-n sn-green">3</div>
+    <div><div class="section-ttl">Livraison automatique par email avec EmailJS</div><div class="section-sub">Le client paie → entre son email → reçoit le fichier EA automatiquement — 200 emails/mois GRATUIT</div></div>
+  </div>
+  <div class="ok"><p><strong>Comment ça fonctionne :</strong> Le client clique "Acheter" → entre son email + confirme le paiement → EmailJS envoie automatiquement un email avec le lien de téléchargement ou le fichier. Vous n'avez rien à faire manuellement !</p></div>
+  <div class="box">
+    <h4>📧 Configuration EmailJS (15 minutes) :</h4>
+    <ul>
+      <li><strong>Étape A :</strong> Créez un compte GRATUIT sur <code>emailjs.com</code></li>
+      <li><strong>Étape B :</strong> "Email Services" → "Add New Service" → choisissez <strong>Gmail</strong> → connectez votre Gmail (capor51@gmail.com)</li>
+      <li><strong>Étape C :</strong> "Email Templates" → "Create New Template" → collez le template ci-dessous</li>
+      <li><strong>Étape D :</strong> Notez votre <strong>Service ID</strong>, <strong>Template ID</strong> et <strong>Public Key</strong> (dans Account → General)</li>
+      <li><strong>Étape E :</strong> Remplacez les 3 valeurs dans le fichier <code>checkout.html</code> fourni ci-dessous</li>
+    </ul>
+  </div>
+  <div class="box">
+    <h4>📋 Template Email à copier dans EmailJS :</h4>
+    <p style="font-size:12px;color:var(--text3);">Subject : ✅ Votre produit RoboTradingRatuit — {{product_name}}</p>
+    <div style="background:var(--bg3);border:1px solid var(--bd);border-radius:7px;padding:14px;font-size:12px;color:var(--text);font-family:monospace;line-height:1.8;">
+      Bonjour {{client_name}},<br><br>
+      Merci pour votre achat ! Voici votre produit :<br><br>
+      🤖 <strong>{{product_name}}</strong><br>
+      💰 Prix payé : {{price}}<br><br>
+      📥 TÉLÉCHARGEMENT :<br>
+      {{download_link}}<br><br>
+      📚 Guide d'installation inclus :<br>
+      {{guide_link}}<br><br>
+      Pour toute question → Telegram : @salomonryn<br><br>
+      Merci et bon trading !<br>
+      RoboTradingRatuit — Free Trading Tools
+    </div>
+  </div>
+  <div class="warn"><p>⚠️ Pour les fichiers EA (EX4/EX5) : uploadez-les sur <strong>Google Drive</strong> avec partage public → copiez le lien → mettez-le comme <code>download_link</code> dans votre template EmailJS. Le fichier sera envoyé automatiquement à chaque achat.</p></div>
+</div>
+
+<!-- STEP 4 — VÉRIFICATION AFFILIÉS -->
+<div class="section">
+  <div class="section-hd">
+    <div class="step-n sn-purple">4</div>
+    <div><div class="section-ttl">Système de vérification des comptes affiliés</div><div class="section-sub">Le client doit prouver qu'il a ouvert son compte via vos liens avant d'accéder aux contenus gratuits</div></div>
+  </div>
+  <div class="ok"><p><strong>Comment ça marche :</strong> Avant d'accéder aux outils gratuits, le client voit une page qui lui demande de soumettre son <strong>identifiant de compte broker</strong> (ID Exness, ID Roboforex ou ID FBS). Vous vérifiez dans votre back-office broker, puis vous lui donnez accès. C'est la méthode la plus fiable sans serveur.</p></div>
+  <div class="box">
+    <h4>🔒 3 niveaux de vérification disponibles :</h4>
+    <table class="t">
+      <tr><th>Méthode</th><th>Comment vérifier</th><th>Fiabilité</th><th>Effort</th></tr>
+      <tr><td><strong>ID de compte broker</strong></td><td>Client envoie son Login MT4/MT5 → vous vérifiez dans votre dashboard IB Exness/Roboforex</td><td><span class="tag tg">HAUTE</span></td><td><span class="tag tb">5 min</span></td></tr>
+      <tr><td><strong>Capture d'écran</strong></td><td>Client envoie screenshot de son compte avec votre code IB visible → Telegram @salomonryn</td><td><span class="tag tg">HAUTE</span></td><td><span class="tag tb">2 min</span></td></tr>
+      <tr><td><strong>Email de confirmation broker</strong></td><td>Client transfère l'email de bienvenue du broker avec votre lien → prouve l'inscription</td><td><span class="tag tg">HAUTE</span></td><td><span class="tag to">10 min</span></td></tr>
+    </table>
+  </div>
+  <p style="font-size:13px;color:var(--text2);margin-top:10px;">Le fichier <code>acces-gratuit.html</code> ci-dessous contient le formulaire complet de vérification — les clients ne peuvent pas accéder aux contenus gratuits sans avoir soumis leur preuve.</p>
+</div>
+
+<!-- STEP 5 — GOOGLE DRIVE POUR FICHIERS -->
+<div class="section">
+  <div class="section-hd">
+    <div class="step-n sn-orange">5</div>
+    <div><div class="section-ttl">Stocker vos fichiers EA sur Google Drive (GRATUIT)</div><div class="section-sub">15 Go gratuits — suffisant pour tous vos EAs, indicateurs et ebooks</div></div>
+  </div>
+  <ul class="steps-list">
+    <li><div class="st">Ouvrez <code>drive.google.com</code> avec votre Gmail</div></li>
+    <li><div class="st">Créez un dossier <strong>"RoboTradingRatuit — Produits"</strong> avec des sous-dossiers : Robots_EA / Indicateurs / Ebooks</div></li>
+    <li><div class="st">Uploadez chaque fichier (EX4, EX5, PDF) dans le bon sous-dossier</div></li>
+    <li><div class="st">Clic droit sur chaque fichier → <strong>"Partager"</strong> → <strong>"Tout le monde avec le lien peut voir"</strong></div></li>
+    <li><div class="st">Copiez le lien → remplacez dans votre template EmailJS pour ce produit</div></li>
+    <li><div class="st">Pour les <strong>produits payants</strong> uniquement : laissez le partage actif SEULEMENT après vérification du paiement. Pour l'automatisation, le lien est envoyé uniquement après confirmation.</div></li>
+  </ul>
+</div>
+
+<!-- STEP 6 — ADMIN & PHOTOS -->
+<div class="section">
+  <div class="section-hd">
+    <div class="step-n sn-blue">6</div>
+    <div><div class="section-ttl">Configurer votre Dashboard Admin</div><div class="section-sub">Ajouter vos vraies photos de produits et personnaliser le site</div></div>
+  </div>
+  <ul class="steps-list">
+    <li><div class="st">Accédez à <code>robotradingratuit.com/admin-dashboard.html</code></div></li>
+    <li><div class="st">Connectez-vous : <strong>Identifiant : Leo</strong> / <strong>Mot de passe : Salvation1993</strong></div></li>
+    <li><div class="st">Pour chaque Robot EA → cliquez <strong>"✏️ Modifier"</strong> → section <strong>"Photos du produit"</strong></div></li>
+    <li><div class="st">Cliquez sur la zone photo → <strong>choisissez un screenshot de backtest MT4</strong> depuis votre ordinateur</div></li>
+    <li><div class="st">Ajoutez jusqu'à 8 photos dans la galerie (courbes de profit, résultats, interface MT4)</div></li>
+    <li><div class="st">Cliquez <strong>"Enregistrer"</strong> → la photo apparaît immédiatement sur le catalogue</div></li>
+  </ul>
+</div>
+
+<!-- RÉCAP FINANCIER -->
+<div class="section">
+  <div class="section-hd">
+    <div class="step-n sn-green">💰</div>
+    <div><div class="section-ttl">Récapitulatif — $8 investis, objectif $1 000/mois</div></div>
+  </div>
+  <table class="t">
+    <tr><th>Source de revenu</th><th>Prix</th><th>Objectif mensuel</th><th>Revenu</th></tr>
+    <tr><td><strong>👑 VIP Illimité</strong></td><td>$200 unique</td><td>5 ventes</td><td><strong style="color:var(--green)">$1 000</strong></td></tr>
+    <tr><td><strong>🤖 Robots individuels</strong></td><td>$15–$50</td><td>10 ventes (~$30 moy.)</td><td><strong style="color:var(--green)">$300</strong></td></tr>
+    <tr><td><strong>📣 Signaux abonnement</strong></td><td>$19–$49/mois</td><td>10 abonnés</td><td><strong style="color:var(--green)">$200–$400</strong></td></tr>
+    <tr><td><strong>🏦 Commissions Exness IB</strong></td><td>Variable</td><td>20 comptes actifs</td><td><strong style="color:var(--green)">$100–$300</strong></td></tr>
+    <tr><td><strong>📘 Ebooks PDF</strong></td><td>$29–$39</td><td>5 ventes</td><td><strong style="color:var(--green)">$150–$200</strong></td></tr>
+    <tr><td colspan="3"><strong>TOTAL MOIS 3 RÉALISTE</strong></td><td><strong style="color:var(--green);font-size:16px;">$1 500–$2 000</strong></td></tr>
+  </table>
+</div>
+
+<!-- FICHIERS TÉLÉCHARGER -->
+<div class="section">
+  <div class="section-hd">
+    <div class="step-n sn-blue">📦</div>
+    <div><div class="section-ttl">Fichiers fournis dans ce pack</div></div>
+  </div>
+  <table class="t">
+    <tr><th>Fichier</th><th>Description</th><th>Statut</th></tr>
+    <tr><td><code>index.html</code></td><td>Page d'accueil complète</td><td><span class="tag tg">✅ Inclus</span></td></tr>
+    <tr><td><code>catalog-robots.html</code></td><td>Catalogue Robots EA navigable</td><td><span class="tag tg">✅ Inclus</span></td></tr>
+    <tr><td><code>catalog-indicators.html</code></td><td>Catalogue Indicateurs</td><td><span class="tag tg">✅ Inclus</span></td></tr>
+    <tr><td><code>catalog-systems.html</code></td><td>Catalogue Systèmes</td><td><span class="tag tg">✅ Inclus</span></td></tr>
+    <tr><td><code>catalog-ebooks.html</code></td><td>Catalogue Ebooks</td><td><span class="tag tg">✅ Inclus</span></td></tr>
+    <tr><td><code>catalog-videos.html</code></td><td>Catalogue Vidéos</td><td><span class="tag tg">✅ Inclus</span></td></tr>
+    <tr><td><code>product.html</code></td><td>Fiche produit avec galerie photos</td><td><span class="tag tg">✅ Inclus</span></td></tr>
+    <tr><td><code>admin-dashboard.html</code></td><td>Dashboard admin (Leo/Salvation1993)</td><td><span class="tag tg">✅ Inclus</span></td></tr>
+    <tr><td><code>checkout.html</code></td><td><strong>NOUVEAU</strong> — Page paiement + livraison auto EmailJS</td><td><span class="tag tb">✅ Inclus ci-dessous</span></td></tr>
+    <tr><td><code>acces-gratuit.html</code></td><td><strong>NOUVEAU</strong> — Vérification compte affilié broker</td><td><span class="tag tb">✅ Inclus ci-dessous</span></td></tr>
+  </table>
+</div>
+
+<div class="final">
+  <h2>🚀 Vous êtes prêt — En ligne aujourd'hui !</h2>
+  <p>
+    <strong style="color:var(--white)">Budget total dépensé : $7–8</strong> (domaine uniquement)<br>
+    Hébergement, SSL, email automatique, vérification affiliés = <strong style="color:var(--green)">TOUT GRATUIT</strong><br><br>
+    Première vente VIP à $200 = <strong style="color:var(--green)">+2 500% de retour sur votre investissement</strong>
+  </p>
+  <a href="https://t.me/salomonryn" target="_blank" class="btn btn-tg">💬 Support Telegram</a>
+  <a href="index.html" class="btn btn-vip">🌐 Voir le site</a>
+</div>
+
+</div>
+</body>
+</html>

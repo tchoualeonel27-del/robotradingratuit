@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Produit — RoboTradingRatuit</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#04060c;--bg2:#07090f;--bg3:#0a0d16;--bg4:#0d1120;--blue:#0ea5e9;--blue2:#0284c7;--cyan:#22d3ee;--white:#e0f2fe;--text:#8dafc8;--text2:#3f6080;--text3:#1a3048;--green:#10b981;--red:#f43f5e;--gold:#eab308;--orange:#f97316;--purple:#8b5cf6;--bd:rgba(14,165,233,.09);--bd2:rgba(14,165,233,.20);--fh:'Orbitron',sans-serif;--fb:'DM Sans',sans-serif;--r:12px;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.7;font-size:16px;}
+::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-thumb{background:var(--blue2);border-radius:2px;}
+a{text-decoration:none;color:inherit;}button{cursor:pointer;font-family:var(--fb);}
+#cv{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;}
+.tk-wrap{position:relative;z-index:20;height:36px;overflow:hidden;background:rgba(4,6,12,.98);border-bottom:1px solid var(--bd2);display:flex;align-items:center;}
+.tk-lbl{background:linear-gradient(135deg,var(--blue),var(--cyan));color:#000;font-size:9px;font-weight:800;padding:0 13px;white-space:nowrap;letter-spacing:2px;font-family:var(--fh);flex-shrink:0;height:36px;display:flex;align-items:center;text-transform:uppercase;}
+.tk-tr{display:flex;gap:52px;white-space:nowrap;padding:0 16px;animation:tick 30s linear infinite;width:max-content;}
+@keyframes tick{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+.tki{font-size:12px;font-weight:600;display:flex;align-items:center;gap:8px;color:var(--text);}
+.tk-sym{font-family:var(--fh);font-size:10px;color:var(--white);letter-spacing:1px;}
+.tk-up{color:var(--green);}.tk-dn{color:var(--red);}
+nav{position:fixed;top:36px;left:0;right:0;z-index:100;background:rgba(4,6,12,.97);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);height:62px;display:flex;align-items:center;padding:0 3.5%;gap:18px;}
+.nav-logo{display:flex;align-items:center;gap:9px;flex-shrink:0;}
+.nav-logo img{width:32px;height:32px;border-radius:7px;border:1px solid rgba(14,165,233,.28);object-fit:cover;}
+.logo-n{font-family:var(--fh);font-size:11px;font-weight:900;background:linear-gradient(90deg,var(--blue),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.logo-t{font-size:8px;color:var(--text2);letter-spacing:2px;text-transform:uppercase;}
+.nav-links{display:flex;flex:1;justify-content:center;}
+.nav-links a{color:var(--text2);font-size:13px;font-weight:500;padding:5px 11px;border-radius:6px;transition:all .2s;white-space:nowrap;}
+.nav-links a:hover{color:var(--white);background:rgba(14,165,233,.07);}
+.nav-r{display:flex;gap:7px;flex-shrink:0;}
+.btn-vip{background:linear-gradient(135deg,var(--purple),#6d28d9);color:#fff;border:none;padding:7px 15px;border-radius:6px;font-size:12px;font-weight:700;}
+.float-s{position:fixed;bottom:22px;right:22px;z-index:999;display:flex;align-items:center;gap:8px;background:linear-gradient(135deg,#1d9bd1,#1370a0);color:#fff;border:none;border-radius:50px;padding:10px 17px;font-size:12px;font-weight:700;animation:fy 3.5s ease-in-out infinite;box-shadow:0 6px 22px rgba(29,155,209,.4);}
+@keyframes fy{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
+.fd{width:7px;height:7px;border-radius:50%;background:#4ade80;animation:bk 1.5s infinite;flex-shrink:0;}
+@keyframes bk{0%,100%{opacity:1;}50%{opacity:.15;}}
+
+/* MAIN WRAP */
+.wrap{position:relative;z-index:1;padding:112px 3.5% 80px;max-width:1260px;margin:0 auto;}
+.bc{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text2);margin-bottom:22px;flex-wrap:wrap;}
+.bc a:hover{color:var(--blue);} .bc span{color:var(--text3);}
+
+/* PRODUCT LAYOUT */
+.prod-lay{display:grid;grid-template-columns:1fr 400px;gap:36px;align-items:start;}
+
+/* LEFT — IMAGES */
+.img-col{}
+/* Photo principale */
+.main-photo{border-radius:var(--r);overflow:hidden;border:1px solid var(--bd);background:var(--bg2);position:relative;width:100%;aspect-ratio:4/3;cursor:zoom-in;display:flex;align-items:center;justify-content:center;}
+.main-photo img{width:100%;height:100%;object-fit:cover;transition:transform .3s;}
+.main-photo:hover img{transform:scale(1.03);}
+/* Fond "pas de photo" — propre, sans émoji */
+.no-photo{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:linear-gradient(160deg,#040710,#070b15);}
+.no-photo .plat-lbl{font-family:var(--fh);font-size:9px;color:rgba(14,165,233,.22);letter-spacing:3px;text-transform:uppercase;}
+.no-photo .add-lbl{font-size:12px;color:var(--text3);text-align:center;line-height:1.5;}
+.no-photo .add-lbl a{color:var(--blue);}
+/* Miniatures galerie */
+.thumbs{display:flex;gap:8px;margin-top:10px;overflow-x:auto;padding-bottom:3px;}
+.thumbs::-webkit-scrollbar{height:3px;}
+.thumb{width:68px;height:68px;border-radius:8px;overflow:hidden;border:2px solid transparent;cursor:pointer;flex-shrink:0;transition:border-color .2s;background:var(--bg2);}
+.thumb:hover,.thumb.on{border-color:var(--blue);}
+.thumb img{width:100%;height:100%;object-fit:cover;}
+
+/* RIGHT — INFOS */
+.info-col{}
+.p-badges{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
+.pbdg{font-size:9px;font-weight:800;padding:3px 10px;border-radius:4px;letter-spacing:1px;text-transform:uppercase;}
+.pb-hot{background:linear-gradient(135deg,var(--orange),#c2410c);color:#fff;}
+.pb-sale{background:linear-gradient(135deg,var(--red),#be123c);color:#fff;}
+.pb-free{background:linear-gradient(135deg,var(--green),#059669);color:#000;}
+.pb-best{background:linear-gradient(135deg,var(--gold),#ca8a04);color:#000;}
+.p-tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;}
+.ptag{background:rgba(14,165,233,.07);border:1px solid var(--bd);color:var(--text2);font-size:9px;font-weight:700;padding:2px 8px;border-radius:4px;text-transform:uppercase;}
+.ptag.or{border-color:rgba(234,179,8,.2);color:var(--gold);}
+.ptag.forex{border-color:rgba(14,165,233,.2);color:var(--blue);}
+.p-name{font-family:var(--fh);font-size:clamp(17px,2.2vw,26px);font-weight:700;color:var(--white);margin-bottom:9px;line-height:1.25;}
+.p-stars{display:flex;align-items:center;gap:8px;margin-bottom:14px;}
+.stars{color:var(--gold);font-size:15px;letter-spacing:1px;}
+.stars-n{font-size:13px;color:var(--text2);}
+/* PRIX */
+.price-block{background:rgba(14,165,233,.05);border:1px solid var(--bd2);border-radius:var(--r);padding:16px;margin-bottom:18px;}
+.price-row{display:flex;align-items:baseline;gap:9px;margin-bottom:5px;flex-wrap:wrap;}
+.price{font-family:var(--fh);font-size:38px;font-weight:900;color:var(--blue);line-height:1;}
+.price .pc{font-size:19px;vertical-align:super;}
+.price.fp{color:var(--green);font-size:26px;}
+.price-old{font-size:17px;color:var(--text3);text-decoration:line-through;}
+.price-pct{background:rgba(244,63,94,.14);color:var(--red);font-size:11px;font-weight:700;padding:3px 9px;border-radius:4px;}
+.price-note{font-size:12px;color:var(--text2);}
+.price-note span{color:var(--green);font-weight:700;}
+/* BOUTONS */
+.btn-buy-big{width:100%;background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;border:none;padding:14px;border-radius:10px;font-size:15px;font-weight:700;transition:all .25s;margin-bottom:9px;box-shadow:0 5px 22px rgba(14,165,233,.32);}
+.btn-buy-big:hover{transform:translateY(-2px);box-shadow:0 9px 30px rgba(14,165,233,.48);}
+.btn-tg{width:100%;background:linear-gradient(135deg,#1d9bd1,#1370a0);color:#fff;border:none;padding:11px;border-radius:10px;font-size:13px;font-weight:700;margin-bottom:9px;transition:all .2s;display:block;text-align:center;}
+.btn-tg:hover{opacity:.9;}
+.pay-row{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin-bottom:12px;}
+.pay-chip{background:var(--bg3);border:1px solid var(--bd);border-radius:6px;padding:6px 12px;font-size:11px;color:var(--text2);text-align:center;}
+.pay-chip strong{display:block;color:var(--white);font-size:12px;}
+.deliv-note{font-size:12px;color:var(--text2);text-align:center;padding:9px;background:rgba(14,165,233,.04);border-radius:7px;border:1px solid var(--bd);}
+.deliv-note a{color:var(--blue);font-weight:700;}
+
+/* TABS */
+.tabs-wrap{margin-top:34px;}
+.tabs-nav{display:flex;gap:0;border-bottom:1px solid var(--bd);margin-bottom:22px;}
+.tab{padding:10px 17px;font-size:14px;font-weight:600;color:var(--text2);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;margin-bottom:-1px;}
+.tab:hover,.tab.on{color:var(--blue);border-bottom-color:var(--blue);}
+.tab-content{display:none;}
+.tab-content.on{display:block;}
+/* Description */
+.desc-text{font-size:15px;color:var(--text2);line-height:1.8;}
+.desc-text p{margin-bottom:11px;}
+/* Features */
+.feats-list{list-style:none;}
+.feats-list li{font-size:14px;color:var(--text);padding:10px 13px;border-bottom:1px solid var(--bd);display:flex;align-items:flex-start;gap:9px;}
+.feats-list li:last-child{border-bottom:none;}
+.feats-list li::before{content:'✓';color:var(--green);font-weight:700;font-size:13px;flex-shrink:0;margin-top:1px;}
+/* Galerie onglet */
+.gal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:11px;}
+.gal-thumb{border-radius:var(--r);overflow:hidden;border:1px solid var(--bd);cursor:pointer;transition:border-color .2s;aspect-ratio:4/3;}
+.gal-thumb:hover{border-color:var(--bd2);}
+.gal-thumb img{width:100%;height:100%;object-fit:cover;}
+.gal-empty{text-align:center;padding:36px;color:var(--text3);font-size:13px;grid-column:1/-1;}
+/* Specs */
+.specs-tbl{width:100%;border-collapse:collapse;}
+.specs-tbl td{padding:10px 13px;font-size:13px;border-bottom:1px solid var(--bd);}
+.specs-tbl td:first-child{color:var(--text2);font-weight:600;width:38%;}
+.specs-tbl td:last-child{color:var(--white);}
+/* Related */
+.related-sec{margin-top:54px;}
+.related-sec h2{font-family:var(--fh);font-size:20px;font-weight:700;color:var(--white);margin-bottom:18px;}
+.rel-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;}
+.rel-card{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;transition:all .3s;display:block;}
+.rel-card:hover{border-color:var(--bd2);transform:translateY(-4px);}
+.rel-thumb{height:120px;background:var(--bg4);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.rel-thumb img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;}
+.rel-body{padding:12px;}
+.rel-name{font-family:var(--fh);font-size:11px;font-weight:700;color:var(--white);margin-bottom:7px;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.rel-foot{display:flex;align-items:center;justify-content:space-between;}
+.rel-price{font-family:var(--fh);font-size:17px;font-weight:900;color:var(--blue);}
+.rel-price .ps{font-size:10px;vertical-align:super;}
+.rel-price.fp{color:var(--green);font-size:13px;}
+.btn-rel{background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;border:none;padding:6px 12px;border-radius:6px;font-size:10px;font-weight:700;}
+/* LIGHTBOX */
+.lb{display:none;position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:800;align-items:center;justify-content:center;cursor:pointer;}
+.lb.on{display:flex;}
+.lb img{max-width:92vw;max-height:92vh;border-radius:9px;object-fit:contain;}
+.lb-cls{position:fixed;top:18px;right:18px;background:rgba(255,255,255,.1);color:#fff;border:none;border-radius:50%;width:38px;height:38px;font-size:19px;display:flex;align-items:center;justify-content:center;}
+/* MODALS */
+.mvo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:500;align-items:center;justify-content:center;padding:18px;backdrop-filter:blur(5px);}
+.mvo.on{display:flex;}
+.mbox{background:linear-gradient(160deg,var(--bg2),var(--bg3));border:1px solid var(--bd2);border-radius:14px;padding:26px;width:100%;max-width:440px;max-height:90vh;overflow-y:auto;position:relative;}
+.mcls{position:absolute;top:12px;right:12px;background:transparent;border:1px solid var(--bd2);color:var(--text2);width:26px;height:26px;border-radius:6px;font-size:12px;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.mcls:hover{border-color:var(--red);color:var(--red);}
+.mt{font-family:var(--fh);font-size:16px;font-weight:700;color:var(--white);margin-bottom:5px;}
+.ms{font-size:12px;color:var(--text2);margin-bottom:16px;}
+.bmod{width:100%;background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;border:none;padding:12px;border-radius:9px;font-size:13px;font-weight:700;display:block;text-align:center;text-decoration:none;margin-top:9px;}
+@media(max-width:900px){.prod-lay{grid-template-columns:1fr;}.nav-links{display:none;}.main-photo{aspect-ratio:16/10;}}
+@media(max-width:600px){.wrap{padding:102px 4% 60px;}.rel-grid{grid-template-columns:1fr 1fr;}.gal-grid{grid-template-columns:1fr 1fr;}}
+</style>
+</head>
+<body>
+<canvas id="cv"></canvas>
+<a href="https://t.me/salomonryn" target="_blank" class="float-s"><span class="fd"></span>💬 Support</a>
+
+<div class="tk-wrap"><div class="tk-lbl">📡 LIVE</div><div class="tk-tr" id="TK"></div></div>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <img src="photo_2025-05-22_17-46-29.jpg" alt="Logo" onerror="this.style.display='none'">
+    <div><div class="logo-n">RoboTradingRatuit</div><div class="logo-t">Free Trading Tools</div></div>
+  </a>
+  <div class="nav-links">
+    <a href="catalog-robots.html">🤖 Robots EA</a>
+    <a href="catalog-indicators.html">📡 Indicateurs</a>
+    <a href="catalog-systems.html">⚙️ Systèmes</a>
+    <a href="catalog-ebooks.html">📘 Ebooks</a>
+    <a href="index.html#signals">📣 Signaux</a>
+    <a href="index.html#brokers">🏦 Brokers</a>
+  </div>
+  <div class="nav-r"><button class="btn-vip" onclick="openM('vm')">👑 VIP — $200</button></div>
+</nav>
+
+<div class="wrap" id="W">
+  <div class="bc" id="BC"><a href="index.html">Accueil</a><span>›</span><span id="BC-cat"></span><span id="BC-sep">›</span><span id="BC-nm" style="color:var(--white)"></span></div>
+
+  <div class="prod-lay">
+    <!-- COLONNE IMAGES -->
+    <div class="img-col">
+      <div class="main-photo" id="MP" onclick="openLB(document.getElementById('MI').src)">
+        <div class="no-photo" id="NP">
+          <div class="plat-lbl" id="NP-plat">EA EXPERT ADVISOR</div>
+          <div class="add-lbl">Aucune photo disponible.<br>Ajoutez-en une via le <a href="admin-dashboard.html">tableau de bord</a>.</div>
+        </div>
+        <img id="MI" src="" alt="" style="display:none;">
+      </div>
+      <div class="thumbs" id="THUMBS"></div>
+    </div>
+
+    <!-- COLONNE INFOS -->
+    <div class="info-col">
+      <div class="p-badges" id="BADGES"></div>
+      <div class="p-tags" id="TAGS"></div>
+      <div class="p-name" id="PNAME">Chargement...</div>
+      <div class="p-stars"><span class="stars" id="STARS">★★★★☆</span><span class="stars-n" id="STARS-N">(4/5)</span></div>
+      <div class="price-block">
+        <div class="price-row">
+          <div class="price" id="PRICE"><span class="pc">$</span>0</div>
+          <span id="PRICE-OLD"></span>
+          <span id="PRICE-PCT"></span>
+        </div>
+        <div class="price-note" id="PRICE-NOTE">Fichier livré par email sous 24h · <span>Format EX4/EX5</span></div>
+      </div>
+      <button class="btn-buy-big" id="BUY" onclick="openM('pm')">🛒 Acheter maintenant</button>
+      <a href="https://t.me/salomonryn" target="_blank" class="btn-tg">💬 Demander des informations</a>
+      <div class="pay-row">
+        <div class="pay-chip"><strong>🅿️ PayPal</strong>capor51@gmail.com</div>
+        <div class="pay-chip"><strong>🟡 Binance</strong>USDT TRC20</div>
+        <div class="pay-chip"><strong>💛 Binance Pay</strong>798651100</div>
+      </div>
+      <div class="deliv-note">📩 Après paiement → justificatif à <a href="https://t.me/salomonryn" target="_blank">@salomonryn</a></div>
+    </div>
+  </div>
+
+  <!-- ONGLETS -->
+  <div class="tabs-wrap">
+    <div class="tabs-nav">
+      <div class="tab on" onclick="showTab('desc',this)">Description</div>
+      <div class="tab" onclick="showTab('feats',this)">Caractéristiques</div>
+      <div class="tab" onclick="showTab('gallery',this)">Galerie photos</div>
+      <div class="tab" onclick="showTab('specs',this)">Spécifications</div>
+    </div>
+    <div class="tab-content on" id="t-desc"><div class="desc-text" id="DESC"></div></div>
+    <div class="tab-content" id="t-feats"><ul class="feats-list" id="FEATS"></ul></div>
+    <div class="tab-content" id="t-gallery"><div class="gal-grid" id="GAL"></div></div>
+    <div class="tab-content" id="t-specs"><table class="specs-tbl" id="SPECS"></table></div>
+  </div>
+
+  <!-- PRODUITS SIMILAIRES -->
+  <div class="related-sec">
+    <h2>Produits similaires</h2>
+    <div class="rel-grid" id="REL"></div>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lb" id="LB" onclick="closeLB()">
+  <button class="lb-cls" onclick="closeLB()">✕</button>
+  <img id="LB-IMG" src="" alt="">
+</div>
+
+<!-- MODAL PAIEMENT -->
+<div class="mvo" id="pm">
+  <div class="mbox">
+    <button class="mcls" onclick="closeM('pm')">✕</button>
+    <div class="mt" id="pmT">Commander</div>
+    <p class="ms">Choisissez votre mode de paiement</p>
+    <div id="pmS" style="background:var(--bg3);border:1px solid var(--bd);border-radius:8px;padding:12px;margin-bottom:12px;"></div>
+    <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:12px;">
+      <div style="background:var(--bg3);border:1px solid var(--bd);border-radius:8px;padding:10px;"><b style="color:var(--white);font-size:13px;">🅿️ PayPal</b><div style="font-size:12px;color:var(--cyan);margin-top:3px;">capor51@gmail.com</div></div>
+      <div style="background:var(--bg3);border:1px solid var(--bd);border-radius:8px;padding:10px;"><b style="color:var(--white);font-size:13px;">🟡 Binance USDT (TRC20)</b><div style="font-size:11px;color:var(--cyan);margin-top:3px;word-break:break-all;">TQ8JunUjkWu3rv1PyVjmPSEVHh6fD4kFGe</div></div>
+      <div style="background:var(--bg3);border:1px solid var(--bd);border-radius:8px;padding:10px;"><b style="color:var(--white);font-size:13px;">💛 Binance Pay</b><div style="font-size:12px;color:var(--cyan);margin-top:3px;">ID : 798651100</div></div>
+    </div>
+    <a href="https://t.me/salomonryn" target="_blank" class="bmod">💬 Envoyer justificatif @salomonryn</a>
+    <div style="font-size:11px;color:var(--text3);text-align:center;margin-top:9px;">Fichier livré sous 24h après confirmation du paiement</div>
+  </div>
+</div>
+
+<!-- MODAL VIP -->
+<div class="mvo" id="vm">
+  <div class="mbox" style="border-color:rgba(139,92,246,.3);">
+    <button class="mcls" onclick="closeM('vm')">✕</button>
+    <div class="mt" style="background:linear-gradient(90deg,var(--purple),#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">👑 VIP Illimité — $200 à Vie</div>
+    <p class="ms">Tous les produits actuels & futurs — paiement unique</p>
+    <div style="font-family:var(--fh);font-size:40px;font-weight:900;text-align:center;background:linear-gradient(135deg,var(--purple),#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:14px;">$200</div>
+    <a href="https://t.me/salomonryn" target="_blank" class="bmod" style="background:linear-gradient(135deg,var(--purple),#6d28d9);">💬 Contacter @salomonryn pour activer</a>
+  </div>
+</div>
+
+<script>
+var K='rtr_products';
+function getDB(){try{var d=localStorage.getItem(K);return d?JSON.parse(d):null;}catch(e){return null;}}
+function dfDB(){return{robots:[
+  {id:1,name:'Gold Hunter V8',plat:'MT4/MT5',cat:'or',price:30,oldPrice:null,badge:'bs',free:false,stars:5,desc:'EA de référence pour XAUUSD basé sur la détection des zones de liquidité. Algorithme v8 optimisé sur 5 ans de backtest avec drawdown contrôlé. Compatible avec tous les brokers MT4/MT5.',feats:['XAUUSD/Gold optimisé','Drawdown max < 12%','Presets Exness & Roboforex inclus','No DLL requis — installation simple','Testé sur données 2019–2024'],img:'',imgs:[]},
+  {id:2,name:'AI Gold Sniper MT4 V1.4',plat:'MT4',cat:'or',price:20,oldPrice:null,badge:'hot',free:false,stars:5,desc:'Expert Advisor IA de sniper sur l\'Or. Intelligence artificielle pour des entrées chirurgicales sur XAUUSD.',feats:['IA-powered XAU/USD','Sniper haute précision','Version 1.4 optimisée'],img:'',imgs:[]},
+  {id:3,name:'Dominant EA MT5',plat:'MT5',cat:'forex',price:50,oldPrice:299,badge:'sale',free:false,stars:5,desc:'EA complet avec 3 modes de risque. Compatible EURUSD, GBPUSD, USDJPY et XAUUSD.',feats:['3 niveaux: Low/Medium/Aggressive','EUR/USD, GBP/USD, USD/JPY, XAU/USD','Presets Exness fournis'],img:'',imgs:[]},
+  {id:4,name:'AI Golden Jet Fighter GTX MT4',plat:'MT4',cat:'forex',price:15,oldPrice:null,badge:'',free:false,stars:4,desc:'EA Forex agressif — entrées rapides, sorties précises.',feats:['Scalping rapide','EUR/USD, GBP/USD'],img:'',imgs:[]},
+  {id:5,name:'AiMaxPro EA V2',plat:'MT4',cat:'indices',price:15,oldPrice:null,badge:'',free:false,stars:4,desc:'EA pour indices boursiers. IA v2 avec gestion dynamique.',feats:['US30, NAS100, SP500','IA v2'],img:'',imgs:[]},
+  {id:6,name:'Alpha Scalper Pro MT5',plat:'MT5',cat:'forex',price:50,oldPrice:500,badge:'sale',free:false,stars:5,desc:'Scalper professionnel ultra-rapide MT5.',feats:['Scalping milliseconde','Multi-sessions'],img:'',imgs:[]},
+  {id:7,name:'ICT Venom XAUUSD MT5',plat:'MT5',cat:'or',price:35,oldPrice:null,badge:'',free:false,stars:4,desc:'EA basé sur la méthodologie ICT. Order Blocks et FVG automatiques.',feats:['Méthodologie ICT 100%','Order Blocks & FVG'],img:'',imgs:[]},
+],indicators:[
+  {id:1,name:'V2 Price Action Volumetric OB & Trend Strength',compat:'TradingView',type:'Premium',price:15,free:false,stars:4,desc:'Détection automatique des Order Blocks volumétriques.',img:'',imgs:[]},
+  {id:2,name:'100% Pine Script — Système Complet',compat:'TradingView',type:'Premium',price:20,free:false,stars:4,desc:'Script Pine Script complet.',img:'',imgs:[]},
+  {id:3,name:'Fiona V.01',compat:'MT4',type:'Gratuit',price:0,free:true,stars:4,desc:'Indicateur MT4 gratuit de tendance.',img:'',imgs:[]},
+],systems:[
+  {id:1,name:'100% Winrate System MT4 (Source Code MQ4)',plat:'MT4/MT5',price:25,src:true,free:false,stars:5,desc:'Système avec code source MQ4 complet. Résultats vérifiés sur MyFxBook.',feats:['Code source MQ4 complet','Résultats vérifiés MyFxBook'],img:'',imgs:[]},
+],ebooks:[
+  {id:1,title:'Maîtriser le Forex de A à Z',pages:120,cat:'Formation générale',price:29,free:false,stars:5,desc:'120 pages premium. Formation complète pour traders.',img:'',imgs:[]},
+  {id:2,title:'Smart Money Concepts (SMC)',pages:95,cat:'SMC / ICT',price:39,free:false,stars:5,desc:'Apprenez à trader comme les institutions.',img:'',imgs:[]},
+  {id:3,title:'Guide Installation EA MT4/MT5',pages:40,cat:'Automatisation',price:0,free:true,stars:4,desc:'Manuel illustré pour installer vos robots.',img:'',imgs:[]},
+]};}
+
+var DB=getDB()||dfDB();
+
+function getP(){var qs=new URLSearchParams(window.location.search);return{type:qs.get('type')||'robot',id:parseInt(qs.get('id'))||1};}
+function findP(type,id){
+  var map={robot:DB.robots,indicator:DB.indicators,system:DB.systems,ebook:DB.ebooks};
+  var robots=DB.robots,indicators=DB.indicators,systems=DB.systems,ebooks=DB.ebooks;
+  if(type==='robot')return{type:'robot',data:(robots||[]).find(function(r){return r.id===id;})};
+  if(type==='indicator')return{type:'indicator',data:(indicators||[]).find(function(r){return r.id===id;})};
+  if(type==='system')return{type:'system',data:(systems||[]).find(function(r){return r.id===id;})};
+  if(type==='ebook')return{type:'ebook',data:(ebooks||[]).find(function(r){return r.id===id;})};
+  return null;
+}
+
+function load(){
+  var q=getP();var res=findP(q.type,q.id);
+  if(!res||!res.data){document.getElementById('PNAME').textContent='Produit introuvable';return;}
+  var p=res.data,type=res.type;
+  var nm=p.name||p.title||'—';
+  document.title=nm+' — RoboTradingRatuit';
+
+  /* Breadcrumb */
+  var catNm={robot:'Robots EA',indicator:'Indicateurs',system:'Systèmes',ebook:'Ebooks'};
+  var catHref={robot:'catalog-robots.html',indicator:'catalog-indicators.html',system:'catalog-systems.html',ebook:'catalog-ebooks.html'};
+  document.getElementById('BC-cat').innerHTML='<a href="'+(catHref[type]||'#')+'" style="color:var(--text2)">'+catNm[type]+'</a>';
+  document.getElementById('BC-nm').textContent=nm;
+
+  /* Photo principale */
+  if(p.img){
+    var mi=document.getElementById('MI');
+    mi.src=p.img;mi.style.display='block';
+    document.getElementById('NP').style.display='none';
+    document.getElementById('MP').onclick=function(){openLB(p.img);};
+  } else {
+    document.getElementById('NP-plat').textContent=(p.plat||p.compat||type.toUpperCase());
+  }
+
+  /* Miniatures */
+  var allImgs=[];
+  if(p.img)allImgs.push(p.img);
+  (p.imgs||[]).forEach(function(s){allImgs.push(s);});
+  var tH='';
+  allImgs.forEach(function(src,i){
+    tH+='<div class="thumb'+(i===0?' on':'')+'" onclick="setMain(\''+src+'\',this)"><img src="'+src+'" alt="photo'+i+'" onerror="this.parentElement.style.display=\'none\'"></div>';
+  });
+  document.getElementById('THUMBS').innerHTML=tH;
+  if(allImgs.length<=1)document.getElementById('THUMBS').style.display='none';
+
+  /* Badges */
+  var bm={bs:'pb-best BEST SELLER',hot:'pb-hot HOT',sale:'pb-sale PROMO',fr:'pb-free GRATUIT',new:'pb-new NOUVEAU'};
+  document.getElementById('BADGES').innerHTML=p.badge&&bm[p.badge]?'<span class="pbdg '+bm[p.badge].split(' ')[0]+'">'+bm[p.badge].substring(bm[p.badge].indexOf(' ')+1)+'</span>':'';
+
+  /* Tags */
+  document.getElementById('TAGS').innerHTML='<span class="ptag '+(p.cat||'')+'">'+((p.cat||p.compat||type))+'</span><span class="ptag">'+(p.plat||p.compat||'')+'</span>';
+
+  /* Nom */
+  document.getElementById('PNAME').textContent=nm;
+
+  /* Stars */
+  var s=p.stars||4,st='';
+  for(var i=1;i<=5;i++)st+=(i<=s)?'★':'☆';
+  document.getElementById('STARS').textContent=st;
+  document.getElementById('STARS-N').textContent='('+s+'/5)';
+
+  /* Prix */
+  if(p.free||p.price===0){
+    document.getElementById('PRICE').className='price fp';
+    document.getElementById('PRICE').textContent='GRATUIT';
+    document.getElementById('PRICE-NOTE').textContent='Disponible gratuitement sur notre Telegram';
+    var b=document.getElementById('BUY');
+    b.textContent='⬇ Télécharger gratuitement';
+    b.style.background='linear-gradient(135deg,var(--green),#059669)';
+    b.onclick=function(){window.open('https://t.me/robotradingratuit','_blank');};
+  } else {
+    document.getElementById('PRICE').innerHTML='<span class="pc">$</span>'+p.price;
+    if(p.oldPrice){
+      document.getElementById('PRICE-OLD').innerHTML='<span class="price-old">$'+p.oldPrice+'</span>';
+      document.getElementById('PRICE-PCT').innerHTML='<span class="price-pct">-'+Math.round((1-p.price/p.oldPrice)*100)+'%</span>';
+    }
+    document.getElementById('BUY').textContent='🛒 Acheter — $'+p.price;
+    document.getElementById('BUY').onclick=function(){
+      document.getElementById('pmT').textContent='🛒 '+nm;
+      document.getElementById('pmS').innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;"><span style="color:var(--text2);font-size:13px;">'+nm+'</span><span style="color:var(--blue);font-family:var(--fh);font-size:18px;font-weight:700;">$'+p.price+'</span></div>';
+      openM('pm');
+    };
+  }
+
+  /* Description */
+  document.getElementById('DESC').innerHTML='<p>'+((p.desc||'').replace(/\n/g,'</p><p>'))+'</p>';
+
+  /* Caractéristiques */
+  var fh='';(p.feats||[]).forEach(function(f){fh+='<li>'+f+'</li>';});
+  document.getElementById('FEATS').innerHTML=fh||'<li style="color:var(--text3)">Détails disponibles sur demande.</li>';
+
+  /* Galerie */
+  var gh=(p.imgs||[]).map(function(src){return'<div class="gal-thumb" onclick="openLB(\''+src+'\')"><img src="'+src+'" alt="galerie" onerror="this.parentElement.style.display=\'none\'"></div>';}).join('');
+  if(p.img)gh='<div class="gal-thumb" onclick="openLB(\''+p.img+'\')"><img src="'+p.img+'" alt="cover" onerror="this.parentElement.style.display=\'none\'"></div>'+gh;
+  document.getElementById('GAL').innerHTML=gh||'<div class="gal-empty">Aucune photo de galerie pour ce produit.<br>Le vendeur peut en ajouter via le tableau de bord admin.</div>';
+
+  /* Specs */
+  var catLabels={robot:'Robots EA',indicator:'Indicateurs',system:'Systèmes',ebook:'Ebooks'};
+  var rows=[['Type',catLabels[type]||type],['Plateforme',p.plat||p.compat||'—'],['Marché',p.cat||'—'],['Prix',p.free?'Gratuit':'$'+p.price],p.oldPrice?['Prix original','$'+p.oldPrice]:null,['Livraison','Par email sous 24h'],['Format',type==='ebook'?'PDF':'EX4 / EX5'],['Support','Telegram @salomonryn'],['Mises à jour','Incluses à vie']].filter(Boolean);
+  document.getElementById('SPECS').innerHTML=rows.map(function(r){return'<tr><td>'+r[0]+'</td><td>'+r[1]+'</td></tr>';}).join('');
+
+  /* Produits similaires */
+  var all=[].concat(DB.robots||[],DB.indicators||[],DB.systems||[],DB.ebooks||[]);
+  var rel=all.filter(function(x){return x.id!==p.id&&(x.cat===p.cat||x.compat===p.compat);}).slice(0,4);
+  if(!rel.length)rel=all.filter(function(x){return x.id!==p.id;}).slice(0,4);
+  document.getElementById('REL').innerHTML=rel.map(function(r){
+    var rn=r.name||r.title,rp=r.free?'<span class="rel-price fp">GRATUIT</span>':'<span class="rel-price"><span class="ps">$</span>'+r.price+'</span>';
+    var ri=r.img?'<img src="'+r.img+'" alt="'+rn+'" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">':'';
+    var rt=DB.robots&&DB.robots.indexOf(r)>=0?'robot':DB.indicators&&DB.indicators.indexOf(r)>=0?'indicator':DB.systems&&DB.systems.indexOf(r)>=0?'system':'ebook';
+    return'<a href="product.html?type='+rt+'&id='+r.id+'" class="rel-card"><div class="rel-thumb">'+ri+'</div><div class="rel-body"><div class="rel-name">'+rn+'</div><div class="rel-foot">'+rp+'<button class="btn-rel">Voir →</button></div></div></a>';
+  }).join('');
+}
+
+function setMain(src,thumb){
+  var mi=document.getElementById('MI');
+  mi.src=src;mi.style.display='block';
+  document.getElementById('NP').style.display='none';
+  document.getElementById('MP').onclick=function(){openLB(src);};
+  document.querySelectorAll('.thumb').forEach(function(t){t.classList.remove('on');});
+  thumb.classList.add('on');
+}
+function showTab(id,el){
+  document.querySelectorAll('.tab-content').forEach(function(t){t.classList.remove('on');});
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('on');});
+  document.getElementById('t-'+id).classList.add('on');
+  el.classList.add('on');
+}
+function openLB(src){if(!src)return;document.getElementById('LB-IMG').src=src;document.getElementById('LB').classList.add('on');document.body.style.overflow='hidden';}
+function closeLB(){document.getElementById('LB').classList.remove('on');document.body.style.overflow='';}
+function openM(id){var el=document.getElementById(id);if(el)el.classList.add('on');}
+function closeM(id){var el=document.getElementById(id);if(el)el.classList.remove('on');}
+document.querySelectorAll('.mvo').forEach(function(m){m.addEventListener('click',function(e){if(e.target===m)m.classList.remove('on');});});
+
+/* CANVAS */
+(function(){var cv=document.getElementById('cv'),ctx=cv.getContext('2d');var W,H,cs=[];function rsz(){W=cv.width=window.innerWidth;H=cv.height=window.innerHeight;}window.addEventListener('resize',rsz);rsz();function mk(y0){var up=Math.random()>.42,th=55+Math.random()*120,bh=22+Math.random()*60,bw=7+Math.random()*10;return{x:20+Math.random()*(W-40),y:y0!==undefined?y0:H+25,th:th,bh:bh,bw:bw,up:up,sp:.5+Math.random()*.8,al:0,as:.004+Math.random()*.007};}for(var i=0;i<50;i++){var c=mk(Math.random()*H);c.al=Math.random()*.6;cs.push(c);}function draw(){ctx.clearRect(0,0,W,H);if(cs.length<60&&Math.random()<.06)cs.push(mk());cs=cs.filter(function(c){return c.y+c.th>-20;});cs.forEach(function(c){c.y-=c.sp;if(c.al<.65)c.al=Math.min(.65,c.al+c.as);var col=c.up?'#10b981':'#f43f5e';ctx.globalAlpha=c.al;ctx.strokeStyle=col;ctx.lineWidth=1.5;ctx.shadowColor=col;ctx.shadowBlur=6;ctx.beginPath();ctx.moveTo(c.x,c.y);ctx.lineTo(c.x,c.y+c.th);ctx.stroke();var by=c.y+(c.th-c.bh)/2;ctx.fillStyle=col;ctx.shadowBlur=11;ctx.fillRect(c.x-c.bw/2,by,c.bw,c.bh);ctx.shadowBlur=0;});ctx.globalAlpha=1;requestAnimationFrame(draw);}draw();})();
+
+/* TICKER */
+(function(){var p=[{s:'XAU/USD',p:'2 342.50',c:'+0.82%',u:true},{s:'EUR/USD',p:'1.0842',c:'-0.12%',u:false},{s:'BTC/USD',p:'67 420',c:'+2.14%',u:true},{s:'GBP/USD',p:'1.2680',c:'+0.08%',u:true},{s:'ETH/USD',p:'3 512',c:'+1.45%',u:true},{s:'USD/JPY',p:'154.32',c:'-0.21%',u:false},{s:'US30',p:'38 420',c:'+0.35%',u:true},{s:'NAS100',p:'17 856',c:'+0.62%',u:true}];var t=document.getElementById('TK');var h=p.map(function(x){return'<span class="tki"><span class="tk-sym">'+x.s+'</span><span style="color:var(--text3);font-size:9px;">|</span><span class="'+(x.u?'tk-up':'tk-dn')+'">'+(x.u?'▲':'▼')+' '+x.p+' ('+x.c+')</span></span>';}).join('');t.innerHTML=h+h;})();
+
+load();
+</script>
+</body>
+</html>

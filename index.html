@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RoboTradingRatuit – Robots EA MT4/MT5 | Signaux Forex | VIP $200</title>
+<meta name="description" content="Robots EA MT4/MT5 professionnels, signaux Forex, indicateurs, ebooks. Accès VIP illimité $200 paiement unique.">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#04060c;--bg2:#07090f;--bg3:#0a0d16;
+  --blue:#0ea5e9;--blue2:#0284c7;--cyan:#22d3ee;
+  --white:#e0f2fe;--text:#a8cce0;--text2:#5a8aaa;--text3:#1a3048;
+  --green:#10b981;--red:#f43f5e;--gold:#eab308;--purple:#8b5cf6;
+  --bd:rgba(14,165,233,.10);--bd2:rgba(14,165,233,.22);
+  --fh:'Orbitron',sans-serif;--fb:'DM Sans',sans-serif;
+}
+html{scroll-behavior:smooth;}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);overflow-x:hidden;font-size:18px;line-height:1.75;}
+::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-thumb{background:var(--blue2);border-radius:2px;}
+a{text-decoration:none;color:inherit;}img{max-width:100%;display:block;}button{cursor:pointer;font-family:var(--fb);}
+
+/* CANVAS BOUGIES */
+#cv{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;}
+
+/* TICKER */
+.ticker{position:relative;z-index:20;height:36px;overflow:hidden;background:rgba(4,6,12,.98);border-bottom:1px solid var(--bd2);display:flex;align-items:center;}
+.tk-lbl{background:linear-gradient(135deg,var(--blue),var(--cyan));color:#000;font-size:9px;font-weight:800;padding:0 13px;white-space:nowrap;letter-spacing:2px;font-family:var(--fh);flex-shrink:0;height:36px;display:flex;align-items:center;}
+.tk-tr{display:flex;gap:50px;white-space:nowrap;padding:0 16px;animation:tick 28s linear infinite;width:max-content;}
+@keyframes tick{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+.tki{font-size:12px;display:flex;align-items:center;gap:8px;}
+.tk-sym{font-family:var(--fh);font-size:10px;color:var(--white);letter-spacing:1px;}
+.tk-up{color:var(--green);font-weight:600;}
+.tk-dn{color:var(--red);font-weight:600;}
+
+/* NAV */
+nav{position:fixed;top:36px;left:0;right:0;z-index:100;background:rgba(4,6,12,.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--bd);height:62px;display:flex;align-items:center;padding:0 4%;gap:16px;}
+.nav-brand{display:flex;align-items:center;gap:9px;flex-shrink:0;}
+.nav-brand img{width:34px;height:34px;border-radius:8px;border:1px solid var(--bd2);object-fit:cover;}
+.brand-name{font-family:var(--fh);font-size:12px;font-weight:900;background:linear-gradient(90deg,var(--blue),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.brand-tag{font-size:8px;color:var(--text2);letter-spacing:2px;text-transform:uppercase;}
+.nav-links{display:flex;flex:1;justify-content:center;gap:2px;}
+.nav-links a{color:var(--text2);font-size:14px;font-weight:500;padding:6px 11px;border-radius:6px;transition:all .2s;white-space:nowrap;}
+.nav-links a:hover{color:var(--white);background:rgba(14,165,233,.07);}
+.nav-right{display:flex;gap:8px;align-items:center;flex-shrink:0;}
+.btn-login{background:transparent;border:1px solid var(--bd2);color:var(--text);padding:7px 14px;border-radius:6px;font-size:12px;font-weight:500;transition:all .2s;}
+.btn-login:hover{border-color:var(--blue);color:var(--blue);}
+.btn-vip-nav{background:linear-gradient(135deg,var(--purple),#6d28d9);color:#fff;border:none;padding:8px 16px;border-radius:6px;font-size:12px;font-weight:700;box-shadow:0 2px 14px rgba(139,92,246,.35);}
+.btn-vip-nav:hover{transform:translateY(-1px);box-shadow:0 4px 20px rgba(139,92,246,.55);}
+
+/* TG BANNER */
+.tg-bar{position:relative;z-index:9;margin-top:98px;background:rgba(7,9,15,.92);border-bottom:1px solid var(--bd);padding:9px 4%;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}
+.tg-dot{width:7px;height:7px;border-radius:50%;background:var(--green);flex-shrink:0;position:relative;}
+.tg-dot::after{content:'';position:absolute;inset:-3px;border-radius:50%;border:1.5px solid var(--green);animation:rpl 1.5s infinite;}
+@keyframes rpl{0%{transform:scale(1);opacity:.8;}100%{transform:scale(2.2);opacity:0;}}
+.tg-bar p{font-size:13px;}
+.tg-bar strong{color:var(--cyan);}
+.tg-bar a{display:inline-flex;align-items:center;gap:6px;background:#1d9bd1;color:#fff;padding:5px 14px;border-radius:20px;font-size:12px;font-weight:700;transition:all .2s;}
+.tg-bar a:hover{opacity:.88;transform:scale(1.03);}
+
+/* FLOAT */
+.float-btn{position:fixed;bottom:24px;right:24px;z-index:999;display:flex;align-items:center;gap:8px;background:linear-gradient(135deg,#1d9bd1,#1370a0);color:#fff;border:none;border-radius:50px;padding:11px 18px;font-size:13px;font-weight:700;animation:fy 3.5s ease-in-out infinite;box-shadow:0 6px 22px rgba(29,155,209,.4);}
+@keyframes fy{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
+.fdot{width:8px;height:8px;border-radius:50%;background:#4ade80;animation:bk 1.5s infinite;flex-shrink:0;}
+@keyframes bk{0%,100%{opacity:1;}50%{opacity:.15;}}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;padding:140px 4% 80px;position:relative;z-index:1;}
+.hero-inner{max-width:1200px;margin:0 auto;width:100%;display:grid;grid-template-columns:1.1fr 0.9fr;gap:60px;align-items:center;}
+.hero-tag{display:inline-flex;align-items:center;gap:7px;background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.25);color:var(--purple);padding:5px 14px;border-radius:20px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:20px;}
+.hero-tag span{width:6px;height:6px;border-radius:50%;background:var(--purple);animation:bk 1.5s infinite;}
+h1{font-family:var(--fh);font-size:clamp(26px,3.5vw,50px);font-weight:900;line-height:1.07;margin-bottom:20px;color:var(--white);}
+h1 .g1{background:linear-gradient(100deg,var(--blue),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+h1 .g2{color:var(--gold);}
+.hero-p{font-size:19px;color:var(--text2);line-height:1.8;margin-bottom:30px;max-width:500px;}
+.hero-p strong{color:var(--text);font-weight:600;}
+.ctas{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:36px;}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:13px 22px;border-radius:8px;font-size:14px;font-weight:700;transition:all .25s;border:none;text-decoration:none;white-space:nowrap;}
+.btn:hover{transform:translateY(-2px);}
+.b-blue{background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;box-shadow:0 4px 18px rgba(14,165,233,.3);}
+.b-blue:hover{box-shadow:0 8px 26px rgba(14,165,233,.5);}
+.b-ghost{background:transparent;color:var(--white);border:1px solid rgba(14,165,233,.28);}
+.b-ghost:hover{border-color:var(--blue);color:var(--blue);}
+.b-tg{background:linear-gradient(135deg,#1d9bd1,#1370a0);color:#fff;}
+.b-green{background:linear-gradient(135deg,var(--green),#059669);color:#fff;}
+.b-vip{background:linear-gradient(135deg,var(--purple),#6d28d9);color:#fff;box-shadow:0 4px 18px rgba(139,92,246,.38);}
+.b-vip:hover{box-shadow:0 8px 28px rgba(139,92,246,.55);}
+.stats{display:flex;gap:24px;flex-wrap:wrap;align-items:center;}
+.stat-n{font-family:var(--fh);font-size:24px;font-weight:900;color:var(--blue);}
+.stat-l{font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:1.5px;margin-top:2px;}
+.stat-div{width:1px;height:32px;background:var(--bd2);}
+.hero-right{position:relative;display:flex;align-items:center;justify-content:center;}
+.hero-orbit{position:absolute;border-radius:50%;border:1px solid rgba(14,165,233,.1);}
+.ho1{width:420px;height:420px;animation:sp 22s linear infinite;}
+.ho2{width:310px;height:310px;animation:sp 16s linear infinite reverse;}
+.ho1::before{content:'';position:absolute;width:10px;height:10px;border-radius:50%;background:var(--blue);box-shadow:0 0 16px var(--blue);top:-5px;left:50%;transform:translateX(-50%);}
+.ho2::before{content:'';position:absolute;width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 12px var(--cyan);bottom:-3.5px;left:50%;transform:translateX(-50%);}
+@keyframes sp{0%{transform:rotate(0);}100%{transform:rotate(360deg);}}
+.hero-glow{position:absolute;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(14,165,233,.12),transparent 65%);}
+.hero-img{position:relative;z-index:2;width:100%;max-width:320px;border-radius:18px;box-shadow:0 0 50px rgba(14,165,233,.2);animation:hfl 4s ease-in-out infinite;}
+@keyframes hfl{0%,100%{transform:translateY(0) rotate(-1deg);}50%{transform:translateY(-12px) rotate(1deg);}}
+
+/* STATS BAR */
+.stats-bar{position:relative;z-index:2;background:var(--bg2);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd);padding:20px 4%;display:grid;grid-template-columns:repeat(5,1fr);}
+.sb{text-align:center;padding:0 14px;border-right:1px solid var(--bd);}
+.sb:last-child{border-right:none;}
+.sb-n{font-family:var(--fh);font-size:24px;font-weight:900;color:var(--blue);}
+.sb-l{font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:1.5px;margin-top:3px;}
+
+/* BROKER STRIP */
+.bstrip{position:relative;z-index:2;background:rgba(4,6,12,.9);border-bottom:1px solid var(--bd);padding:11px 4%;display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;}
+.bstrip p{font-size:13px;color:var(--text2);}
+.bstrip-btn{background:rgba(14,165,233,.06);border:1px solid var(--bd2);color:var(--blue);padding:7px 18px;border-radius:6px;font-size:12px;font-weight:700;transition:all .2s;display:inline-block;}
+.bstrip-btn:hover{background:var(--blue);color:#fff;transform:translateY(-1px);}
+
+/* SECTIONS */
+section{position:relative;z-index:1;}
+.sec{padding:72px 4%;}
+.sec-alt{background:linear-gradient(180deg,var(--bg2),var(--bg));}
+.sec-hd{text-align:center;margin-bottom:44px;}
+.sec-kicker{display:inline-flex;align-items:center;gap:6px;background:rgba(14,165,233,.07);border:1px solid rgba(14,165,233,.17);color:var(--blue);padding:4px 14px;border-radius:4px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:12px;}
+h2{font-family:var(--fh);font-size:clamp(20px,2.6vw,34px);font-weight:700;color:var(--white);margin-bottom:10px;}
+.sec-sub{font-size:17px;color:var(--text2);max-width:560px;margin:0 auto;line-height:1.8;}
+
+/* VIP */
+.vip-sec{position:relative;z-index:2;background:linear-gradient(135deg,rgba(60,15,120,.12),rgba(30,5,70,.08),rgba(60,15,120,.12));border-top:1px solid rgba(139,92,246,.2);border-bottom:1px solid rgba(139,92,246,.2);}
+.vip-inner{max-width:1040px;margin:0 auto;padding:68px 4%;display:grid;grid-template-columns:1fr 1fr;gap:54px;align-items:center;}
+.vip-kicker{display:inline-flex;align-items:center;gap:7px;background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.24);color:var(--purple);padding:5px 14px;border-radius:20px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;}
+.vip-h2{font-family:var(--fh);font-size:clamp(18px,2.4vw,32px);font-weight:900;color:var(--white);margin-bottom:12px;line-height:1.1;}
+.vip-h2 em{font-style:normal;background:linear-gradient(90deg,var(--purple),#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.vip-p{font-size:15px;color:var(--text2);margin-bottom:20px;line-height:1.75;}
+.vip-feats{list-style:none;margin-bottom:24px;display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+.vip-feats li{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--text);padding:7px 10px;background:rgba(139,92,246,.05);border:1px solid rgba(139,92,246,.1);border-radius:7px;}
+.vip-feats li::before{content:'✓';color:var(--green);font-weight:700;font-size:12px;flex-shrink:0;}
+.vip-card{background:linear-gradient(160deg,rgba(80,20,160,.15),rgba(40,5,100,.1));border:1.5px solid rgba(139,92,246,.3);border-radius:18px;padding:32px;text-align:center;box-shadow:0 20px 60px rgba(139,92,246,.12);}
+.vip-crown{font-size:50px;margin-bottom:10px;display:block;filter:drop-shadow(0 0 18px rgba(139,92,246,.5));animation:crn 3.5s ease-in-out infinite;}
+@keyframes crn{0%,100%{transform:rotate(-2deg) scale(1);}50%{transform:rotate(2deg) scale(1.04);}}
+.vip-card h3{font-family:var(--fh);font-size:15px;color:var(--white);margin-bottom:4px;}
+.vip-price{font-family:var(--fh);font-size:52px;font-weight:900;background:linear-gradient(135deg,var(--purple),#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin:13px 0 4px;}
+.vip-price .vpc{font-size:22px;vertical-align:super;}
+.vip-once{font-size:13px;color:var(--text2);}
+.vip-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.24);color:var(--green);padding:5px 13px;border-radius:20px;font-size:12px;font-weight:700;margin:11px 0 18px;}
+.vip-list{list-style:none;text-align:left;margin-bottom:20px;}
+.vip-list li{font-size:12px;color:var(--text);padding:4px 0;display:flex;align-items:center;gap:7px;border-bottom:1px solid rgba(255,255,255,.04);}
+.vip-list li::before{content:'✓';color:var(--green);font-weight:700;font-size:11px;flex-shrink:0;}
+.btn-vip-big{width:100%;background:linear-gradient(135deg,var(--purple),#6d28d9);color:#fff;border:none;padding:14px;border-radius:10px;font-size:15px;font-weight:700;transition:all .25s;box-shadow:0 5px 20px rgba(139,92,246,.38);}
+.btn-vip-big:hover{transform:translateY(-2px);box-shadow:0 9px 30px rgba(139,92,246,.55);}
+.vip-note{font-size:11px;color:var(--text3);margin-top:9px;}
+
+/* CAT GRID */
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:13px;max-width:1040px;margin:0 auto;}
+.cat-card{background:var(--bg2);border:1px solid var(--bd);border-radius:12px;padding:24px 18px;text-align:center;transition:all .3s;display:block;}
+.cat-card:hover{border-color:var(--bd2);transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,.4);}
+.cat-ico{font-size:36px;margin-bottom:10px;filter:drop-shadow(0 0 9px rgba(14,165,233,.28));}
+.cat-nm{font-family:var(--fh);font-size:11px;font-weight:700;color:var(--white);margin-bottom:4px;}
+.cat-cnt{font-size:14px;color:var(--text2);}
+
+/* PRODUCT CARDS */
+.prod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(268px,1fr));gap:14px;max-width:1260px;margin:0 auto;}
+.pcard{background:var(--bg2);border:1px solid var(--bd);border-radius:12px;overflow:hidden;transition:all .3s;position:relative;display:block;}
+.pcard:hover{border-color:rgba(14,165,233,.3);transform:translateY(-5px);box-shadow:0 18px 48px rgba(0,0,0,.5),0 0 36px rgba(14,165,233,.06);}
+.pbadge{position:absolute;top:10px;right:10px;font-size:9px;font-weight:800;padding:3px 9px;border-radius:4px;letter-spacing:1px;text-transform:uppercase;z-index:3;}
+.pb-best{background:linear-gradient(135deg,var(--gold),#ca8a04);color:#000;}
+.pb-hot{background:linear-gradient(135deg,#f97316,#c2410c);color:#fff;}
+.pb-sale{background:linear-gradient(135deg,var(--red),#be123c);color:#fff;}
+.pthumb{height:178px;background:var(--bg3);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;}
+.pthumb::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 4px,rgba(14,165,233,.016) 4px,rgba(14,165,233,.016) 5px);}
+.pthumb::after{content:'';position:absolute;bottom:0;left:0;right:0;height:36px;background:linear-gradient(transparent,var(--bg2));}
+.pthumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+.pthumb-plat{font-family:var(--fh);font-size:8px;color:rgba(14,165,233,.22);letter-spacing:3px;text-transform:uppercase;position:relative;z-index:1;}
+.pbody{padding:14px 15px;}
+.pmeta{display:flex;align-items:center;gap:5px;margin-bottom:7px;flex-wrap:wrap;}
+.ptag{background:rgba(14,165,233,.07);border:1px solid var(--bd);color:var(--text2);font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;text-transform:uppercase;}
+.ptag.or{border-color:rgba(234,179,8,.2);color:var(--gold);}
+.ptag.forex{border-color:rgba(14,165,233,.2);color:var(--blue);}
+.pstars{color:var(--gold);font-size:11px;margin-left:auto;}
+.pname{font-family:var(--fh);font-size:12.5px;font-weight:700;color:var(--white);margin-bottom:6px;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.pdesc{font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:11px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.pfoot{display:flex;align-items:center;justify-content:space-between;gap:7px;padding-top:10px;border-top:1px solid var(--bd);}
+.pprice{font-family:var(--fh);font-size:20px;font-weight:900;color:var(--blue);line-height:1;}
+.pprice .ps{font-size:11px;vertical-align:super;}
+.pold{font-size:10px;color:var(--text3);text-decoration:line-through;margin-left:3px;}
+.ppct{background:rgba(244,63,94,.14);color:var(--red);font-size:9px;font-weight:700;padding:2px 5px;border-radius:3px;margin-left:2px;}
+.btn-buy{background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;border:none;padding:8px 13px;border-radius:7px;font-size:11px;font-weight:700;transition:all .2s;white-space:nowrap;}
+.btn-buy:hover{transform:scale(1.05);}
+.btn-free{background:linear-gradient(135deg,var(--green),#059669);color:#000;border:none;padding:8px 13px;border-radius:7px;font-size:11px;font-weight:700;transition:all .2s;white-space:nowrap;}
+.btn-free:hover{transform:scale(1.05);}
+
+/* SIGNALS */
+.sig-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:980px;margin:0 auto 40px;}
+.sig-box{border-radius:12px;padding:22px;}
+.sig-free{background:rgba(16,185,129,.06);border:1.5px solid rgba(16,185,129,.2);}
+.sig-paid{background:rgba(14,165,233,.06);border:1.5px solid var(--bd2);}
+.sig-box h3{font-family:var(--fh);font-size:13px;font-weight:700;margin-bottom:9px;}
+.sig-free h3{color:var(--green);}
+.sig-paid h3{color:var(--blue);}
+.sig-box p{font-size:15px;color:var(--text2);line-height:1.75;margin-bottom:14px;}
+.sig-links{display:flex;flex-direction:column;gap:7px;}
+.sig-link{display:flex;align-items:center;gap:9px;padding:11px 14px;border-radius:8px;font-size:14px;font-weight:600;transition:all .2s;}
+.sl-g{background:rgba(16,185,129,.07);border:1px solid rgba(16,185,129,.15);color:var(--green);}
+.sl-g:hover{background:rgba(16,185,129,.14);transform:translateX(3px);}
+.sl-b{background:rgba(14,165,233,.07);border:1px solid var(--bd2);color:var(--blue);}
+.sl-b:hover{transform:translateX(3px);}
+.sl-tg{background:rgba(29,155,209,.08);border:1px solid rgba(29,155,209,.2);color:#1d9bd1;}
+.sl-tg:hover{transform:translateX(3px);}
+
+/* PLANS */
+.plans-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:860px;margin:0 auto;}
+.plan{background:var(--bg2);border:1px solid var(--bd);border-radius:12px;padding:24px 20px;text-align:center;transition:all .3s;position:relative;overflow:hidden;}
+.plan::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue),var(--cyan));opacity:0;transition:opacity .3s;}
+.plan.pop,.plan:hover{border-color:var(--blue);}
+.plan.pop::before,.plan:hover::before{opacity:1;}
+.plan-pop{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--blue),var(--cyan));color:#000;font-size:9px;font-weight:800;padding:3px 12px;border-radius:10px;letter-spacing:1.5px;white-space:nowrap;}
+.plan:hover{transform:translateY(-4px);}
+.plan-name{font-family:var(--fh);font-size:13px;font-weight:700;color:var(--white);margin-bottom:5px;}
+.plan-price{font-family:var(--fh);font-size:34px;font-weight:900;color:var(--blue);line-height:1;margin:12px 0 4px;}
+.plan-price .pps{font-size:16px;vertical-align:super;}
+.plan-price .ppp{font-size:12px;color:var(--text2);}
+.plan-sub{font-size:12px;color:var(--text2);margin-bottom:15px;}
+.plan-feats{list-style:none;text-align:left;margin-bottom:20px;}
+.plan-feats li{font-size:14px;color:var(--text);padding:5px 0;display:flex;align-items:center;gap:6px;border-bottom:1px solid rgba(255,255,255,.03);}
+.ck{color:var(--green);font-size:11px;flex-shrink:0;}
+.xk{color:var(--text3);font-size:11px;flex-shrink:0;}
+.plan-feats li.off{color:var(--text3);}
+.btn-plan{width:100%;background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;border:none;padding:11px;border-radius:8px;font-size:12px;font-weight:700;transition:all .2s;}
+.btn-plan:hover{box-shadow:0 6px 20px rgba(14,165,233,.4);transform:translateY(-1px);}
+
+/* PAY */
+.pay-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:800px;margin:0 auto;}
+.pay-card{background:var(--bg2);border:1px solid var(--bd);border-radius:12px;padding:20px;text-align:center;transition:all .3s;}
+.pay-card:hover{border-color:var(--bd2);transform:translateY(-3px);}
+.pay-ico{font-size:34px;margin-bottom:10px;display:block;}
+.pay-nm{font-family:var(--fh);font-size:13px;font-weight:700;color:var(--white);margin-bottom:7px;}
+.pay-dt{font-size:14px;color:var(--text2);word-break:break-all;}
+.pay-addr{color:var(--cyan);display:block;margin-top:5px;font-size:11px;}
+.pay-ok{display:inline-flex;align-items:center;gap:4px;margin-top:11px;background:rgba(16,185,129,.07);border:1px solid rgba(16,185,129,.15);color:var(--green);padding:3px 11px;border-radius:20px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;}
+
+/* BROKERS */
+.bk-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:880px;margin:0 auto;}
+.bk-card{background:var(--bg2);border:1px solid var(--bd);border-radius:12px;padding:22px;text-align:center;transition:all .3s;}
+.bk-card:hover{border-color:var(--bd2);transform:translateY(-4px);box-shadow:0 18px 48px rgba(0,0,0,.4);}
+.bk-logo{font-family:var(--fh);font-size:18px;font-weight:900;color:var(--blue);margin-bottom:7px;}
+.bk-desc{font-size:15px;color:var(--text2);margin-bottom:12px;line-height:1.75;}
+.bk-tags{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;margin-bottom:13px;}
+.bkt{background:rgba(14,165,233,.06);border:1px solid var(--bd);color:var(--text2);font-size:10px;padding:2px 7px;border-radius:3px;}
+.bkt.g{border-color:rgba(16,185,129,.2);color:var(--green);}
+.btn-bk{display:inline-block;background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;padding:8px 18px;border-radius:7px;font-size:12px;font-weight:700;transition:all .2s;}
+.btn-bk:hover{box-shadow:0 5px 18px rgba(14,165,233,.4);transform:translateY(-1px);}
+
+/* TESTI */
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:1020px;margin:0 auto;}
+.tc{background:var(--bg2);border:1px solid var(--bd);border-radius:12px;padding:20px;position:relative;}
+.tc:hover{border-color:var(--bd2);}
+.tc::before{content:'"';position:absolute;top:12px;right:14px;font-size:48px;color:rgba(14,165,233,.07);font-family:serif;line-height:1;}
+.t-stars{color:var(--gold);font-size:13px;margin-bottom:9px;letter-spacing:1px;}
+.t-text{font-size:15px;color:var(--text2);line-height:1.8;margin-bottom:12px;font-style:italic;}
+.t-auth{display:flex;align-items:center;gap:8px;}
+.t-av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--blue2),var(--blue));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:#fff;border:1.5px solid var(--bd2);}
+.t-name{font-size:13px;font-weight:700;color:var(--white);}
+.t-co{font-size:10px;color:var(--text3);}
+
+/* FAQ */
+.faq-wrap{max-width:700px;margin:0 auto;}
+.fq{border:1px solid var(--bd);border-radius:10px;margin-bottom:7px;overflow:hidden;}
+.fq:hover,.fq.open{border-color:var(--bd2);}
+.fq-q{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;cursor:pointer;font-size:16px;font-weight:600;color:var(--white);}
+.fq-arr{color:var(--blue);font-size:12px;transition:transform .3s;flex-shrink:0;}
+.fq.open .fq-arr{transform:rotate(180deg);}
+.fq-a{max-height:0;overflow:hidden;transition:max-height .35s ease;font-size:15px;color:var(--text2);line-height:1.8;padding:0 17px;}
+.fq.open .fq-a{max-height:200px;padding:0 17px 13px;}
+
+/* LEGAL */
+.legal-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:880px;margin:0 auto;}
+.lb{background:var(--bg3);border:1px solid var(--bd);border-radius:12px;padding:18px;}
+.lb h4{font-family:var(--fh);font-size:11px;font-weight:700;color:var(--white);margin-bottom:7px;}
+.lb p{font-size:12px;color:var(--text2);line-height:1.75;}
+.disc{background:rgba(244,63,94,.04);border:1px solid rgba(244,63,94,.13);border-radius:10px;padding:14px 20px;max-width:980px;margin:16px auto 0;}
+.disc-t{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:2px;color:var(--red);margin-bottom:6px;}
+.disc-p{font-size:12px;color:var(--text3);line-height:1.8;}
+
+/* FOOTER */
+footer{background:var(--bg2);border-top:1px solid var(--bd2);padding:44px 4% 22px;position:relative;z-index:2;}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:36px;max-width:1180px;margin:0 auto;padding-bottom:28px;border-bottom:1px solid var(--bd);}
+.footer-logo{font-family:var(--fh);font-size:13px;font-weight:900;background:linear-gradient(90deg,var(--blue),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:4px;}
+.footer-tag{font-size:9px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
+.footer-about{font-size:14px;color:var(--text3);line-height:1.8;}
+.footer-col h5{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--white);margin-bottom:11px;}
+.footer-col ul{list-style:none;}
+.footer-col ul li{margin-bottom:7px;}
+.footer-col ul li a{font-size:14px;color:var(--text3);transition:color .2s;}
+.footer-col ul li a:hover{color:var(--blue);}
+.footer-bot{max-width:1180px;margin:16px auto 0;display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--text3);flex-wrap:wrap;gap:9px;}
+.footer-bot a{color:var(--blue);}
+
+/* MODALS */
+.mvo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:500;align-items:center;justify-content:center;padding:18px;backdrop-filter:blur(5px);}
+.mvo.on{display:flex;}
+.mbox{background:linear-gradient(160deg,var(--bg2),var(--bg3));border:1px solid var(--bd2);border-radius:14px;padding:26px;width:100%;max-width:450px;max-height:90vh;overflow-y:auto;position:relative;}
+.mcls{position:absolute;top:12px;right:12px;background:transparent;border:1px solid var(--bd2);color:var(--text2);width:26px;height:26px;border-radius:6px;font-size:12px;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.mcls:hover{border-color:var(--red);color:var(--red);}
+.mt{font-family:var(--fh);font-size:16px;font-weight:700;color:var(--white);margin-bottom:4px;}
+.ms{font-size:12px;color:var(--text2);margin-bottom:15px;}
+.mf{margin-bottom:13px;}
+.mf label{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text2);margin-bottom:4px;}
+.mf input{width:100%;background:var(--bg3);border:1px solid var(--bd2);color:var(--text);padding:10px 11px;border-radius:7px;font-size:13px;font-family:var(--fb);outline:none;transition:border-color .2s;}
+.mf input:focus{border-color:var(--blue);}
+.bmod{width:100%;background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;border:none;padding:12px;border-radius:9px;font-size:13px;font-weight:700;display:block;text-align:center;text-decoration:none;margin-top:7px;transition:all .2s;}
+.bmod.vip{background:linear-gradient(135deg,var(--purple),#6d28d9);}
+.malt{font-size:12px;color:var(--text3);text-align:center;margin-top:11px;}
+.malt a{color:var(--blue);cursor:pointer;}
+
+/* RESPONSIVE */
+@media(max-width:1024px){
+  .hero-inner,.vip-inner{grid-template-columns:1fr;text-align:center;}
+  .hero-right{display:none;}
+  .vip-feats{grid-template-columns:1fr;}
+  .plans-grid,.bk-grid{grid-template-columns:1fr;max-width:340px;margin:0 auto;}
+  .legal-grid{grid-template-columns:1fr;}
+  .footer-grid{grid-template-columns:1fr 1fr;}
+  .testi-grid{grid-template-columns:1fr;}
+  .sig-grid{grid-template-columns:1fr;}
+}
+@media(max-width:768px){
+  .stats-bar{grid-template-columns:repeat(3,1fr);}
+  .nav-links{display:none;}
+  .pay-grid{grid-template-columns:1fr;}
+  .footer-grid{grid-template-columns:1fr;}
+  .footer-bot{flex-direction:column;text-align:center;}
+  h1{font-size:26px;}
+  .hero{padding:125px 4% 60px;}
+}
+@media(max-width:500px){
+  .stats-bar{grid-template-columns:1fr 1fr;}
+  .float-btn{bottom:12px;right:12px;padding:9px 14px;font-size:12px;}
+}
+</style>
+</head>
+<body>
+<canvas id="cv"></canvas>
+<a href="https://t.me/salomonryn" target="_blank" class="float-btn"><span class="fdot"></span>💬 Support</a>
+
+<!-- TICKER -->
+<div class="ticker"><div class="tk-lbl">📡 LIVE</div><div class="tk-tr" id="TK"></div></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">
+    <div id="logo-img-wrap" style="width:34px;height:34px;border-radius:8px;border:1px solid var(--bd2);overflow:hidden;flex-shrink:0;background:linear-gradient(135deg,var(--blue2),var(--blue));display:flex;align-items:center;justify-content:center;font-size:18px;">🤖</div>
+    <div><div class="brand-name">RoboTradingRatuit</div><div class="brand-tag">Free Trading Tools</div></div>
+  </div>
+  <div class="nav-links">
+    <a href="catalog-robots.html">🤖 Robots EA</a>
+    <a href="catalog-indicators.html">📡 Indicateurs</a>
+    <a href="catalog-systems.html">⚙️ Systèmes</a>
+    <a href="catalog-ebooks.html">📘 Ebooks</a>
+    <a href="acces-gratuit.html">🎁 Gratuit</a>
+    <a href="#signals">📣 Signaux</a>
+    <a href="#brokers">🏦 Brokers</a>
+  </div>
+  <div class="nav-right">
+    <button class="btn-login" onclick="openM('lm')">Connexion</button>
+    <button class="btn-vip-nav" onclick="openM('vm')">👑 VIP — $200</button>
+  </div>
+</nav>
+
+<!-- TG BANNER -->
+<div class="tg-bar">
+  <div class="tg-dot"></div>
+  <p>🔔 Canal <strong>Telegram GRATUIT</strong> — Signaux, robots & analyses en temps réel</p>
+  <a href="https://t.me/lementorforexgroup" target="_blank">✈ Rejoindre maintenant</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-tag"><span></span>Accès VIP Illimité à Vie — $200 Unique</div>
+      <h1><span class="g1">RoboTradingRatuit</span><br>Free <span class="g2">Trading</span> Tools.</h1>
+      <p class="hero-p">Robots EA MT4/MT5 ultra-performants, signaux Forex précis, indicateurs techniques premium. <strong>Signaux gratuits</strong> pour membres IB. <strong>Accès VIP</strong> à tous les outils pour $200 une seule fois.</p>
+      <div class="ctas">
+        <a href="catalog-robots.html" class="btn b-blue">🤖 Voir les Robots</a>
+        <a href="#vip-section" class="btn b-vip">👑 VIP — $200 à vie</a>
+        <a href="https://t.me/lementorforexgroup" target="_blank" class="btn b-tg">✈ Telegram Gratuit</a>
+        <a href="acces-gratuit.html" class="btn b-green">🎁 Accès Gratuit</a>
+      </div>
+      <div class="stats">
+        <div><div class="stat-n">3 200+</div><div class="stat-l">Traders actifs</div></div>
+        <div class="stat-div"></div>
+        <div><div class="stat-n">11+</div><div class="stat-l">Produits</div></div>
+        <div class="stat-div"></div>
+        <div><div class="stat-n">94%</div><div class="stat-l">Satisfaction</div></div>
+        <div class="stat-div"></div>
+        <div><div class="stat-n">24/7</div><div class="stat-l">Support</div></div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-orbit ho1"></div>
+      <div class="hero-orbit ho2"></div>
+      <div class="hero-glow"></div>
+      <div style="position:relative;z-index:2;width:290px;height:290px;border-radius:18px;background:linear-gradient(135deg,#030508,#070b15);border:1px solid rgba(14,165,233,.2);display:flex;align-items:center;justify-content:center;box-shadow:0 0 50px rgba(14,165,233,.15);animation:hfl 4s ease-in-out infinite;"><span style="font-size:110px;filter:drop-shadow(0 0 30px rgba(14,165,233,.5));">🤖</span></div>🤖</div>'">
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="sb"><div class="sb-n">3 200+</div><div class="sb-l">Traders actifs</div></div>
+  <div class="sb"><div class="sb-n">11+</div><div class="sb-l">Produits</div></div>
+  <div class="sb"><div class="sb-n">94%</div><div class="sb-l">Satisfaction</div></div>
+  <div class="sb"><div class="sb-n">5 ans</div><div class="sb-l">Expérience</div></div>
+  <div class="sb"><div class="sb-n">24/7</div><div class="sb-l">Support</div></div>
+</div>
+
+<!-- BROKER STRIP -->
+<div class="bstrip">
+  <p>🏦 Ouvrez un compte broker → signaux <strong style="color:var(--green)">GRATUITS</strong> :</p>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;">
+    <a href="https://my.roboforex.com/en/?a=nwln" target="_blank" class="bstrip-btn">RoboForex ↗</a>
+    <a href="https://one.exnesstrack.org/a/3518wl75nc" target="_blank" class="bstrip-btn">Exness ↗</a>
+    <a href="https://fbs.partners?ibl=756168&ibp=18597762" target="_blank" class="bstrip-btn">FBS ↗</a>
+  </div>
+</div>
+
+<!-- VIP -->
+<div id="vip-section">
+<div class="vip-sec">
+  <div class="vip-inner">
+    <div>
+      <div class="vip-kicker">⭐ Offre Exclusive</div>
+      <div class="vip-h2"><em>Accès VIP Illimité</em><br>à tous nos outils — pour toujours</div>
+      <p class="vip-p">Un seul paiement de <strong style="color:var(--white)">$200</strong> et vous accédez à TOUS nos robots EA, indicateurs, ebooks et systèmes — sans abonnement, à vie.</p>
+      <ul class="vip-feats">
+        <li>Tous les robots EA (MT4 & MT5)</li><li>Tous les indicateurs techniques</li>
+        <li>Tous les ebooks de formation</li><li>Systèmes de trading complets</li>
+        <li>Signaux Forex quotidiens</li><li>Mises à jour gratuites à vie</li>
+        <li>Groupe privé Telegram VIP</li><li>Futurs produits inclus</li>
+      </ul>
+      <button class="btn b-vip" onclick="openM('vm')" style="font-size:15px;padding:14px 28px;">👑 Rejoindre le VIP — $200</button>
+    </div>
+    <div class="vip-card">
+      <span class="vip-crown">👑</span>
+      <h3>Membre VIP à Vie</h3>
+      <div class="vip-price"><span class="vpc">$</span>200</div>
+      <div class="vip-once">Paiement unique — jamais renouvelé</div>
+      <div class="vip-badge">✓ Accès illimité à vie</div>
+      <ul class="vip-list">
+        <li>Tous les EAs actuels & futurs</li>
+        <li>Tous les indicateurs</li>
+        <li>Tous les ebooks & systèmes</li>
+        <li>Signaux gratuits inclus</li>
+        <li>Groupe privé exclusif</li>
+      </ul>
+      <button class="btn-vip-big" onclick="openM('vm')">👑 Devenir VIP — $200</button>
+      <p class="vip-note">PayPal · Binance USDT · Binance Pay</p>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- CATALOGUE -->
+<section class="sec" id="catalogue">
+  <div class="sec-hd">
+    <div class="sec-kicker">Catalogue complet</div>
+    <h2>Explorez nos produits</h2>
+    <p class="sec-sub">Filtres, recherche, pagination — conçu pour 5 000+ produits</p>
+  </div>
+  <div class="cat-grid">
+    <a href="catalog-robots.html" class="cat-card"><div class="cat-ico">🤖</div><div class="cat-nm">Robots EA</div><div class="cat-cnt" id="cnt-r">7 produits</div></a>
+    <a href="catalog-indicators.html" class="cat-card"><div class="cat-ico">📡</div><div class="cat-nm">Indicateurs</div><div class="cat-cnt" id="cnt-i">3 produits</div></a>
+    <a href="catalog-systems.html" class="cat-card"><div class="cat-ico">⚙️</div><div class="cat-nm">Systèmes</div><div class="cat-cnt" id="cnt-s">1 produit</div></a>
+    <a href="catalog-ebooks.html" class="cat-card"><div class="cat-ico">📘</div><div class="cat-nm">Ebooks PDF</div><div class="cat-cnt" id="cnt-e">3 produits</div></a>
+    <a href="acces-gratuit.html" class="cat-card"><div class="cat-ico">🎁</div><div class="cat-nm">Gratuits</div><div class="cat-cnt">Via broker IB</div></a>
+  </div>
+</section>
+
+<!-- ROBOTS EN VEDETTE -->
+<section class="sec sec-alt" id="robots">
+  <div class="sec-hd">
+    <div class="sec-kicker">Expert Advisors MT4/MT5</div>
+    <h2>Robots de Trading en vedette</h2>
+    <p class="sec-sub">Cliquez sur un produit pour voir les détails, photos et backtests</p>
+  </div>
+  <div class="prod-grid" id="feat-robots"></div>
+  <div style="text-align:center;margin-top:24px;">
+    <a href="catalog-robots.html" class="btn b-blue" style="display:inline-flex;">Voir tous les robots EA →</a>
+  </div>
+</section>
+
+<!-- SIGNAUX -->
+<section class="sec" id="signals">
+  <div class="sec-hd">
+    <div class="sec-kicker">Signaux de Trading</div>
+    <h2>Gratuits ou Payants</h2>
+    <p class="sec-sub"><strong style="color:var(--green)">Gratuits</strong> si vous ouvrez un compte via nos liens partenaires</p>
+  </div>
+  <div class="sig-grid">
+    <div class="sig-box sig-free">
+      <h3>🎁 SIGNAUX GRATUITS</h3>
+      <p>Ouvrez votre compte chez <strong>Exness, RoboForex ou FBS</strong> via nos liens, OU ajoutez-nous comme partenaire IB.</p>
+      <div class="sig-links">
+        <a href="https://one.exnesstrack.org/a/3518wl75nc" target="_blank" class="sig-link sl-g">🏦 Compte Exness → signaux gratuits</a>
+        <a href="https://my.roboforex.com/en/?a=nwln" target="_blank" class="sig-link sl-g">🏦 Compte RoboForex → signaux gratuits</a>
+        <a href="https://fbs.partners?ibl=756168&ibp=18597762" target="_blank" class="sig-link sl-g">🏦 Compte FBS → signaux gratuits</a>
+        <a href="https://t.me/salomonryn" target="_blank" class="sig-link sl-tg">💬 Contacter pour activation IB</a>
+      </div>
+    </div>
+    <div class="sig-box sig-paid">
+      <h3>💳 SIGNAUX PAYANTS</h3>
+      <p>Sans partenariat IB ? Abonnez-vous pour accéder aux signaux Forex, Or, Crypto et Indices quotidiens.</p>
+      <div class="sig-links">
+        <a href="#" class="sig-link sl-b" onclick="openPay('Signaux Mensuel','$19');return false;">📅 Plan Mensuel — $19/mois</a>
+        <a href="#" class="sig-link sl-b" onclick="openPay('Signaux Trimestriel','$49');return false;">📆 Trimestriel — $49/3 mois</a>
+        <a href="#" class="sig-link sl-b" onclick="openPay('Signaux Annuel','$149');return false;">📅 Annuel — $149/an (-40%)</a>
+      </div>
+    </div>
+  </div>
+  <div class="plans-grid">
+    <div class="plan">
+      <div class="plan-name">Mensuel</div>
+      <div class="plan-price"><span class="pps">$</span>19<span class="ppp">/mois</span></div>
+      <div class="plan-sub">Pour débuter</div>
+      <ul class="plan-feats">
+        <li><span class="ck">✓</span>Signaux Forex quotidiens</li>
+        <li><span class="ck">✓</span>Canal Telegram</li>
+        <li class="off"><span class="xk">✗</span>Signaux Or & Crypto</li>
+        <li class="off"><span class="xk">✗</span>Dashboard personnel</li>
+      </ul>
+      <button class="btn-plan" onclick="openPay('Signaux Mensuel','$19')">S'abonner</button>
+    </div>
+    <div class="plan pop">
+      <div class="plan-pop">⭐ POPULAIRE</div>
+      <div class="plan-name">Trimestriel</div>
+      <div class="plan-price"><span class="pps">$</span>49<span class="ppp">/3 mois</span></div>
+      <div class="plan-sub">Meilleur rapport qualité/prix</div>
+      <ul class="plan-feats">
+        <li><span class="ck">✓</span>Signaux Forex + Or + Crypto</li>
+        <li><span class="ck">✓</span>Canal Telegram</li>
+        <li><span class="ck">✓</span>Dashboard personnel</li>
+        <li><span class="ck">✓</span>Signaux Indices</li>
+      </ul>
+      <button class="btn-plan" onclick="openPay('Signaux Trimestriel','$49')">S'abonner</button>
+    </div>
+    <div class="plan">
+      <div class="plan-name">Annuel</div>
+      <div class="plan-price"><span class="pps">$</span>149<span class="ppp">/an</span></div>
+      <div class="plan-sub">Économisez 40%</div>
+      <ul class="plan-feats">
+        <li><span class="ck">✓</span>Signaux Forex + Or + Crypto</li>
+        <li><span class="ck">✓</span>Canal Telegram</li>
+        <li><span class="ck">✓</span>Dashboard + Vidéos hebdo</li>
+        <li><span class="ck">✓</span>Signaux Indices</li>
+      </ul>
+      <button class="btn-plan" onclick="openPay('Signaux Annuel','$149')">S'abonner</button>
+    </div>
+  </div>
+  <div style="text-align:center;margin-top:20px;">
+    <a href="https://t.me/lementorforexgroup" target="_blank" class="btn b-tg" style="display:inline-flex;">✈ Signaux gratuits sur Telegram</a>
+  </div>
+</section>
+
+<!-- PAIEMENTS -->
+<section class="sec sec-alt" id="payment">
+  <div class="sec-hd">
+    <div class="sec-kicker">Sécurisé & Rapide</div>
+    <h2>Moyens de Paiement</h2>
+    <p class="sec-sub">Votre produit livré sous 24h après confirmation</p>
+  </div>
+  <div class="pay-grid">
+    <div class="pay-card"><span class="pay-ico">🅿️</span><div class="pay-nm">PayPal</div><div class="pay-dt">Envoyez à :<span class="pay-addr">capor51@gmail.com</span></div><div class="pay-ok">✓ Sécurisé</div></div>
+    <div class="pay-card"><span class="pay-ico">🟡</span><div class="pay-nm">Binance USDT (TRC20)</div><div class="pay-dt">Adresse :<span class="pay-addr">TQ8JunUjkWu3rv1PyVjmPSEVHh6fD4kFGe</span></div><div class="pay-ok">✓ Crypto</div></div>
+    <div class="pay-card"><span class="pay-ico">💛</span><div class="pay-nm">Binance Pay</div><div class="pay-dt">ID Pay :<span class="pay-addr">798651100</span></div><div class="pay-ok">✓ Instantané</div></div>
+  </div>
+  <div style="text-align:center;margin-top:16px;font-size:13px;color:var(--text2);">📩 Après paiement → envoyez le justificatif à <a href="https://t.me/salomonryn" target="_blank" style="color:var(--blue);font-weight:700;">@salomonryn</a> sur Telegram</div>
+</section>
+
+<!-- BROKERS -->
+<section class="sec" id="brokers">
+  <div class="sec-hd">
+    <div class="sec-kicker">Partenaires Officiels</div>
+    <h2>Brokers Recommandés</h2>
+    <p class="sec-sub">Ouvrez via nos liens pour les <strong style="color:var(--green)">signaux GRATUITS</strong></p>
+  </div>
+  <div class="bk-grid">
+    <div class="bk-card"><div class="bk-logo">RoboForex</div><p class="bk-desc">Broker régulé. Spreads 0.0 pip, levier 1:2000, MT4/MT5.</p><div class="bk-tags"><span class="bkt g">Spreads 0.0</span><span class="bkt">MT4/MT5</span><span class="bkt">CySEC</span></div><a href="https://my.roboforex.com/en/?a=nwln" target="_blank" class="btn-bk">Ouvrir un compte →</a></div>
+    <div class="bk-card"><div class="bk-logo">Exness</div><p class="bk-desc">Leader mondial Forex. Retrait 24/7, spreads 0.0, dépôt min $10.</p><div class="bk-tags"><span class="bkt g">Spreads 0.0</span><span class="bkt">CySEC/FCA</span><span class="bkt">Retrait 24/7</span></div><a href="https://one.exnesstrack.org/a/3518wl75nc" target="_blank" class="btn-bk">Ouvrir un compte →</a></div>
+    <div class="bk-card"><div class="bk-logo">FBS</div><p class="bk-desc">Populaire en Afrique. Bonus 100%, formation FR, support 24/7.</p><div class="bk-tags"><span class="bkt g">Bonus 100%</span><span class="bkt">IFSC</span><span class="bkt">Formation FR</span></div><a href="https://fbs.partners?ibl=756168&ibp=18597762" target="_blank" class="btn-bk">Ouvrir un compte →</a></div>
+  </div>
+</section>
+
+<!-- TESTI -->
+<section class="sec sec-alt">
+  <div class="sec-hd"><div class="sec-kicker">Avis Clients</div><h2>Ce que disent nos traders</h2></div>
+  <div class="testi-grid">
+    <div class="tc"><div class="t-stars">★★★★★</div><p class="t-text">"Gold Hunter V8 est incroyable sur XAUUSD. Rentabilisé en 2 semaines. Le VIP à $200 vaut vraiment l'investissement !"</p><div class="t-auth"><div class="t-av">MK</div><div><div class="t-name">Mohamed K.</div><div class="t-co">🇹🇳 Tunisie</div></div></div></div>
+    <div class="tc"><div class="t-stars">★★★★★</div><p class="t-text">"J'ai acheté le VIP et c'est le meilleur investissement. Tous les EAs + signaux gratuits pour $200 !"</p><div class="t-auth"><div class="t-av">JB</div><div><div class="t-name">Jean-Baptiste L.</div><div class="t-co">🇫🇷 France</div></div></div></div>
+    <div class="tc"><div class="t-stars">★★★★☆</div><p class="t-text">"Dominant EA MT5 avec les 3 niveaux de risque. Support très réactif. Je recommande !"</p><div class="t-auth"><div class="t-av">AS</div><div><div class="t-name">Aminata S.</div><div class="t-co">🇸🇳 Sénégal</div></div></div></div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="sec" id="faq">
+  <div class="sec-hd"><div class="sec-kicker">FAQ</div><h2>Questions Fréquentes</h2></div>
+  <div class="faq-wrap" id="faqWrap"></div>
+</section>
+
+<!-- LEGAL -->
+<section class="sec sec-alt" id="legal">
+  <div class="sec-hd"><div class="sec-kicker">Légal</div><h2>Mentions Légales</h2></div>
+  <div class="legal-grid">
+    <div class="lb"><h4>Conditions d'utilisation</h4><p>Produits numériques livrés électroniquement, non remboursables après téléchargement.</p></div>
+    <div class="lb"><h4>Politique de confidentialité</h4><p>Vos données sont utilisées uniquement pour la livraison. Jamais partagées à des tiers.</p></div>
+    <div class="lb"><h4>Remboursement</h4><p>Aucun remboursement après livraison. Support @salomonryn pour tout problème technique.</p></div>
+    <div class="lb"><h4>Avertissement risques</h4><p>RoboTradingRatuit n'est pas un courtier agréé. Le trading comporte des risques élevés.</p></div>
+  </div>
+  <div class="disc"><div class="disc-t">⚠ Avertissement légal</div><p class="disc-p"><strong>RISQUE ÉLEVÉ :</strong> Le trading Forex, Or, Crypto et Indices comporte des risques. Les robots EA sont des outils d'aide et ne garantissent aucun profit. N'investissez que ce que vous pouvez vous permettre de perdre.</p></div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-logo">🤖 RoboTradingRatuit</div>
+      <div class="footer-tag">Free Trading Tools</div>
+      <p class="footer-about">Robots EA MT4/MT5, indicateurs, ebooks et signaux Forex. Accès VIP illimité $200 — paiement unique à vie.</p>
+      <div style="margin-top:12px;display:flex;gap:7px;flex-wrap:wrap;">
+        <a href="https://t.me/lementorforexgroup" target="_blank" style="display:inline-flex;align-items:center;gap:5px;background:#1d9bd1;color:#fff;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;">✈ Signaux</a>
+        <a href="https://t.me/salomonryn" target="_blank" style="display:inline-flex;align-items:center;gap:5px;background:rgba(14,165,233,.1);border:1px solid var(--bd2);color:var(--blue);padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;">💬 Support</a>
+        <button onclick="openM('vm')" style="background:linear-gradient(135deg,var(--purple),#6d28d9);color:#fff;border:none;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;">👑 VIP $200</button>
+      </div>
+    </div>
+    <div class="footer-col"><h5>Catalogue</h5><ul>
+      <li><a href="catalog-robots.html">Robots EA MT4/MT5</a></li>
+      <li><a href="catalog-indicators.html">Indicateurs techniques</a></li>
+      <li><a href="catalog-systems.html">Systèmes de trading</a></li>
+      <li><a href="catalog-ebooks.html">Ebooks formation</a></li>
+      <li><a href="acces-gratuit.html">Téléchargements gratuits</a></li>
+    </ul></div>
+    <div class="footer-col"><h5>Brokers</h5><ul>
+      <li><a href="https://my.roboforex.com/en/?a=nwln" target="_blank">RoboForex ↗</a></li>
+      <li><a href="https://one.exnesstrack.org/a/3518wl75nc" target="_blank">Exness ↗</a></li>
+      <li><a href="https://fbs.partners?ibl=756168&ibp=18597762" target="_blank">FBS ↗</a></li>
+    </ul><h5 style="margin-top:14px;">Paiements</h5><ul>
+      <li><a href="#payment">PayPal</a></li>
+      <li><a href="#payment">Binance USDT</a></li>
+      <li><a href="#payment">Binance Pay</a></li>
+    </ul></div>
+    <div class="footer-col"><h5>Liens</h5><ul>
+      <li><a href="#legal">Conditions</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="https://t.me/salomonryn" target="_blank">Contact</a></li>
+      <li><a href="admin-dashboard.html" style="color:var(--purple);">🔐 Admin</a></li>
+    </ul></div>
+  </div>
+  <div class="footer-bot">
+    <div>© 2025 RoboTradingRatuit – Free Trading Tools. Tous droits réservés.</div>
+    <div>Canal : <a href="https://t.me/lementorforexgroup" target="_blank">@lementorforexgroup ↗</a></div>
+  </div>
+</footer>
+
+<!-- MODAL VIP -->
+<div class="mvo" id="vm">
+  <div class="mbox" style="max-width:500px;border-color:rgba(139,92,246,.3);">
+    <button class="mcls" onclick="closeM('vm')">✕</button>
+    <div class="mt" style="background:linear-gradient(90deg,var(--purple),#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">👑 Devenir Membre VIP</div>
+    <p class="ms">Tous les produits à vie — $200 paiement unique</p>
+    <div style="font-family:var(--fh);font-size:42px;font-weight:900;text-align:center;background:linear-gradient(135deg,var(--purple),#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:4px;">$200</div>
+    <div style="text-align:center;font-size:12px;color:var(--text3);margin-bottom:16px;">Paiement unique · Accès à vie · Aucun abonnement jamais</div>
+    <div style="display:flex;flex-direction:column;gap:9px;margin-bottom:14px;">
+      <div style="background:var(--bg3);border:1px solid var(--bd);border-radius:9px;padding:12px;"><b style="color:var(--white);font-size:13px;">🅿️ PayPal</b><div style="font-size:12px;color:var(--text2);margin-top:3px;">$200 → <strong style="color:var(--cyan)">capor51@gmail.com</strong> — Objet : "VIP RTR"</div></div>
+      <div style="background:var(--bg3);border:1px solid var(--bd);border-radius:9px;padding:12px;"><b style="color:var(--white);font-size:13px;">🟡 Binance USDT (TRC20)</b><div style="font-size:11px;color:var(--cyan);margin-top:3px;word-break:break-all;">TQ8JunUjkWu3rv1PyVjmPSEVHh6fD4kFGe</div></div>
+      <div style="background:var(--bg3);border:1px solid var(--bd);border-radius:9px;padding:12px;"><b style="color:var(--white);font-size:13px;">💛 Binance Pay</b><div style="font-size:12px;color:var(--cyan);margin-top:3px;">ID : 798651100</div></div>
+    </div>
+    <a href="https://t.me/salomonryn" target="_blank" class="bmod vip">💬 Envoyer justificatif @salomonryn</a>
+    <div style="text-align:center;font-size:11px;color:var(--text3);margin-top:9px;">Activation sous 24h maximum après confirmation</div>
+  </div>
+</div>
+
+<!-- MODAL LOGIN -->
+<div class="mvo" id="lm">
+  <div class="mbox">
+    <button class="mcls" onclick="closeM('lm')">✕</button>
+    <div class="mt">Connexion</div>
+    <p class="ms">Accédez à votre espace personnel</p>
+    <div class="mf"><label>Email</label><input type="email" placeholder="votre@email.com"></div>
+    <div class="mf"><label>Mot de passe</label><input type="password" placeholder="••••••••"></div>
+    <button class="bmod" onclick="closeM('lm')">Se connecter</button>
+    <p class="malt">Pas de compte ? <a onclick="closeM('lm');openM('vm')">Devenir VIP →</a></p>
+  </div>
+</div>
+
+<!-- MODAL PAIEMENT -->
+<div class="mvo" id="pm">
+  <div class="mbox" style="max-width:460px;">
+    <button class="mcls" onclick="closeM('pm')">✕</button>
+    <div class="mt" id="pmT">Commander</div>
+    <p class="ms">Choisissez votre mode de paiement</p>
+    <div id="pmS" style="background:var(--bg3);border:1px solid var(--bd);border-radius:8px;padding:12px;margin-bottom:13px;"></div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px;">
+      <div style="background:var(--bg3);border:1px solid var(--bd);border-radius:8px;padding:10px;"><b style="color:var(--white);font-size:13px;">🅿️ PayPal</b><div style="font-size:12px;color:var(--text2);margin-top:2px;">capor51@gmail.com</div></div>
+      <div style="background:var(--bg3);border:1px solid var(--bd);border-radius:8px;padding:10px;"><b style="color:var(--white);font-size:13px;">🟡 Binance USDT (TRC20)</b><div style="font-size:11px;color:var(--cyan);margin-top:2px;word-break:break-all;">TQ8JunUjkWu3rv1PyVjmPSEVHh6fD4kFGe</div></div>
+      <div style="background:var(--bg3);border:1px solid var(--bd);border-radius:8px;padding:10px;"><b style="color:var(--white);font-size:13px;">💛 Binance Pay</b><div style="font-size:12px;color:var(--cyan);margin-top:2px;">ID : 798651100</div></div>
+    </div>
+    <a href="https://t.me/salomonryn" target="_blank" class="bmod">💬 Envoyer justificatif @salomonryn</a>
+  </div>
+</div>
+
+<script>
+/* DB */
+var K='rtr_products';
+function getDB(){try{var d=localStorage.getItem(K);return d?JSON.parse(d):null;}catch(e){return null;}}
+var DB=getDB();
+var robots=(DB&&DB.robots)||[
+  {id:1,name:'Gold Hunter V8',plat:'MT4/MT5',cat:'or',price:30,oldPrice:null,badge:'bs',free:false,stars:5,desc:'EA de référence pour XAUUSD. Détection zones de liquidité, drawdown contrôlé.',img:'',imgs:[]},
+  {id:2,name:'AI Gold Sniper MT4 V1.4',plat:'MT4',cat:'or',price:20,oldPrice:null,badge:'hot',free:false,stars:5,desc:'IA de sniper sur l\'Or. Entrées chirurgicales XAUUSD haute précision.',img:'',imgs:[]},
+  {id:3,name:'Dominant EA MT5',plat:'MT5',cat:'forex',price:50,oldPrice:299,badge:'sale',free:false,stars:5,desc:'EA complet 3 modes de risque. EUR/USD, GBP/USD, USD/JPY, XAU/USD.',img:'',imgs:[]},
+];
+
+/* ROBOTS EN VEDETTE */
+function renderFeat(){
+  var g=document.getElementById('feat-robots');
+  if(!g)return;
+  var bmap={bs:'pb-best BEST SELLER',hot:'pb-hot HOT',sale:'pb-sale PROMO'};
+  g.innerHTML=robots.slice(0,3).map(function(r){
+    var bdg=r.badge&&bmap[r.badge]?'<div class="pbadge '+bmap[r.badge].split(' ')[0]+'">'+bmap[r.badge].substring(bmap[r.badge].indexOf(' ')+1)+'</div>':'';
+    var imgH='';
+      if(r.img){
+        imgH='<img src="'+r.img+'" alt="'+r.name+'" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">';
+      } else {
+        // Pas de photo: fond sombre discret avec juste le nom de plateforme en petit
+        imgH='<div class="pthumb-plat">'+r.plat+'</div>';
+      }
+    var stars='';for(var i=1;i<=5;i++)stars+=(i<=(r.stars||4))?'★':'☆';
+    var px=r.oldPrice?'<div class="pprice"><span class="ps">$</span>'+r.price+'</div><span class="pold">$'+r.oldPrice+'</span><span class="ppct">-'+Math.round((1-r.price/r.oldPrice)*100)+'%</span>':'<div class="pprice"><span class="ps">$</span>'+r.price+'</div>';
+    return'<a href="product.html?type=robot&id='+r.id+'" class="pcard">'+bdg+'<div class="pthumb">'+imgH+'</div><div class="pbody"><div class="pmeta"><span class="ptag '+(r.cat||'')+'">'+r.cat+'</span><span class="ptag">'+r.plat+'</span><span class="pstars">'+stars+'</span></div><div class="pname">'+r.name+'</div><div class="pdesc">'+r.desc+'</div><div class="pfoot"><div style="display:flex;align-items:baseline;gap:3px;flex-wrap:wrap;">'+px+'</div><button class="btn-buy" onclick="event.preventDefault();event.stopPropagation();openPay(\''+r.name.replace(/'/g,"\\'")+'\',$'+r.price+')">🛒 Acheter</button></div></div></a>';
+  }).join('');
+  // Counts
+  if(DB){
+    var el;
+    el=document.getElementById('cnt-r');if(el&&DB.robots)el.textContent=DB.robots.length+' produits';
+    el=document.getElementById('cnt-i');if(el&&DB.indicators)el.textContent=DB.indicators.length+' produits';
+    el=document.getElementById('cnt-s');if(el&&DB.systems)el.textContent=DB.systems.length+' produit'+(DB.systems.length>1?'s':'');
+    el=document.getElementById('cnt-e');if(el&&DB.ebooks)el.textContent=DB.ebooks.length+' produits';
+  }
+}
+
+/* FAQ */
+var faqs=[
+  {q:'Comment recevoir mon EA après achat ?',a:'Envoyez le justificatif de paiement à @salomonryn sur Telegram avec le nom du produit. Votre fichier EX4/EX5 + guide d\'installation sera livré sous 24h.'},
+  {q:"Qu'est-ce que l'offre VIP à $200 ?",a:'Le VIP donne accès à TOUS nos produits actuels et futurs (robots, indicateurs, ebooks, systèmes) pour $200 unique. Accès à vie, aucun abonnement jamais.'},
+  {q:'Comment obtenir les signaux GRATUITS ?',a:'Ouvrez un compte chez Exness, RoboForex ou FBS via nos liens d\'affiliation. Votre partenariat IB est automatiquement enregistré. Contactez @salomonryn pour activation des signaux.'},
+  {q:'Les EAs fonctionnent-ils sur tous les brokers ?',a:'Oui, MT4/MT5 de tous les brokers. Pour des performances optimales : Exness, RoboForex et FBS pour leurs faibles spreads.'},
+  {q:'Comment accéder aux outils gratuits ?',a:'Cliquez sur "Accès Gratuit" → ouvrez un compte broker via nos liens → soumettez votre ID de compte pour vérification → recevez vos accès sous 4h.'},
+];
+function renderFaq(){
+  var w=document.getElementById('faqWrap');if(!w)return;
+  w.innerHTML=faqs.map(function(f,i){return'<div class="fq" id="fq'+i+'"><div class="fq-q" onclick="tFq('+i+')"><span>'+f.q+'</span><span class="fq-arr">▼</span></div><div class="fq-a">'+f.a+'</div></div>';}).join('');
+}
+function tFq(i){var el=document.getElementById('fq'+i),was=el.classList.contains('open');document.querySelectorAll('.fq').forEach(function(e){e.classList.remove('open');});if(!was)el.classList.add('open');}
+
+/* MODALS */
+function openM(id){var el=document.getElementById(id);if(el)el.classList.add('on');}
+function closeM(id){var el=document.getElementById(id);if(el)el.classList.remove('on');}
+document.querySelectorAll('.mvo').forEach(function(m){m.addEventListener('click',function(e){if(e.target===m)m.classList.remove('on');});});
+function openPay(name,price){
+  document.getElementById('pmT').textContent='🛒 '+name;
+  document.getElementById('pmS').innerHTML='<div style="display:flex;justify-content:space-between;"><span style="color:var(--text2);font-size:13px;">'+name+'</span><span style="color:var(--blue);font-family:var(--fh);font-size:18px;font-weight:700;">'+price+'</span></div>';
+  openM('pm');
+}
+
+/* BOUGIES */
+(function(){var cv=document.getElementById('cv'),ctx=cv.getContext('2d');var W,H,cs=[];function rsz(){W=cv.width=window.innerWidth;H=cv.height=window.innerHeight;}window.addEventListener('resize',rsz);rsz();function mk(y0){var up=Math.random()>.42,th=55+Math.random()*120,bh=22+Math.random()*62,bw=7+Math.random()*10;return{x:20+Math.random()*(W-40),y:y0!==undefined?y0:H+25,th:th,bh:bh,bw:bw,up:up,sp:.45+Math.random()*.8,al:0,as:.004+Math.random()*.007};}for(var i=0;i<55;i++){var c=mk(Math.random()*H);c.al=Math.random()*.62;cs.push(c);}function draw(){ctx.clearRect(0,0,W,H);if(cs.length<65&&Math.random()<.06)cs.push(mk());cs=cs.filter(function(c){return c.y+c.th>-20;});cs.forEach(function(c){c.y-=c.sp;if(c.al<.68)c.al=Math.min(.68,c.al+c.as);var col=c.up?'#10b981':'#f43f5e';ctx.globalAlpha=c.al;ctx.strokeStyle=col;ctx.lineWidth=1.5;ctx.shadowColor=col;ctx.shadowBlur=6;ctx.beginPath();ctx.moveTo(c.x,c.y);ctx.lineTo(c.x,c.y+c.th);ctx.stroke();var by=c.y+(c.th-c.bh)/2;ctx.fillStyle=col;ctx.shadowBlur=11;ctx.fillRect(c.x-c.bw/2,by,c.bw,c.bh);ctx.shadowBlur=0;});ctx.globalAlpha=1;requestAnimationFrame(draw);}draw();})();
+
+/* TICKER */
+(function(){var p=[{s:'XAU/USD',p:'2 342.50',c:'+0.82%',u:true},{s:'EUR/USD',p:'1.0842',c:'-0.12%',u:false},{s:'BTC/USD',p:'67 420',c:'+2.14%',u:true},{s:'GBP/USD',p:'1.2680',c:'+0.08%',u:true},{s:'ETH/USD',p:'3 512',c:'+1.45%',u:true},{s:'USD/JPY',p:'154.32',c:'-0.21%',u:false},{s:'US30',p:'38 420',c:'+0.35%',u:true},{s:'NAS100',p:'17 856',c:'+0.62%',u:true},{s:'XAG/USD',p:'29.85',c:'+1.08%',u:true},{s:'AUD/USD',p:'0.6542',c:'-0.18%',u:false}];var t=document.getElementById('TK');var h=p.map(function(x){return'<span class="tki"><span class="tk-sym">'+x.s+'</span><span style="color:var(--text3);font-size:9px;">|</span><span class="'+(x.u?'tk-up':'tk-dn')+'">'+(x.u?'▲':'▼')+' '+x.p+' ('+x.c+')</span></span>';}).join('');t.innerHTML=h+h;})();
+
+renderFeat();renderFaq();
+</script>
+</body>
+</html>

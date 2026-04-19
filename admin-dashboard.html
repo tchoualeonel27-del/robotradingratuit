@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — RoboTradingRatuit</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#04060c;--bg2:#07090f;--bg3:#0a0d16;--bg4:#0d1120;--blue:#0ea5e9;--blue2:#0284c7;--cyan:#22d3ee;--white:#e0f2fe;--text:#8dafc8;--text2:#3f6080;--text3:#1a3048;--green:#10b981;--red:#f43f5e;--gold:#eab308;--orange:#f97316;--purple:#8b5cf6;--bd:rgba(14,165,233,.09);--bd2:rgba(14,165,233,.20);--fh:'Orbitron',sans-serif;--fb:'DM Sans',sans-serif;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);min-height:100vh;display:flex;font-size:15px;}
+::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-thumb{background:var(--blue2);border-radius:2px;}
+a{color:inherit;text-decoration:none;}button{cursor:pointer;font-family:var(--fb);}
+/* LOGIN */
+#LS{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;align-items:center;justify-content:center;}
+.lb{background:var(--bg2);border:1px solid var(--bd2);border-radius:14px;padding:40px;width:360px;text-align:center;box-shadow:0 0 60px rgba(14,165,233,.07);}
+.lb h2{font-family:var(--fh);font-size:15px;color:var(--white);margin-bottom:4px;}.lb h2 b{color:var(--blue);}
+.lb p{font-size:12px;color:var(--text2);margin-bottom:22px;}
+.linp{width:100%;background:var(--bg3);border:1px solid var(--bd2);color:var(--text);padding:11px 13px;border-radius:8px;font-size:13px;font-family:var(--fb);outline:none;margin-bottom:11px;display:block;transition:border-color .2s;}
+.linp:focus{border-color:var(--blue);}
+.lbtn{width:100%;background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;border:none;padding:12px;border-radius:8px;font-size:13px;font-weight:700;}
+.lerr{color:var(--red);font-size:12px;margin-bottom:9px;display:none;}
+/* SIDEBAR */
+.sb{width:220px;min-height:100vh;background:var(--bg2);border-right:1px solid var(--bd);display:flex;flex-direction:column;position:fixed;top:0;left:0;z-index:50;}
+.mn{margin-left:220px;flex:1;min-height:100vh;display:flex;flex-direction:column;}
+.sb-logo{padding:16px;border-bottom:1px solid var(--bd);font-family:var(--fh);font-size:11px;font-weight:900;color:var(--white);display:flex;align-items:center;gap:7px;}
+.sb-logo b{color:var(--blue);}
+.sb-dot{width:6px;height:6px;border-radius:50%;background:var(--green);margin-left:auto;animation:bk 1.5s infinite;}
+@keyframes bk{0%,100%{opacity:1;}50%{opacity:.2;}}
+.sb-nav{flex:1;padding:8px 0;overflow-y:auto;}
+.sbg{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--text3);padding:10px 16px 4px;}
+.sbi{display:flex;align-items:center;gap:8px;padding:9px 16px;font-size:12.5px;font-weight:500;color:var(--text2);cursor:pointer;border-left:3px solid transparent;transition:all .15s;}
+.sbi:hover,.sbi.on{color:var(--blue);background:rgba(14,165,233,.06);border-left-color:var(--blue);}
+.sbi i{font-size:14px;width:18px;text-align:center;flex-shrink:0;font-style:normal;}
+.sb-bdg{margin-left:auto;background:var(--blue);color:#000;font-size:9px;font-weight:700;padding:1px 6px;border-radius:8px;}
+.sb-bot{padding:12px 16px;border-top:1px solid var(--bd);display:flex;align-items:center;gap:8px;}
+.sb-av{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--cyan));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:#000;flex-shrink:0;}
+.sb-nm{font-size:12px;font-weight:600;color:var(--white);}
+.sb-rl{font-size:9px;color:var(--text3);}
+.btn-lo{background:transparent;border:1px solid rgba(244,63,94,.25);color:var(--red);padding:4px 8px;border-radius:4px;font-size:10px;margin-left:auto;}
+/* TOPBAR */
+.topbar{background:var(--bg2);border-bottom:1px solid var(--bd);padding:12px 22px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:40;}
+.tb-ttl{font-family:var(--fh);font-size:13px;font-weight:700;color:var(--white);}
+.tb-r{display:flex;align-items:center;gap:10px;}
+.tb-time{font-size:11px;color:var(--text2);}
+.btn-site{background:linear-gradient(135deg,var(--green),#059669);color:#000;border:none;padding:7px 14px;border-radius:6px;font-size:11px;font-weight:700;text-decoration:none;display:inline-block;}
+/* PAGES */
+.pg{display:none;padding:22px;}.pg.on{display:block;}
+/* METRICS */
+.mets{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px;}
+.met{background:var(--bg2);border:1px solid var(--bd);border-radius:10px;padding:16px;}
+.met-i{font-size:22px;margin-bottom:6px;}
+.met-v{font-family:var(--fh);font-size:22px;font-weight:700;color:var(--blue);}
+.met-l{font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-top:2px;}
+/* CARD */
+.card{background:var(--bg2);border:1px solid var(--bd);border-radius:10px;margin-bottom:16px;}
+.card-hd{padding:12px 18px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.card-ttl{font-family:var(--fh);font-size:12px;font-weight:700;color:var(--white);}
+.card-bd{padding:18px;}
+/* BUTTONS */
+.btn{border:none;padding:8px 14px;border-radius:7px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:5px;transition:all .2s;}
+.btn:hover{opacity:.85;transform:translateY(-1px);}
+.b-pr{background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;}
+.b-gr{background:linear-gradient(135deg,var(--green),#059669);color:#000;}
+.b-pu{background:linear-gradient(135deg,var(--purple),#6d28d9);color:#fff;}
+.b-ed{background:rgba(14,165,233,.08);border:1px solid var(--bd2);color:var(--blue);padding:5px 10px;border-radius:5px;font-size:11px;font-weight:600;}
+.b-ed:hover{background:var(--blue);color:#fff;}
+.b-dl{background:rgba(244,63,94,.07);border:1px solid rgba(244,63,94,.18);color:var(--red);padding:5px 10px;border-radius:5px;font-size:11px;font-weight:600;}
+.b-dl:hover{background:rgba(244,63,94,.15);}
+.b-sv{background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;border:none;padding:10px 20px;border-radius:7px;font-size:12px;font-weight:700;}
+.b-ca{background:transparent;border:1px solid var(--bd2);color:var(--text2);padding:10px 16px;border-radius:7px;font-size:12px;}
+.b-ca:hover{border-color:var(--red);color:var(--red);}
+/* TABLE */
+.tbl{width:100%;border-collapse:collapse;}
+.tbl th{text-align:left;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);padding:8px 12px;border-bottom:1px solid var(--bd);}
+.tbl td{padding:10px 12px;font-size:12.5px;border-bottom:1px solid rgba(14,165,233,.03);vertical-align:middle;}
+.tbl tr:hover td{background:rgba(14,165,233,.02);}
+.tbl tr:last-child td{border-bottom:none;}
+.tw{overflow-x:auto;}
+.acts{display:flex;gap:5px;}
+/* BADGES */
+.bv{display:inline-block;padding:2px 8px;border-radius:4px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;}
+.bv-g{background:rgba(16,185,129,.1);color:var(--green);border:1px solid rgba(16,185,129,.2);}
+.bv-b{background:rgba(14,165,233,.1);color:var(--blue);border:1px solid rgba(14,165,233,.2);}
+.bv-r{background:rgba(244,63,94,.1);color:var(--red);border:1px solid rgba(244,63,94,.2);}
+.bv-go{background:rgba(234,179,8,.1);color:var(--gold);border:1px solid rgba(234,179,8,.2);}
+.bv-o{background:rgba(249,115,22,.1);color:var(--orange);border:1px solid rgba(249,115,22,.2);}
+.bv-p{background:rgba(139,92,246,.1);color:var(--purple);border:1px solid rgba(139,92,246,.2);}
+.bv-gr{background:rgba(100,120,140,.08);color:var(--text2);border:1px solid var(--bd);}
+/* TABLE THUMB */
+.tthumb{width:44px;height:44px;border-radius:7px;overflow:hidden;border:1px solid var(--bd);flex-shrink:0;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:20px;}
+.tthumb img{width:100%;height:100%;object-fit:cover;}
+.tnc{display:flex;align-items:center;gap:9px;}
+/* FORMS */
+.fg{margin-bottom:14px;}
+.fg label{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text2);margin-bottom:5px;}
+.fi,.fsel,.fta{width:100%;background:var(--bg3);border:1px solid var(--bd2);color:var(--text);padding:9px 12px;border-radius:7px;font-size:13px;font-family:var(--fb);outline:none;transition:border-color .2s;}
+.fi:focus,.fsel:focus,.fta:focus{border-color:var(--blue);}
+.fta{resize:vertical;min-height:75px;}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.sbar{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
+.sinp{background:var(--bg3);border:1px solid var(--bd2);color:var(--text);padding:8px 12px;border-radius:7px;font-size:12px;font-family:var(--fb);outline:none;flex:1;min-width:140px;}
+.sinp:focus{border-color:var(--blue);}
+.ssel{background:var(--bg3);border:1px solid var(--bd2);color:var(--text2);padding:8px 12px;border-radius:7px;font-size:11px;font-family:var(--fb);outline:none;}
+/* TOGGLE */
+.tgw{display:flex;align-items:center;gap:8px;margin-top:6px;}
+.tg{position:relative;width:36px;height:20px;cursor:pointer;flex-shrink:0;}
+.tg input{opacity:0;width:0;height:0;position:absolute;}
+.tsl{position:absolute;inset:0;background:var(--bg4);border-radius:10px;border:1px solid var(--bd2);transition:background .2s;}
+.tsl::before{content:'';position:absolute;width:14px;height:14px;border-radius:50%;background:var(--text3);bottom:2px;left:2px;transition:all .2s;}
+.tg input:checked+.tsl{background:rgba(16,185,129,.2);border-color:var(--green);}
+.tg input:checked+.tsl::before{transform:translateX(16px);background:var(--green);}
+/* ══════════════════════════════
+   PHOTO UPLOAD — Le coeur du système
+══════════════════════════════ */
+.photo-section{background:var(--bg3);border:1px solid var(--bd);border-radius:10px;padding:16px;margin-top:4px;}
+.photo-ttl{font-size:11px;font-weight:700;color:var(--white);margin-bottom:14px;display:flex;align-items:center;gap:6px;}
+/* Zone photo principale */
+.cover-zone{position:relative;width:100%;height:190px;border-radius:9px;overflow:hidden;cursor:pointer;border:2px dashed var(--bd2);background:var(--bg4);transition:all .2s;display:flex;align-items:center;justify-content:center;}
+.cover-zone:hover{border-color:var(--blue);background:rgba(14,165,233,.04);}
+.cover-zone.has-photo{border-style:solid;border-color:var(--bd);cursor:default;}
+/* Image chargée */
+.cover-zone img.cov-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none;}
+.cover-zone.has-photo img.cov-img{display:block;}
+/* Placeholder (affiché quand vide) */
+.cov-ph{display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none;}
+.cover-zone.has-photo .cov-ph{display:none;}
+.cov-ph .c-ico{font-size:38px;color:var(--text2);}
+.cov-ph .c-t1{font-size:14px;font-weight:600;color:var(--text);}
+.cov-ph .c-t2{font-size:11px;color:var(--text2);}
+/* Overlay au survol quand photo chargée */
+.cov-ov{position:absolute;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;opacity:0;transition:opacity .2s;pointer-events:none;}
+.cover-zone.has-photo:hover .cov-ov{opacity:1;pointer-events:auto;cursor:pointer;}
+.cover-zone.has-photo:hover{cursor:pointer;}
+.cov-ov span{font-size:13px;color:#fff;font-weight:600;}
+/* Bouton supprimer la photo */
+.cov-rm{position:absolute;top:8px;right:8px;background:rgba(244,63,94,.92);color:#fff;border:none;border-radius:5px;width:24px;height:24px;font-size:11px;cursor:pointer;display:none;align-items:center;justify-content:center;z-index:3;}
+.cover-zone.has-photo .cov-rm{display:flex;}
+/* Champ URL */
+.url-row{display:flex;gap:7px;margin-top:8px;}
+.url-inp{flex:1;background:var(--bg3);border:1px solid var(--bd2);color:var(--text);padding:8px 11px;border-radius:6px;font-size:12px;font-family:var(--fb);outline:none;transition:border-color .2s;}
+.url-inp:focus{border-color:var(--blue);}
+.url-btn{background:var(--bg3);border:1px solid var(--bd2);color:var(--blue);padding:8px 12px;border-radius:6px;font-size:11px;font-weight:700;white-space:nowrap;}
+.url-btn:hover{background:var(--blue);color:#fff;}
+/* Galerie */
+.gal-wrap{margin-top:14px;}
+.gal-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.gal-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text2);}
+.gal-cnt{font-size:10px;color:var(--text3);}
+.gal-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;}
+.gal-item{position:relative;aspect-ratio:1;border-radius:7px;overflow:hidden;border:1px solid var(--bd);background:var(--bg4);}
+.gal-item img{width:100%;height:100%;object-fit:cover;}
+.gal-del{position:absolute;top:3px;right:3px;background:rgba(244,63,94,.9);color:#fff;border:none;border-radius:4px;width:19px;height:19px;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .15s;}
+.gal-item:hover .gal-del{opacity:1;}
+.gal-add{aspect-ratio:1;border-radius:7px;border:2px dashed var(--bd2);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:3px;cursor:pointer;background:var(--bg4);transition:all .2s;}
+.gal-add:hover{border-color:var(--blue);}
+.gal-add-ico{font-size:20px;color:var(--text2);}
+.gal-add-txt{font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;}
+.photo-tip{font-size:10px;color:var(--text3);margin-top:8px;line-height:1.5;}
+.photo-tip b{color:var(--text2);}
+/* Galerie compteur dans table */
+.gal-badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--blue);}
+/* Quick actions */
+.qa{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+/* Activity */
+.af{display:flex;flex-direction:column;gap:7px;}
+.ai{display:flex;align-items:flex-start;gap:9px;padding:9px;background:var(--bg3);border-radius:7px;border:1px solid var(--bd);}
+.ai-ico{font-size:16px;flex-shrink:0;}
+.ai-t{font-size:12px;color:var(--text);flex:1;}
+.ai-t strong{color:var(--white);}
+.ai-d{font-size:10px;color:var(--text3);}
+/* Modal */
+.mvo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:500;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px);}
+.mvo.on{display:flex;}
+.mpan{background:var(--bg2);border:1px solid var(--bd2);border-radius:14px;width:100%;max-width:620px;max-height:94vh;overflow-y:auto;display:flex;flex-direction:column;}
+.mhd{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--bd);flex-shrink:0;}
+.mhd h3{font-family:var(--fh);font-size:13px;font-weight:700;color:var(--white);}
+.mcls{background:transparent;border:1px solid var(--bd2);color:var(--text2);width:27px;height:27px;border-radius:6px;font-size:13px;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.mcls:hover{border-color:var(--red);color:var(--red);}
+.mbdy{padding:18px;flex:1;}
+.mft{padding:13px 20px;border-top:1px solid var(--bd);display:flex;gap:8px;justify-content:flex-end;flex-shrink:0;}
+/* Notif */
+.notif{position:fixed;top:14px;right:14px;z-index:9999;padding:11px 16px;border-radius:8px;font-size:13px;font-weight:600;display:flex;align-items:center;gap:7px;animation:sIn .3s ease;max-width:300px;box-shadow:0 8px 26px rgba(0,0,0,.5);}
+@keyframes sIn{from{transform:translateX(100%);opacity:0;}to{transform:translateX(0);opacity:1;}}
+.n-ok{background:#040d08;border:1px solid rgba(16,185,129,.28);color:var(--green);}
+.n-err{background:#0d0408;border:1px solid rgba(244,63,94,.28);color:var(--red);}
+.n-inf{background:#04080d;border:1px solid rgba(14,165,233,.28);color:var(--blue);}
+@media(max-width:900px){.sb{width:50px;}.sbi span:not(i){display:none;}.sb-logo .txt{display:none;}.sbg,.sb-nm,.sb-rl,.btn-lo{display:none;}.mn{margin-left:50px;}.mets{grid-template-columns:1fr 1fr;}.frow{grid-template-columns:1fr;}.gal-grid{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:600px){.mets{grid-template-columns:1fr 1fr;}.pg{padding:12px;}.qa{grid-template-columns:1fr 1fr;}}
+</style>
+</head>
+<body>
+
+<!-- ═══ LOGIN ═══ -->
+<div id="LS">
+  <div class="lb">
+    <h2>🤖 Robo<b>Trading</b>Ratuit</h2>
+    <p>Tableau de bord administration</p>
+    <div class="lerr" id="lerr">❌ Identifiants incorrects</div>
+    <input type="text" class="linp" id="lu" placeholder="Identifiant">
+    <input type="password" class="linp" id="lp" placeholder="Mot de passe">
+    <button class="lbtn" onclick="doLogin()">Accéder au Dashboard →</button>
+  </div>
+</div>
+
+<!-- ═══ SIDEBAR ═══ -->
+<aside class="sb">
+  <div class="sb-logo"><span>🤖</span><span class="txt">RTR <b>Admin</b></span><span class="sb-dot"></span></div>
+  <nav class="sb-nav">
+    <div class="sbg">Principal</div>
+    <div class="sbi on" onclick="goPage('dash',this)"><i>📊</i><span>Dashboard</span></div>
+    <div class="sbi" onclick="goPage('all',this)"><i>📦</i><span>Tous les produits</span><span class="sb-bdg" id="bdg-all">0</span></div>
+    <div class="sbg">Catégories</div>
+    <div class="sbi" onclick="goPage('robots',this)"><i>🤖</i><span>Robots EA</span><span class="sb-bdg" id="bdg-r">0</span></div>
+    <div class="sbi" onclick="goPage('indics',this)"><i>📡</i><span>Indicateurs</span></div>
+    <div class="sbi" onclick="goPage('systems',this)"><i>⚙️</i><span>Systèmes</span></div>
+    <div class="sbi" onclick="goPage('ebooks',this)"><i>📘</i><span>Ebooks</span></div>
+    <div class="sbi" onclick="goPage('videos',this)"><i>📺</i><span>Vidéos</span></div>
+    <div class="sbg">Configuration</div>
+    <div class="sbi" onclick="goPage('signals',this)"><i>📣</i><span>Plans & Signaux</span></div>
+    <div class="sbi" onclick="goPage('settings',this)"><i>⚙️</i><span>Paramètres</span></div>
+    <div class="sbi" onclick="goPage('payments',this)"><i>💳</i><span>Paiements</span></div>
+  </nav>
+  <div class="sb-bot">
+    <div class="sb-av">L</div>
+    <div><div class="sb-nm">Leo</div><div class="sb-rl">Super Admin</div></div>
+    <button class="btn-lo" onclick="doLogout()">⏏</button>
+  </div>
+</aside>
+
+<!-- ═══ MAIN ═══ -->
+<div class="mn">
+  <header class="topbar">
+    <div class="tb-ttl" id="PT">📊 Dashboard</div>
+    <div class="tb-r">
+      <span class="tb-time" id="CLK"></span>
+      <a href="index.html" target="_blank" class="btn-site">🌐 Voir le site</a>
+    </div>
+  </header>
+
+  <!-- DASHBOARD -->
+  <div class="pg on" id="pg-dash">
+    <div class="mets">
+      <div class="met"><div class="met-i">🤖</div><div class="met-v" id="m-r">7</div><div class="met-l">Robots EA</div></div>
+      <div class="met"><div class="met-i">📡</div><div class="met-v" id="m-i">3</div><div class="met-l">Indicateurs</div></div>
+      <div class="met"><div class="met-i">📘</div><div class="met-v" id="m-e">3</div><div class="met-l">Ebooks</div></div>
+      <div class="met"><div class="met-i">👑</div><div class="met-v">$200</div><div class="met-l">Offre VIP</div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      <div class="card">
+        <div class="card-hd"><div class="card-ttl">⚡ Actions rapides</div></div>
+        <div class="card-bd">
+          <div class="qa">
+            <button class="btn b-pr" onclick="openMod('mr');rF('r')">➕ Robot EA</button>
+            <button class="btn b-pr" onclick="openMod('mi');rF('i')">➕ Indicateur</button>
+            <button class="btn b-pr" onclick="openMod('ms');rF('s')">➕ Système</button>
+            <button class="btn b-gr" onclick="openMod('me');rF('e')">➕ Ebook</button>
+            <button class="btn b-gr" onclick="openMod('mv')">➕ Vidéo</button>
+            <button class="btn b-pu" onclick="openMod('mb')">➕ Article</button>
+          </div>
+          <div style="margin-top:12px;padding:11px;background:var(--bg3);border-radius:7px;border:1px solid var(--bd);">
+            <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:8px;">LIENS RAPIDES</div>
+            <a href="https://t.me/lementorforexgroup" target="_blank" style="display:block;font-size:12px;color:var(--blue);margin-bottom:5px;">✈ Canal Telegram signaux</a>
+            <a href="https://t.me/salomonryn" target="_blank" style="display:block;font-size:12px;color:var(--blue);margin-bottom:5px;">💬 Support Telegram</a>
+            <a href="https://one.exnesstrack.org/a/3518wl75nc" target="_blank" style="display:block;font-size:12px;color:var(--green);">🏦 Exness affiliation</a>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-hd"><div class="card-ttl">📋 Activité récente</div></div>
+        <div class="card-bd"><div class="af" id="AF"><div class="ai"><div class="ai-ico">🚀</div><div><div class="ai-t">Dashboard <strong>initialisé</strong></div><div class="ai-d">Maintenant</div></div></div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOUS LES PRODUITS -->
+  <div class="pg" id="pg-all">
+    <div class="card">
+      <div class="card-hd"><div class="card-ttl">📦 Tous les produits</div>
+        <div style="display:flex;gap:7px;flex-wrap:wrap;">
+          <button class="btn b-pr" onclick="openMod('mr');rF('r')">➕ Robot</button>
+          <button class="btn b-pr" onclick="openMod('mi');rF('i')">➕ Indicateur</button>
+          <button class="btn b-pr" onclick="openMod('ms');rF('s')">➕ Système</button>
+        </div>
+      </div>
+      <div class="card-bd">
+        <div class="sbar">
+          <input type="text" class="sinp" placeholder="🔍 Rechercher..." oninput="searchAll(this.value)">
+          <select class="ssel" onchange="filterAll(this.value)">
+            <option value="all">Tout</option><option value="robot">Robots</option><option value="indicator">Indicateurs</option><option value="system">Systèmes</option><option value="ebook">Ebooks</option>
+          </select>
+        </div>
+        <div class="tw"><table class="tbl"><thead><tr><th>Photo</th><th>Nom</th><th>Type</th><th>Prix</th><th>Galerie</th><th>Actions</th></tr></thead><tbody id="TB-all"></tbody></table></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROBOTS -->
+  <div class="pg" id="pg-robots">
+    <div class="card">
+      <div class="card-hd"><div class="card-ttl">🤖 Robots EA</div><button class="btn b-pr" onclick="openMod('mr');rF('r')">➕ Nouveau Robot</button></div>
+      <div class="card-bd">
+        <div class="sbar">
+          <input type="text" class="sinp" placeholder="🔍 Rechercher un robot..." oninput="srchR(this.value)">
+          <select class="ssel" onchange="filR(this.value)"><option value="all">Toutes catégories</option><option value="or">Or/XAUUSD</option><option value="forex">Forex</option><option value="indices">Indices</option><option value="crypto">Crypto</option></select>
+        </div>
+        <div class="tw"><table class="tbl"><thead><tr><th>Photo</th><th>Nom</th><th>Plateforme</th><th>Catégorie</th><th>Prix</th><th>Galerie</th><th>Statut</th><th>Actions</th></tr></thead><tbody id="TB-r"></tbody></table></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INDICATEURS -->
+  <div class="pg" id="pg-indics">
+    <div class="card">
+      <div class="card-hd"><div class="card-ttl">📡 Indicateurs Techniques</div><button class="btn b-pr" onclick="openMod('mi');rF('i')">➕ Nouvel Indicateur</button></div>
+      <div class="card-bd"><div class="tw"><table class="tbl"><thead><tr><th>Photo</th><th>Nom</th><th>Compatible</th><th>Type</th><th>Prix</th><th>Galerie</th><th>Actions</th></tr></thead><tbody id="TB-i"></tbody></table></div></div>
+    </div>
+  </div>
+
+  <!-- SYSTÈMES -->
+  <div class="pg" id="pg-systems">
+    <div class="card">
+      <div class="card-hd"><div class="card-ttl">⚙️ Systèmes de Trading</div><button class="btn b-pr" onclick="openMod('ms');rF('s')">➕ Nouveau Système</button></div>
+      <div class="card-bd"><div class="tw"><table class="tbl"><thead><tr><th>Photo</th><th>Nom</th><th>Plateforme</th><th>Prix</th><th>Galerie</th><th>Actions</th></tr></thead><tbody id="TB-s"></tbody></table></div></div>
+    </div>
+  </div>
+
+  <!-- EBOOKS -->
+  <div class="pg" id="pg-ebooks">
+    <div class="card">
+      <div class="card-hd"><div class="card-ttl">📘 Ebooks PDF</div><button class="btn b-pr" onclick="openMod('me');rF('e')">➕ Nouvel Ebook</button></div>
+      <div class="card-bd"><div class="tw"><table class="tbl"><thead><tr><th>Couverture</th><th>Titre</th><th>Catégorie</th><th>Prix</th><th>Galerie</th><th>Actions</th></tr></thead><tbody id="TB-e"></tbody></table></div></div>
+    </div>
+  </div>
+
+  <!-- VIDÉOS -->
+  <div class="pg" id="pg-videos">
+    <div class="card">
+      <div class="card-hd"><div class="card-ttl">📺 Vidéos YouTube</div><button class="btn b-pr" onclick="openMod('mv')">➕ Ajouter</button></div>
+      <div class="card-bd">
+        <div class="fg"><label>Chaîne YouTube</label><div style="display:flex;gap:8px;"><input type="text" class="fi" id="yt-ch" value="https://www.youtube.com/@RoboTradingRatuit" style="flex:1;"><button class="b-sv" onclick="notify('Mis à jour !','n-ok')">💾</button></div></div>
+        <div class="tw"><table class="tbl"><thead><tr><th>Titre</th><th>Lien</th><th>Durée</th><th>Catégorie</th><th>Actions</th></tr></thead><tbody id="TB-v"></tbody></table></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIGNAUX -->
+  <div class="pg" id="pg-signals">
+    <div class="card">
+      <div class="card-hd"><div class="card-ttl">📣 Plans & Signaux</div></div>
+      <div class="card-bd">
+        <div class="tw"><table class="tbl"><thead><tr><th>Plan</th><th>Prix</th><th>Durée</th><th>Contenu</th><th>Statut</th></tr></thead>
+        <tbody>
+          <tr><td><b>👑 VIP Illimité</b></td><td style="color:var(--purple);font-weight:700;font-size:14px;">$200</td><td><span class="bv bv-p">À VIE</span></td><td>Tous robots, indicateurs, ebooks, signaux</td><td><span class="bv bv-g">Actif</span></td></tr>
+          <tr><td><b>Mensuel</b></td><td style="color:var(--blue);font-weight:700;">$19</td><td>1 mois</td><td>Signaux Forex, Telegram</td><td><span class="bv bv-g">Actif</span></td></tr>
+          <tr><td><b>Trimestriel ⭐</b></td><td style="color:var(--blue);font-weight:700;">$49</td><td>3 mois</td><td>Signaux complets + Dashboard</td><td><span class="bv bv-g">Actif</span></td></tr>
+          <tr><td><b>Annuel</b></td><td style="color:var(--blue);font-weight:700;">$149</td><td>12 mois</td><td>Complet + Vidéos hebdo</td><td><span class="bv bv-g">Actif</span></td></tr>
+        </tbody></table></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PARAMÈTRES -->
+  <div class="pg" id="pg-settings">
+    <div class="card">
+      <div class="card-hd"><div class="card-ttl">⚙️ Paramètres</div></div>
+      <div class="card-bd">
+        <div class="frow"><div class="fg"><label>Nom du site</label><input class="fi" value="RoboTradingRatuit"></div><div class="fg"><label>Email</label><input class="fi" type="email" value="capor51@gmail.com"></div></div>
+        <div class="frow"><div class="fg"><label>Telegram Signaux</label><input class="fi" value="https://t.me/lementorforexgroup"></div><div class="fg"><label>Telegram Support</label><input class="fi" value="https://t.me/salomonryn"></div></div>
+        <div style="font-size:11px;font-weight:700;color:var(--white);margin:12px 0 10px;">🏦 Liens Affiliation</div>
+        <div class="fg"><label>RoboForex</label><input class="fi" value="https://my.roboforex.com/en/?a=nwln"></div>
+        <div class="fg"><label>Exness</label><input class="fi" value="https://one.exnesstrack.org/a/3518wl75nc"></div>
+        <div class="fg"><label>FBS</label><input class="fi" value="https://fbs.partners?ibl=756168&ibp=18597762"></div>
+        <div style="font-size:11px;font-weight:700;color:var(--white);margin:12px 0 10px;">🔐 Sécurité</div>
+        <div class="frow"><div class="fg"><label>Identifiant</label><input class="fi" value="Leo"></div><div class="fg"><label>Nouveau mot de passe</label><input class="fi" type="password" placeholder="••••••••"></div></div>
+        <div style="display:flex;gap:8px;margin-top:8px;"><button class="b-sv" onclick="notify('Paramètres sauvegardés !','n-ok')">💾 Sauvegarder</button><button class="b-ca">Annuler</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAIEMENTS -->
+  <div class="pg" id="pg-payments">
+    <div class="card">
+      <div class="card-hd"><div class="card-ttl">💳 Paiements</div></div>
+      <div class="card-bd">
+        <div class="fg"><label>PayPal Email</label><input class="fi" type="email" value="capor51@gmail.com"></div>
+        <div class="fg"><label>Binance USDT (TRC20)</label><input class="fi" value="TQ8JunUjkWu3rv1PyVjmPSEVHh6fD4kFGe"></div>
+        <div class="fg"><label>Binance Pay ID</label><input class="fi" value="798651100"></div>
+        <button class="b-sv" onclick="notify('Mis à jour !','n-ok')">💾 Sauvegarder</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════ MODALS ════════════════ -->
+
+<!-- MODAL ROBOT -->
+<div class="mvo" id="mr">
+<div class="mpan">
+  <div class="mhd"><h3 id="mr-ttl">🤖 Nouveau Robot EA</h3><button class="mcls" onclick="closeMod('mr')">✕</button></div>
+  <div class="mbdy">
+    <div class="frow">
+      <div class="fg"><label>Nom du robot *</label><input class="fi" id="r-nm" placeholder="Gold Hunter V8 EA MT5"></div>
+      <div class="fg"><label>Prix ($) *</label><input type="number" class="fi" id="r-pr" placeholder="30" min="0"></div>
+    </div>
+    <div class="frow">
+      <div class="fg"><label>Prix barré ($) — promo</label><input type="number" class="fi" id="r-op" placeholder="299 — vide si aucun"></div>
+      <div class="fg"><label>Plateforme</label><select class="fsel" id="r-pl"><option>MT4/MT5</option><option>MT5</option><option>MT4</option></select></div>
+    </div>
+    <div class="frow">
+      <div class="fg"><label>Catégorie marché</label><select class="fsel" id="r-ca"><option value="or">Or / XAUUSD</option><option value="forex">Forex</option><option value="indices">Indices</option><option value="crypto">Crypto</option></select></div>
+      <div class="fg"><label>Badge affiché</label><select class="fsel" id="r-ba"><option value="">Aucun</option><option value="bs">⭐ Best Seller</option><option value="hot">🔥 Hot</option><option value="sale">% Promo</option><option value="new">Nouveau</option><option value="fr">Gratuit</option></select></div>
+    </div>
+    <div class="fg"><label>Description *</label><textarea class="fta" id="r-de" placeholder="Description détaillée et attrayante du robot..."></textarea></div>
+    <div class="fg"><label>Caractéristiques (une par ligne)</label><textarea class="fta" id="r-fe" placeholder="XAUUSD/Gold optimisé&#10;Drawdown max 12%&#10;No DLL requis&#10;Presets Exness inclus&#10;Backtests 5 ans vérifiés"></textarea></div>
+    <div class="frow">
+      <div class="fg"><label>Note (étoiles)</label><select class="fsel" id="r-st"><option value="5">★★★★★ Excellent</option><option value="4" selected>★★★★☆ Très bien</option><option value="3">★★★☆☆ Bien</option></select></div>
+      <div class="fg"><label>Gratuit ?</label><div class="tgw"><label class="tg"><input type="checkbox" id="r-fr"><span class="tsl"></span></label><span style="font-size:12px;color:var(--text2);">Téléchargement gratuit</span></div></div>
+    </div>
+
+    <!-- ══ SECTION PHOTOS ══ -->
+    <div class="photo-section">
+      <div class="photo-ttl">📸 Photos du produit</div>
+
+      <div class="fg" style="margin-bottom:0;">
+        <label style="margin-bottom:7px;">Photo principale (couverture)</label>
+        <!-- Zone cliquable pour uploader ou changer la photo -->
+        <div class="cover-zone" id="r-cz" onclick="trigCov('r-cf')">
+          <img class="cov-img" id="r-cp" src="" alt="">
+          <div class="cov-ph">
+            <div class="c-ico">🖼️</div>
+            <div class="c-t1">Cliquer pour choisir une photo</div>
+            <div class="c-t2">JPG · PNG · WEBP · max 5 Mo</div>
+          </div>
+          <div class="cov-ov" onclick="trigCov('r-cf')"><span>📷 Changer la photo</span></div>
+          <button class="cov-rm" onclick="event.stopPropagation();rmCov('r-cz','r-cp','r')">✕</button>
+        </div>
+        <input type="file" id="r-cf" accept="image/*" style="display:none" onchange="onCovFile(this,'r-cz','r-cp','r')">
+        <!-- OU par URL -->
+        <div class="url-row">
+          <input type="text" class="url-inp" id="r-cu" placeholder="OU collez l'URL d'une image (https://i.imgur.com/... ou tout lien direct)">
+          <button class="url-btn" onclick="applyUrl('r-cu','r-cz','r-cp','r')">✓ Appliquer</button>
+        </div>
+      </div>
+
+      <!-- Galerie de photos supplémentaires -->
+      <div class="gal-wrap">
+        <div class="gal-hd">
+          <span class="gal-lbl">Galerie de photos (backtests, résultats, captures MT4)</span>
+          <span class="gal-cnt" id="r-gc">0 / 8</span>
+        </div>
+        <div class="gal-grid" id="r-gg">
+          <div class="gal-add" onclick="trigGal('r-gf')">
+            <div class="gal-add-ico">➕</div>
+            <div class="gal-add-txt">Ajouter photo</div>
+          </div>
+        </div>
+        <input type="file" id="r-gf" accept="image/*" multiple style="display:none" onchange="onGalFiles(this,'r-gg','r-gc','r')">
+        <div style="background:rgba(234,179,8,.08);border:1px solid rgba(234,179,8,.25);border-radius:8px;padding:12px;margin-top:10px;">
+          <div style="font-size:11px;font-weight:700;color:#eab308;margin-bottom:6px;">⚠️ IMPORTANT — Pour que les photos s'affichent partout</div>
+          <div style="font-size:12px;color:#8dafc8;line-height:1.7;">
+            <strong style="color:#e0f2fe;">Les photos chargées depuis votre ordinateur</strong> ne s'affichent QUE sur votre ordinateur.<br>
+            <strong style="color:#10b981;">Pour que vos clients voient les photos :</strong><br>
+            1️⃣ Allez sur <strong style="color:#22d3ee;">imgur.com</strong> → cliquez "New post" → glissez votre photo<br>
+            2️⃣ Clic droit sur la photo affichée → "Copier l'adresse de l'image"<br>
+            3️⃣ Collez ce lien dans le champ <strong style="color:#22d3ee;">"OU collez l'URL"</strong> ci-dessous → Appliquer<br>
+            <span style="color:#eab308;">✓ Gratuit · ✓ Visible sur tous les appareils · ✓ Permanent</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mft"><button class="b-ca" onclick="closeMod('mr')">Annuler</button><button class="b-sv" onclick="saveRobot()">💾 Enregistrer</button></div>
+</div>
+</div>
+
+<!-- MODAL INDICATEUR -->
+<div class="mvo" id="mi">
+<div class="mpan">
+  <div class="mhd"><h3 id="mi-ttl">📡 Nouvel Indicateur</h3><button class="mcls" onclick="closeMod('mi')">✕</button></div>
+  <div class="mbdy">
+    <div class="frow"><div class="fg"><label>Nom *</label><input class="fi" id="i-nm" placeholder="Smart Signal Pro"></div><div class="fg"><label>Prix ($) — 0=Gratuit</label><input type="number" class="fi" id="i-pr" placeholder="29" min="0"></div></div>
+    <div class="frow"><div class="fg"><label>Compatible</label><select class="fsel" id="i-co"><option>MT4/MT5</option><option>MT4</option><option>MT5</option><option>TradingView</option></select></div><div class="fg"><label>Type</label><select class="fsel" id="i-ty"><option>Premium</option><option>Gratuit</option></select></div></div>
+    <div class="fg"><label>Description *</label><textarea class="fta" id="i-de" placeholder="Description de l'indicateur..."></textarea></div>
+    <div class="photo-section">
+      <div class="photo-ttl">📸 Photos de l'indicateur</div>
+      <div class="cover-zone" id="i-cz" onclick="trigCov('i-cf')">
+        <img class="cov-img" id="i-cp" src="" alt="">
+        <div class="cov-ph"><div class="c-ico">🖼️</div><div class="c-t1">Photo principale</div><div class="c-t2">JPG · PNG · WEBP</div></div>
+        <div class="cov-ov" onclick="trigCov('i-cf')"><span>📷 Changer</span></div>
+        <button class="cov-rm" onclick="event.stopPropagation();rmCov('i-cz','i-cp','i')">✕</button>
+      </div>
+      <input type="file" id="i-cf" accept="image/*" style="display:none" onchange="onCovFile(this,'i-cz','i-cp','i')">
+      <div class="url-row"><input type="text" class="url-inp" id="i-cu" placeholder="OU URL d'image directe"><button class="url-btn" onclick="applyUrl('i-cu','i-cz','i-cp','i')">✓ Appliquer</button></div>
+      <div class="gal-wrap">
+        <div class="gal-hd"><span class="gal-lbl">Galerie (exemples, graphiques de signaux)</span><span class="gal-cnt" id="i-gc">0/8</span></div>
+        <div class="gal-grid" id="i-gg"><div class="gal-add" onclick="trigGal('i-gf')"><div class="gal-add-ico">➕</div><div class="gal-add-txt">Ajouter</div></div></div>
+        <input type="file" id="i-gf" accept="image/*" multiple style="display:none" onchange="onGalFiles(this,'i-gg','i-gc','i')">
+      </div>
+    </div>
+  </div>
+  <div class="mft"><button class="b-ca" onclick="closeMod('mi')">Annuler</button><button class="b-sv" onclick="saveIndic()">💾 Enregistrer</button></div>
+</div>
+</div>
+
+<!-- MODAL SYSTÈME -->
+<div class="mvo" id="ms">
+<div class="mpan">
+  <div class="mhd"><h3>⚙️ Système de Trading</h3><button class="mcls" onclick="closeMod('ms')">✕</button></div>
+  <div class="mbdy">
+    <div class="frow"><div class="fg"><label>Nom *</label><input class="fi" id="s-nm" placeholder="100% Winrate System MT4"></div><div class="fg"><label>Prix ($) *</label><input type="number" class="fi" id="s-pr" placeholder="25" min="0"></div></div>
+    <div class="frow"><div class="fg"><label>Plateforme</label><select class="fsel" id="s-pl"><option>MT4/MT5</option><option>MT4</option><option>MT5</option></select></div><div class="fg"><label>Code source inclus ?</label><div class="tgw" style="margin-top:8px;"><label class="tg"><input type="checkbox" id="s-sc"><span class="tsl"></span></label><span style="font-size:12px;color:var(--text2);">MQ4/MQ5 inclus</span></div></div></div>
+    <div class="fg"><label>Description *</label><textarea class="fta" id="s-de" placeholder="Description du système..."></textarea></div>
+    <div class="fg"><label>Caractéristiques (une par ligne)</label><textarea class="fta" id="s-fe" placeholder="Code source MQ4 inclus&#10;Résultats vérifiés MyFxBook"></textarea></div>
+    <div class="photo-section">
+      <div class="photo-ttl">📸 Photos du produit</div>
+      <div class="cover-zone" id="s-cz" onclick="trigCov('s-cf')">
+        <img class="cov-img" id="s-cp" src="" alt="">
+        <div class="cov-ph"><div class="c-ico">🖼️</div><div class="c-t1">Photo principale</div><div class="c-t2">JPG · PNG · WEBP</div></div>
+        <div class="cov-ov" onclick="trigCov('s-cf')"><span>📷 Changer</span></div>
+        <button class="cov-rm" onclick="event.stopPropagation();rmCov('s-cz','s-cp','s')">✕</button>
+      </div>
+      <input type="file" id="s-cf" accept="image/*" style="display:none" onchange="onCovFile(this,'s-cz','s-cp','s')">
+      <div class="url-row"><input type="text" class="url-inp" id="s-cu" placeholder="OU URL d'image"><button class="url-btn" onclick="applyUrl('s-cu','s-cz','s-cp','s')">✓ Appliquer</button></div>
+      <div class="gal-wrap">
+        <div class="gal-hd"><span class="gal-lbl">Galerie de photos</span><span class="gal-cnt" id="s-gc">0/8</span></div>
+        <div class="gal-grid" id="s-gg"><div class="gal-add" onclick="trigGal('s-gf')"><div class="gal-add-ico">➕</div><div class="gal-add-txt">Ajouter</div></div></div>
+        <input type="file" id="s-gf" accept="image/*" multiple style="display:none" onchange="onGalFiles(this,'s-gg','s-gc','s')">
+      </div>
+    </div>
+  </div>
+  <div class="mft"><button class="b-ca" onclick="closeMod('ms')">Annuler</button><button class="b-sv" onclick="saveSys()">💾 Enregistrer</button></div>
+</div>
+</div>
+
+<!-- MODAL EBOOK -->
+<div class="mvo" id="me">
+<div class="mpan">
+  <div class="mhd"><h3>📘 Ebook PDF</h3><button class="mcls" onclick="closeMod('me')">✕</button></div>
+  <div class="mbdy">
+    <div class="frow"><div class="fg"><label>Titre *</label><input class="fi" id="e-ti" placeholder="Maîtriser le Forex..."></div><div class="fg"><label>Prix ($) — 0=Gratuit</label><input type="number" class="fi" id="e-pr" placeholder="29" min="0"></div></div>
+    <div class="frow"><div class="fg"><label>Pages</label><input type="number" class="fi" id="e-pg" placeholder="120"></div><div class="fg"><label>Catégorie</label><select class="fsel" id="e-ca"><option>Formation générale</option><option>Analyse technique</option><option>SMC / ICT</option><option>Gestion du risque</option><option>Psychologie</option><option>Automatisation / EA</option><option>Crypto</option></select></div></div>
+    <div class="fg"><label>Description *</label><textarea class="fta" id="e-de" placeholder="Description de l'ebook..."></textarea></div>
+    <div class="photo-section">
+      <div class="photo-ttl">📸 Couverture & aperçus de l'ebook</div>
+      <div class="cover-zone" id="e-cz" onclick="trigCov('e-cf')">
+        <img class="cov-img" id="e-cp" src="" alt="">
+        <div class="cov-ph"><div class="c-ico">📚</div><div class="c-t1">Couverture de l'ebook</div><div class="c-t2">JPG · PNG · WEBP</div></div>
+        <div class="cov-ov" onclick="trigCov('e-cf')"><span>📷 Changer</span></div>
+        <button class="cov-rm" onclick="event.stopPropagation();rmCov('e-cz','e-cp','e')">✕</button>
+      </div>
+      <input type="file" id="e-cf" accept="image/*" style="display:none" onchange="onCovFile(this,'e-cz','e-cp','e')">
+      <div class="url-row"><input type="text" class="url-inp" id="e-cu" placeholder="OU URL de la couverture"><button class="url-btn" onclick="applyUrl('e-cu','e-cz','e-cp','e')">✓ Appliquer</button></div>
+      <div class="gal-wrap">
+        <div class="gal-hd"><span class="gal-lbl">Aperçus des pages intérieures</span><span class="gal-cnt" id="e-gc">0/8</span></div>
+        <div class="gal-grid" id="e-gg"><div class="gal-add" onclick="trigGal('e-gf')"><div class="gal-add-ico">➕</div><div class="gal-add-txt">Ajouter</div></div></div>
+        <input type="file" id="e-gf" accept="image/*" multiple style="display:none" onchange="onGalFiles(this,'e-gg','e-gc','e')">
+      </div>
+    </div>
+  </div>
+  <div class="mft"><button class="b-ca" onclick="closeMod('me')">Annuler</button><button class="b-sv" onclick="saveEbook()">💾 Enregistrer</button></div>
+</div>
+</div>
+
+<!-- MODAL VIDÉO -->
+<div class="mvo" id="mv">
+<div class="mpan" style="max-width:500px;">
+  <div class="mhd"><h3>📺 Vidéo YouTube</h3><button class="mcls" onclick="closeMod('mv')">✕</button></div>
+  <div class="mbdy">
+    <div class="fg"><label>Titre *</label><input class="fi" id="v-t" placeholder="Comment installer un EA sur MT4/MT5..."></div>
+    <div class="fg"><label>Lien YouTube *</label><input class="fi" id="v-u" placeholder="https://www.youtube.com/watch?v=..."></div>
+    <div class="frow"><div class="fg"><label>Durée (ex: 12:34)</label><input class="fi" id="v-d" placeholder="12:34"></div><div class="fg"><label>Catégorie</label><select class="fsel" id="v-c"><option>Installation EA</option><option>Stratégie</option><option>Analyse</option><option>Formation</option><option>Signal live</option></select></div></div>
+  </div>
+  <div class="mft"><button class="b-ca" onclick="closeMod('mv')">Annuler</button><button class="b-sv" onclick="saveVid()">💾 Enregistrer</button></div>
+</div>
+</div>
+
+<!-- MODAL BLOG -->
+<div class="mvo" id="mb">
+<div class="mpan" style="max-width:500px;">
+  <div class="mhd"><h3>✏️ Article Blog</h3><button class="mcls" onclick="closeMod('mb')">✕</button></div>
+  <div class="mbdy">
+    <div class="fg"><label>Titre *</label><input class="fi" id="bl-t" placeholder="Comment optimiser votre EA..."></div>
+    <div class="frow"><div class="fg"><label>Catégorie</label><select class="fsel" id="bl-c"><option>Guide</option><option>Stratégie</option><option>Risque</option><option>Formation</option></select></div><div class="fg"><label>Statut</label><select class="fsel" id="bl-s"><option>Publié</option><option>Brouillon</option></select></div></div>
+    <div class="fg"><label>Contenu *</label><textarea class="fta" id="bl-co" style="min-height:120px;" placeholder="Contenu..."></textarea></div>
+  </div>
+  <div class="mft"><button class="b-ca" onclick="closeMod('mb')">Annuler</button><button class="b-sv" onclick="saveBlog()">💾 Enregistrer</button></div>
+</div>
+</div>
+
+<script>
+/* ══ BASE DE DONNÉES (partagée avec le site via localStorage) ══ */
+var K='rtr_products';
+function ldDB(){try{var d=localStorage.getItem(K);return d?JSON.parse(d):null;}catch(e){return null;}}
+function svDB(){try{localStorage.setItem(K,JSON.stringify(DB));}catch(e){notify('Erreur stockage — images trop volumineuses ?','n-err');}}
+
+function dfDB(){return{
+  robots:[
+    {id:1,name:'Gold Hunter V8',plat:'MT4/MT5',cat:'or',price:30,oldPrice:null,badge:'bs',free:false,stars:5,desc:'EA de référence pour XAUUSD basé sur la détection des zones de liquidité. Algorithme v8 optimisé sur 5 ans de backtest avec drawdown contrôlé.',feats:['XAUUSD/Gold optimisé','Drawdown max < 12%','Presets Exness & Roboforex','No DLL requis','Testé 2019–2024'],img:'',imgs:[]},
+    {id:2,name:'AI Gold Sniper MT4 V1.4',plat:'MT4',cat:'or',price:20,oldPrice:null,badge:'hot',free:false,stars:5,desc:'Expert Advisor IA de sniper sur l\'Or. Intelligence artificielle pour des entrées chirurgicales sur XAUUSD.',feats:['IA-powered XAU/USD','Sniper haute précision','Version 1.4 optimisée','Money management auto'],img:'',imgs:[]},
+    {id:3,name:'Dominant EA MT5',plat:'MT5',cat:'forex',price:50,oldPrice:299,badge:'sale',free:false,stars:5,desc:'EA complet avec 3 modes de risque (Low/Medium/Aggressive). Compatible EURUSD, GBPUSD, USDJPY et XAUUSD.',feats:['3 niveaux: Low/Medium/Aggressive','EUR/USD, GBP/USD, USD/JPY, XAU/USD','Trailing stop & moving stop profit','Presets Exness fournis'],img:'',imgs:[]},
+    {id:4,name:'AI Golden Jet Fighter GTX MT4',plat:'MT4',cat:'forex',price:15,oldPrice:null,badge:'',free:false,stars:4,desc:'EA Forex agressif — entrées rapides, sorties précises sur paires majeures.',feats:['Scalping rapide & précis','EUR/USD, GBP/USD','Sessions London & New York'],img:'',imgs:[]},
+    {id:5,name:'AiMaxPro EA V2',plat:'MT4',cat:'indices',price:15,oldPrice:null,badge:'',free:false,stars:4,desc:'EA pour indices boursiers. IA v2 avec gestion dynamique des positions.',feats:['US30, NAS100, SP500','IA v2','Gestion dynamique des lots'],img:'',imgs:[]},
+    {id:6,name:'Alpha Scalper Pro MT5',plat:'MT5',cat:'forex',price:50,oldPrice:500,badge:'sale',free:false,stars:5,desc:'Scalper professionnel ultra-rapide MT5. Execution en millisecondes.',feats:['Scalping milliseconde','EUR/USD, GBP/USD, USD/JPY','Multi-sessions','Filtres news'],img:'',imgs:[]},
+    {id:7,name:'ICT Venom XAUUSD MT5',plat:'MT5',cat:'or',price:35,oldPrice:null,badge:'',free:false,stars:4,desc:'EA basé sur la méthodologie ICT appliquée à XAUUSD. Détection Order Blocks, FVG.',feats:['Méthodologie ICT 100%','Order Blocks & FVG','XAUUSD exclusif'],img:'',imgs:[]},
+  ],
+  indicators:[
+    {id:1,name:'V2 Price Action Volumetric OB & Trend Strength',compat:'TradingView',type:'Premium',price:15,free:false,stars:4,desc:'Détection automatique des Order Blocks volumétriques avec force de tendance.',img:'',imgs:[]},
+    {id:2,name:'100% Pine Script — Système Complet',compat:'TradingView',type:'Premium',price:20,free:false,stars:4,desc:'Script Pine Script complet avec signaux d\'entrée/sortie et gestion du risque.',img:'',imgs:[]},
+    {id:3,name:'Fiona V.01',compat:'MT4',type:'Gratuit',price:0,free:true,stars:4,desc:'Indicateur MT4 gratuit de tendance visuel avec signaux clairs.',img:'',imgs:[]},
+  ],
+  systems:[
+    {id:1,name:'100% Winrate System MT4 (Source Code MQ4)',plat:'MT4/MT5',price:25,src:true,free:false,stars:5,desc:'Système avec code source MQ4 complet. Résultats vérifiés sur MyFxBook.',feats:['Code source MQ4 complet','Résultats vérifiés MyFxBook','Personnalisable'],img:'',imgs:[]},
+  ],
+  ebooks:[
+    {id:1,title:'Maîtriser le Forex de A à Z',pages:120,cat:'Formation générale',price:29,free:false,stars:5,desc:'120 pages premium. Formation complète pour traders débutants et intermédiaires.',img:'',imgs:[]},
+    {id:2,title:'Smart Money Concepts (SMC) Guide Complet',pages:95,cat:'SMC / ICT',price:39,free:false,stars:5,desc:'Apprenez à trader comme les institutions. Order blocks, FVG, BOS, CHoCH.',img:'',imgs:[]},
+    {id:3,title:'Guide Installation EA MT4/MT5',pages:40,cat:'Automatisation / EA',price:0,free:true,stars:4,desc:'Manuel illustré pour installer vos robots sur MetaTrader 4 & 5.',img:'',imgs:[]},
+  ],
+  videos:[
+    {id:1,title:'Comment installer un EA sur MT4/MT5',url:'https://youtu.be/example1',dur:'12:34',cat:'Installation EA'},
+    {id:2,title:'Stratégie ICT — Order Blocks sur XAU/USD',url:'https://youtu.be/example2',dur:'18:45',cat:'Stratégie'},
+    {id:3,title:'AI Gold Sniper — Paramétrage complet',url:'https://youtu.be/example3',dur:'14:22',cat:'Configuration EA'},
+  ]
+};}
+
+var DB=ldDB()||dfDB();
+
+/* ══ PHOTO STATE (en cours d'édition) ══ */
+var COV={};  /* key -> src (base64 ou url) */
+var GAL={};  /* key -> array of src */
+
+/* ══ LOGIN ══ */
+function doLogin(){
+  var u=document.getElementById('lu').value.trim();
+  var p=document.getElementById('lp').value;
+  if(u==='Leo'&&p==='Salvation1993'){
+    document.getElementById('LS').style.display='none';
+    init();
+  }else{
+    document.getElementById('lerr').style.display='block';
+  }
+}
+document.addEventListener('keydown',function(e){if(e.key==='Enter')doLogin();});
+function doLogout(){document.getElementById('LS').style.display='flex';}
+
+/* ══ INIT ══ */
+function init(){renderAll();clock();updMets();}
+function clock(){function t(){document.getElementById('CLK').textContent=new Date().toLocaleString('fr-FR',{dateStyle:'short',timeStyle:'short'});}t();setInterval(t,60000);}
+function updMets(){
+  document.getElementById('m-r').textContent=DB.robots.length;
+  document.getElementById('m-i').textContent=DB.indicators.length;
+  document.getElementById('m-e').textContent=DB.ebooks.length;
+  document.getElementById('bdg-r').textContent=DB.robots.length;
+  document.getElementById('bdg-all').textContent=DB.robots.length+DB.indicators.length+DB.systems.length+DB.ebooks.length;
+}
+
+/* ══ NAVIGATION ══ */
+var PT={dash:'📊 Dashboard',all:'📦 Tous les produits',robots:'🤖 Robots EA',indics:'📡 Indicateurs',systems:'⚙️ Systèmes',ebooks:'📘 Ebooks',videos:'📺 Vidéos',signals:'📣 Plans',settings:'⚙️ Paramètres',payments:'💳 Paiements'};
+function goPage(id,el){
+  document.querySelectorAll('.pg').forEach(function(p){p.classList.remove('on');});
+  var pg=document.getElementById('pg-'+id);if(pg)pg.classList.add('on');
+  document.querySelectorAll('.sbi').forEach(function(s){s.classList.remove('on');});
+  if(el)el.classList.add('on');
+  document.getElementById('PT').textContent=PT[id]||id;
+}
+
+/* ══ RENDER ══ */
+function renderAll(){rRobots();rIndics();rSystems();rEbooks();rVideos();rAllTable();}
+
+function th(it){
+  if(it.img)return '<div class="tthumb"><img src="'+it.img+'" onerror="this.style.display=\'none\'"></div>';
+  return '<div class="tthumb">📦</div>';
+}
+function gcH(it){
+  var n=(it.imgs||[]).length;
+  return n>0?'<span class="gal-badge">'+n+' 📷</span>':'<span style="color:var(--text3);font-size:11px;">0</span>';
+}
+
+function rRobots(list){
+  var d=list||DB.robots;
+  var bm={bs:'<span class="bv bv-b">BEST</span>',hot:'<span class="bv bv-o">HOT</span>',sale:'<span class="bv bv-r">PROMO</span>',fr:'<span class="bv bv-g">FREE</span>'};
+  var h='';
+  for(var i=0;i<d.length;i++){
+    var r=d[i];
+    var bdg=r.badge&&bm[r.badge]?bm[r.badge]:'';
+    var px=r.free?'<span class="bv bv-g">GRATUIT</span>':'<b style="color:var(--blue)">$'+r.price+'</b>'+(r.oldPrice?'<s style="color:var(--text3);font-size:11px;margin-left:3px">$'+r.oldPrice+'</s>':'');
+    h+='<tr><td>'+th(r)+'</td><td><b style="color:var(--white)">'+r.name+'</b></td><td><span class="bv bv-b">'+r.plat+'</span></td><td><span class="bv bv-go">'+r.cat+'</span></td><td>'+px+' '+bdg+'</td><td>'+gcH(r)+'</td><td><span class="bv bv-g">Actif</span></td><td><div class="acts"><button class="b-ed" onclick="editR('+r.id+')">✏️ Modifier</button><button class="b-dl" onclick="delR('+r.id+')">🗑</button></div></td></tr>';
+  }
+  document.getElementById('TB-r').innerHTML=h||'<tr><td colspan="8" style="text-align:center;color:var(--text3);padding:28px">Aucun robot. Cliquez "➕ Nouveau Robot".</td></tr>';
+}
+function rIndics(){
+  var h='';
+  for(var i=0;i<DB.indicators.length;i++){
+    var d=DB.indicators[i];
+    h+='<tr><td>'+th(d)+'</td><td><b style="color:var(--white)">'+d.name+'</b></td><td><span class="bv bv-p">'+d.compat+'</span></td><td><span class="bv '+(d.type==='Gratuit'?'bv-g':'bv-go')+'">'+d.type+'</span></td><td>'+(d.price===0?'<span class="bv bv-g">GRATUIT</span>':'<b style="color:var(--blue)">$'+d.price+'</b>')+'</td><td>'+gcH(d)+'</td><td><div class="acts"><button class="b-ed" onclick="editI('+d.id+')">✏️</button><button class="b-dl" onclick="delI('+d.id+')">🗑</button></div></td></tr>';
+  }
+  document.getElementById('TB-i').innerHTML=h||'<tr><td colspan="7" style="text-align:center;color:var(--text3);padding:28px">Aucun indicateur.</td></tr>';
+}
+function rSystems(){
+  var h='';
+  for(var i=0;i<DB.systems.length;i++){
+    var s=DB.systems[i];
+    h+='<tr><td>'+th(s)+'</td><td><b style="color:var(--white)">'+s.name+'</b></td><td><span class="bv bv-b">'+s.plat+'</span></td><td><b style="color:var(--blue)">$'+s.price+'</b></td><td>'+gcH(s)+'</td><td><div class="acts"><button class="b-ed" onclick="editS('+s.id+')">✏️</button><button class="b-dl" onclick="delS('+s.id+')">🗑</button></div></td></tr>';
+  }
+  document.getElementById('TB-s').innerHTML=h||'<tr><td colspan="6" style="text-align:center;color:var(--text3);padding:28px">Aucun système.</td></tr>';
+}
+function rEbooks(){
+  var h='';
+  for(var i=0;i<DB.ebooks.length;i++){
+    var e=DB.ebooks[i];
+    h+='<tr><td>'+th(e)+'</td><td><b style="color:var(--white)">'+e.title+'</b></td><td><span class="bv bv-p">'+e.cat+'</span></td><td>'+(e.price===0?'<span class="bv bv-g">GRATUIT</span>':'<b style="color:var(--blue)">$'+e.price+'</b>')+'</td><td>'+gcH(e)+'</td><td><div class="acts"><button class="b-ed" onclick="editE('+e.id+')">✏️</button><button class="b-dl" onclick="delE('+e.id+')">🗑</button></div></td></tr>';
+  }
+  document.getElementById('TB-e').innerHTML=h||'<tr><td colspan="6" style="text-align:center;color:var(--text3);padding:28px">Aucun ebook.</td></tr>';
+}
+function rVideos(){
+  var h='';
+  for(var i=0;i<DB.videos.length;i++){
+    var v=DB.videos[i];
+    h+='<tr><td><b style="color:var(--white)">'+v.title+'</b></td><td><a href="'+v.url+'" target="_blank" style="color:var(--blue);font-size:11px;">▶ '+v.url.substring(0,36)+'...</a></td><td>'+v.dur+'</td><td><span class="bv bv-b">'+v.cat+'</span></td><td><div class="acts"><button class="b-ed" onclick="editV('+v.id+')">✏️</button><button class="b-dl" onclick="delV('+v.id+')">🗑</button></div></td></tr>';
+  }
+  document.getElementById('TB-v').innerHTML=h||'<tr><td colspan="5" style="text-align:center;color:var(--text3);padding:28px">Aucune vidéo.</td></tr>';
+}
+function rAllTable(list){
+  var all=list||[].concat(
+    DB.robots.map(function(r){return{t:'robot',it:r};}),
+    DB.indicators.map(function(d){return{t:'indicator',it:d};}),
+    DB.systems.map(function(s){return{t:'system',it:s};}),
+    DB.ebooks.map(function(e){return{t:'ebook',it:e};})
+  );
+  var tn={robot:'🤖 Robot EA',indicator:'📡 Indicateur',system:'⚙️ Système',ebook:'📘 Ebook'};
+  var h='';
+  for(var i=0;i<all.length;i++){
+    var o=all[i],it=o.it,nm=it.name||it.title||'—';
+    var px=it.price===0?'<span class="bv bv-g">GRATUIT</span>':'<b style="color:var(--blue)">$'+it.price+'</b>';
+    h+='<tr><td>'+th(it)+'</td><td><b style="color:var(--white)">'+nm+'</b></td><td><span class="bv bv-b">'+tn[o.t]+'</span></td><td>'+px+'</td><td>'+gcH(it)+'</td><td><div class="acts"><button class="b-ed" onclick="editAny(\''+o.t+'\','+it.id+')">✏️</button><button class="b-dl" onclick="delAny(\''+o.t+'\','+it.id+')">🗑</button></div></td></tr>';
+  }
+  document.getElementById('TB-all').innerHTML=h||'<tr><td colspan="6" style="text-align:center;color:var(--text3);padding:28px">Aucun produit.</td></tr>';
+  updMets();
+}
+
+/* ══ SEARCH ══ */
+function srchR(q){rRobots(DB.robots.filter(function(r){return r.name.toLowerCase().includes(q.toLowerCase());}));}
+function filR(c){rRobots(c==='all'?DB.robots:DB.robots.filter(function(r){return r.cat===c;}));}
+function searchAll(q){var q2=q.toLowerCase();var all=[].concat(DB.robots,DB.indicators,DB.systems,DB.ebooks).filter(function(it){return((it.name||it.title)||'').toLowerCase().includes(q2);});rAllTable(all.map(function(it){var t=DB.robots.indexOf(it)>=0?'robot':DB.indicators.indexOf(it)>=0?'indicator':DB.systems.indexOf(it)>=0?'system':'ebook';return{t:t,it:it};}));}
+function filterAll(c){if(c==='all'){rAllTable();return;}var mp={robot:DB.robots,indicator:DB.indicators,system:DB.systems,ebook:DB.ebooks};rAllTable((mp[c]||[]).map(function(it){return{t:c,it:it};}));}
+
+/* ══ PHOTO MANAGEMENT ══
+   Système propre et simple :
+   1. trigCov  → déclenche l'input file
+   2. onCovFile → lit le fichier, encode en base64, applique
+   3. applyUrl → prend une URL et l'applique directement
+   4. rmCov    → supprime la photo
+   5. trigGal / onGalFiles → galerie multiple
+*/
+function trigCov(inputId){document.getElementById(inputId).click();}
+function trigGal(inputId){document.getElementById(inputId).click();}
+
+function onCovFile(input,zoneId,prevId,key){
+  var file=input.files[0];if(!file)return;
+  if(file.size>5242880){notify('Image trop grande (max 5 Mo)','n-err');return;}
+  var r=new FileReader();
+  r.onload=function(e){applyCov(e.target.result,zoneId,prevId,key);};
+  r.readAsDataURL(file);
+}
+function applyUrl(urlId,zoneId,prevId,key){
+  var url=document.getElementById(urlId).value.trim();
+  if(!url){notify('Entrez une URL valide','n-err');return;}
+  if(!url.startsWith('http')){notify('URL invalide — doit commencer par http://','n-err');return;}
+  applyCov(url,zoneId,prevId,key);
+  document.getElementById(urlId).value='';
+}
+function applyCov(src,zoneId,prevId,key){
+  var z=document.getElementById(zoneId);
+  var p=document.getElementById(prevId);
+  if(!z||!p)return;
+  p.src=src;p.style.display='block';
+  z.classList.add('has-photo');
+  COV[key]=src;
+}
+function rmCov(zoneId,prevId,key){
+  var z=document.getElementById(zoneId);
+  var p=document.getElementById(prevId);
+  if(p){p.src='';p.style.display='none';}
+  if(z)z.classList.remove('has-photo');
+  COV[key]='';
+}
+
+function onGalFiles(input,gridId,cntId,key){
+  var files=input.files;if(!files||!files.length)return;
+  if(!GAL[key])GAL[key]=[];
+  var free=8-GAL[key].length;
+  if(free<=0){notify('Maximum 8 photos par produit','n-err');return;}
+  var toAdd=Math.min(files.length,free),done=0;
+  for(var i=0;i<toAdd;i++){
+    (function(f){
+      if(f.size>5242880){notify('Image trop grande (max 5 Mo)','n-err');return;}
+      var r=new FileReader();
+      r.onload=function(e){
+        GAL[key].push(e.target.result);
+        done++;
+        if(done===toAdd)drawGal(key,gridId,cntId);
+      };
+      r.readAsDataURL(f);
+    })(files[i]);
+  }
+  input.value='';
+}
+function drawGal(key,gridId,cntId){
+  var imgs=GAL[key]||[];
+  var inputId=gridId.replace('-gg','-gf');
+  var h='';
+  for(var i=0;i<imgs.length;i++){
+    h+='<div class="gal-item"><img src="'+imgs[i]+'" alt="photo '+i+'" onerror="this.style.display=\'none\'"><button class="gal-del" onclick="delGalImg(\''+key+'\',\''+gridId+'\',\''+cntId+'\','+i+')">✕</button></div>';
+  }
+  if(imgs.length<8)h+='<div class="gal-add" onclick="trigGal(\''+inputId+'\')"><div class="gal-add-ico">➕</div><div class="gal-add-txt">Ajouter photo</div></div>';
+  document.getElementById(gridId).innerHTML=h;
+  document.getElementById(cntId).textContent=imgs.length+' / 8';
+}
+function delGalImg(key,gridId,cntId,idx){GAL[key].splice(idx,1);drawGal(key,gridId,cntId);}
+
+/* Reset un formulaire photo */
+function rF(key){
+  COV[key]='';GAL[key]=[];
+  var pm={r:['r-cz','r-cp','r-gc','r-gg'],i:['i-cz','i-cp','i-gc','i-gg'],s:['s-cz','s-cp','s-gc','s-gg'],e:['e-cz','e-cp','e-gc','e-gg']};
+  var p=pm[key];if(!p)return;
+  rmCov(p[0],p[1],key);
+  drawGal(key,p[3],p[2]);
+}
+/* Charger les photos existantes dans un formulaire */
+function loadPh(key,img,imgs){
+  COV[key]=img||'';GAL[key]=(imgs||[]).slice();
+  var pm={r:['r-cz','r-cp','r-gc','r-gg'],i:['i-cz','i-cp','i-gc','i-gg'],s:['s-cz','s-cp','s-gc','s-gg'],e:['e-cz','e-cp','e-gc','e-gg']};
+  var p=pm[key];if(!p)return;
+  if(img)applyCov(img,p[0],p[1],key);
+  drawGal(key,p[3],p[2]);
+}
+
+/* ══ CRUD ROBOTS ══ */
+function saveRobot(){
+  var nm=document.getElementById('r-nm').value.trim();
+  if(!nm){notify('Nom requis !','n-err');return;}
+  var nr={
+    id:Date.now(),
+    name:nm,
+    plat:document.getElementById('r-pl').value,
+    cat:document.getElementById('r-ca').value,
+    price:parseInt(document.getElementById('r-pr').value)||0,
+    oldPrice:parseInt(document.getElementById('r-op').value)||null,
+    badge:document.getElementById('r-ba').value,
+    free:document.getElementById('r-fr').checked,
+    stars:parseInt(document.getElementById('r-st').value)||4,
+    desc:document.getElementById('r-de').value,
+    feats:(document.getElementById('r-fe').value||'').split('\n').filter(function(x){return x.trim();}),
+    img:COV['r']||'',
+    imgs:(GAL['r']||[]).slice()
+  };
+  DB.robots.unshift(nr);svDB();rRobots();rAllTable();closeMod('mr');
+  document.getElementById('r-nm').value='';document.getElementById('r-pr').value='';
+  document.getElementById('r-op').value='';document.getElementById('r-de').value='';
+  document.getElementById('r-fe').value='';document.getElementById('r-fr').checked=false;
+  rF('r');document.getElementById('mr-ttl').textContent='🤖 Nouveau Robot EA';
+  addAct('🤖','Robot <strong>'+nm+'</strong> ajouté'+(nr.img?' ✅ avec photo':''));
+  notify('Robot ajouté !','n-ok');
+}
+function editR(id){
+  var r=DB.robots.find(function(x){return x.id===id;});if(!r)return;
+  document.getElementById('r-nm').value=r.name;
+  document.getElementById('r-pr').value=r.price;
+  document.getElementById('r-op').value=r.oldPrice||'';
+  document.getElementById('r-de').value=r.desc||'';
+  document.getElementById('r-fe').value=(r.feats||[]).join('\n');
+  document.getElementById('r-fr').checked=r.free||false;
+  try{document.getElementById('r-pl').value=r.plat;}catch(e){}
+  try{document.getElementById('r-ca').value=r.cat;}catch(e){}
+  try{document.getElementById('r-ba').value=r.badge||'';}catch(e){}
+  try{document.getElementById('r-st').value=r.stars||4;}catch(e){}
+  loadPh('r',r.img||'',r.imgs||[]);
+  document.getElementById('mr-ttl').textContent='✏️ Modifier : '+r.name;
+  openMod('mr');
+}
+function delR(id){if(!confirm('Supprimer ce robot ?'))return;DB.robots=DB.robots.filter(function(r){return r.id!==id;});svDB();rRobots();rAllTable();notify('Robot supprimé','n-err');}
+
+/* ══ CRUD INDICATEURS ══ */
+function saveIndic(){
+  var nm=document.getElementById('i-nm').value.trim();if(!nm){notify('Nom requis !','n-err');return;}
+  var ni={id:Date.now(),name:nm,compat:document.getElementById('i-co').value,type:document.getElementById('i-ty').value,price:parseInt(document.getElementById('i-pr').value)||0,free:parseInt(document.getElementById('i-pr').value)===0,stars:4,desc:document.getElementById('i-de').value,img:COV['i']||'',imgs:(GAL['i']||[]).slice()};
+  DB.indicators.unshift(ni);svDB();rIndics();rAllTable();closeMod('mi');
+  document.getElementById('i-nm').value='';rF('i');
+  addAct('📡','Indicateur <strong>'+nm+'</strong> ajouté');notify('Indicateur ajouté !','n-ok');
+}
+function editI(id){
+  var d=DB.indicators.find(function(x){return x.id===id;});if(!d)return;
+  document.getElementById('i-nm').value=d.name;document.getElementById('i-pr').value=d.price;document.getElementById('i-de').value=d.desc||'';
+  try{document.getElementById('i-co').value=d.compat;}catch(e){}try{document.getElementById('i-ty').value=d.type;}catch(e){}
+  loadPh('i',d.img||'',d.imgs||[]);document.getElementById('mi-ttl').textContent='✏️ Modifier : '+d.name;openMod('mi');
+}
+function delI(id){if(!confirm('Supprimer ?'))return;DB.indicators=DB.indicators.filter(function(d){return d.id!==id;});svDB();rIndics();rAllTable();notify('Supprimé','n-err');}
+
+/* ══ CRUD SYSTÈMES ══ */
+function saveSys(){
+  var nm=document.getElementById('s-nm').value.trim();if(!nm){notify('Nom requis !','n-err');return;}
+  var ns={id:Date.now(),name:nm,plat:document.getElementById('s-pl').value,price:parseInt(document.getElementById('s-pr').value)||0,src:document.getElementById('s-sc').checked,free:false,stars:4,desc:document.getElementById('s-de').value,feats:(document.getElementById('s-fe').value||'').split('\n').filter(function(x){return x.trim();}),img:COV['s']||'',imgs:(GAL['s']||[]).slice()};
+  DB.systems.unshift(ns);svDB();rSystems();rAllTable();closeMod('ms');
+  document.getElementById('s-nm').value='';rF('s');
+  addAct('⚙️','Système <strong>'+nm+'</strong> ajouté');notify('Système ajouté !','n-ok');
+}
+function editS(id){var s=DB.systems.find(function(x){return x.id===id;});if(!s)return;document.getElementById('s-nm').value=s.name;document.getElementById('s-pr').value=s.price;document.getElementById('s-de').value=s.desc||'';document.getElementById('s-sc').checked=s.src||false;try{document.getElementById('s-pl').value=s.plat;}catch(e){}loadPh('s',s.img||'',s.imgs||[]);openMod('ms');}
+function delS(id){if(!confirm('Supprimer ?'))return;DB.systems=DB.systems.filter(function(s){return s.id!==id;});svDB();rSystems();rAllTable();notify('Supprimé','n-err');}
+
+/* ══ CRUD EBOOKS ══ */
+function saveEbook(){
+  var ti=document.getElementById('e-ti').value.trim();if(!ti){notify('Titre requis !','n-err');return;}
+  var ne={id:Date.now(),title:ti,pages:parseInt(document.getElementById('e-pg').value)||0,cat:document.getElementById('e-ca').value,price:parseInt(document.getElementById('e-pr').value)||0,free:parseInt(document.getElementById('e-pr').value)===0,stars:4,desc:document.getElementById('e-de').value,img:COV['e']||'',imgs:(GAL['e']||[]).slice()};
+  DB.ebooks.unshift(ne);svDB();rEbooks();rAllTable();closeMod('me');
+  document.getElementById('e-ti').value='';rF('e');
+  addAct('📘','Ebook <strong>'+ti+'</strong> ajouté');notify('Ebook ajouté !','n-ok');
+}
+function editE(id){var e=DB.ebooks.find(function(x){return x.id===id;});if(!e)return;document.getElementById('e-ti').value=e.title;document.getElementById('e-pr').value=e.price;document.getElementById('e-pg').value=e.pages;document.getElementById('e-de').value=e.desc||'';try{document.getElementById('e-ca').value=e.cat;}catch(ex){}loadPh('e',e.img||'',e.imgs||[]);openMod('me');}
+function delE(id){if(!confirm('Supprimer ?'))return;DB.ebooks=DB.ebooks.filter(function(e){return e.id!==id;});svDB();rEbooks();rAllTable();notify('Supprimé','n-err');}
+
+/* ══ CRUD VIDEOS + BLOG ══ */
+function saveVid(){var t=document.getElementById('v-t').value.trim();if(!t){notify('Titre requis !','n-err');return;}DB.videos.unshift({id:Date.now(),title:t,url:document.getElementById('v-u').value,dur:document.getElementById('v-d').value||'—',cat:document.getElementById('v-c').value});svDB();rVideos();closeMod('mv');document.getElementById('v-t').value='';document.getElementById('v-u').value='';notify('Vidéo ajoutée !','n-ok');}
+function editV(id){var v=DB.videos.find(function(x){return x.id===id;});if(!v)return;document.getElementById('v-t').value=v.title;document.getElementById('v-u').value=v.url;document.getElementById('v-d').value=v.dur;openMod('mv');}
+function delV(id){if(!confirm('Supprimer ?'))return;DB.videos=DB.videos.filter(function(v){return v.id!==id;});svDB();rVideos();notify('Supprimé','n-err');}
+function saveBlog(){var t=document.getElementById('bl-t').value.trim();if(!t){notify('Titre requis !','n-err');return;}notify('Article ajouté !','n-ok');closeMod('mb');document.getElementById('bl-t').value='';}
+
+/* ══ EDIT ANY ══ */
+function editAny(type,id){if(type==='robot')editR(id);else if(type==='indicator')editI(id);else if(type==='system')editS(id);else if(type==='ebook')editE(id);}
+function delAny(type,id){if(type==='robot')delR(id);else if(type==='indicator')delI(id);else if(type==='system')delS(id);else if(type==='ebook')delE(id);}
+
+/* ══ MODALS ══ */
+function openMod(id){var el=document.getElementById(id);if(el)el.classList.add('on');}
+function closeMod(id){var el=document.getElementById(id);if(el)el.classList.remove('on');}
+document.querySelectorAll('.mvo').forEach(function(m){m.addEventListener('click',function(e){if(e.target===m)m.classList.remove('on');});});
+
+/* ══ NOTIFICATIONS ══ */
+function notify(msg,cls){
+  var n=document.createElement('div');n.className='notif '+(cls||'n-inf');
+  n.innerHTML='<span>'+(cls==='n-ok'?'✓':cls==='n-err'?'✕':'ℹ')+'</span><span>'+msg+'</span>';
+  document.body.appendChild(n);setTimeout(function(){n.remove();},3200);
+}
+
+/* ══ ACTIVITY ══ */
+function addAct(ico,txt){
+  var f=document.getElementById('AF');
+  var el=document.createElement('div');el.className='ai';
+  el.innerHTML='<div class="ai-ico">'+ico+'</div><div><div class="ai-t">'+txt+'</div><div class="ai-d">À l\'instant</div></div>';
+  f.prepend(el);while(f.children.length>6)f.lastChild.remove();
+}
+</script>
+</body>
+</html>
