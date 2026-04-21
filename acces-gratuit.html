@@ -3,376 +3,335 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Accès Gratuit — Vérification Compte Broker</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<title>Accès Gratuit — RoboTradingRatuit</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#04060c;--bg2:#07090f;--bg3:#0a0d16;--blue:#0ea5e9;--blue2:#0284c7;--cyan:#22d3ee;--white:#e0f2fe;--text:#8dafc8;--text2:#3f6080;--text3:#1a3048;--green:#10b981;--red:#f43f5e;--gold:#eab308;--orange:#f97316;--purple:#8b5cf6;--bd:rgba(14,165,233,.12);--bd2:rgba(14,165,233,.22);--fh:'Orbitron',sans-serif;--fb:'DM Sans',sans-serif;}
+:root{--bg:#04060c;--bg2:#0d1117;--bg3:#161b22;--bg4:#1c2330;--blue:#38bdf8;--blue2:#0ea5e9;--cyan:#67e8f9;--white:#f0f9ff;--text:#e2e8f0;--text2:#94a3b8;--text3:#475569;--green:#4ade80;--green2:#22c55e;--red:#f87171;--gold:#fcd34d;--orange:#fb923c;--purple:#c084fc;--bd:rgba(56,189,248,.14);--bd2:rgba(56,189,248,.30);--fh:'Orbitron',sans-serif;--fb:'DM Sans',sans-serif;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
-body{font-family:var(--fb);background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);min-height:100vh;font-size:16px;line-height:1.7;}
+a{text-decoration:none;color:inherit;}button{cursor:pointer;font-family:var(--fb);}
 
-/* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(4,6,12,.97);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);height:60px;display:flex;align-items:center;padding:0 3.5%;gap:16px;}
-.nav-logo{font-family:var(--fh);font-size:12px;font-weight:900;background:linear-gradient(90deg,var(--blue),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(4,6,12,.97);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd2);height:62px;display:flex;align-items:center;padding:0 4%;gap:16px;}
+.nav-logo-img{width:34px;height:34px;border-radius:8px;object-fit:cover;border:1px solid var(--bd2);}
+.nav-brand-name{font-family:var(--fh);font-size:11px;font-weight:900;color:var(--white);}
+.nav-brand-name span{color:var(--blue);}
+nav .back-link{margin-left:auto;font-size:13px;color:var(--text2);display:flex;align-items:center;gap:6px;}
+nav .back-link:hover{color:var(--blue);}
 
-/* HERO */
-.hero{padding:90px 3.5% 50px;text-align:center;position:relative;}
-.hero::before{content:'';position:absolute;top:0;left:0;right:0;height:300px;background:radial-gradient(ellipse at center top,rgba(16,185,129,.08),transparent 70%);pointer-events:none;}
-.hero-kicker{display:inline-flex;align-items:center;gap:7px;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.22);color:var(--green);padding:5px 14px;border-radius:20px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;}
-h1{font-family:var(--fh);font-size:clamp(22px,3vw,36px);color:var(--white);margin-bottom:12px;line-height:1.1;}
+.float-btn{position:fixed;bottom:24px;right:24px;z-index:999;display:flex;align-items:center;gap:8px;background:linear-gradient(135deg,#1d9bd1,#1370a0);color:#fff;border:none;border-radius:50px;padding:11px 18px;font-size:13px;font-weight:700;animation:fy 3.5s ease-in-out infinite;box-shadow:0 6px 22px rgba(29,155,209,.4);text-decoration:none;}
+@keyframes fy{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
+.fdot{width:7px;height:7px;border-radius:50%;background:#4ade80;animation:bk 1.5s infinite;flex-shrink:0;}
+@keyframes bk{0%,100%{opacity:1;}50%{opacity:.15;}}
+
+.page-wrap{padding:88px 4% 80px;max-width:900px;margin:0 auto;}
+
+.hero-box{text-align:center;padding:50px 20px 40px;position:relative;}
+.hero-box::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:400px;height:200px;background:radial-gradient(ellipse,rgba(74,222,128,.08),transparent 70%);pointer-events:none;}
+.hero-kicker{display:inline-flex;align-items:center;gap:8px;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.24);color:var(--green);padding:6px 16px;border-radius:20px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:18px;}
+h1{font-family:var(--fh);font-size:clamp(22px,3vw,36px);color:var(--white);margin-bottom:14px;line-height:1.1;}
 h1 span{background:linear-gradient(90deg,var(--green),#34d399);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.hero p{font-size:15px;color:var(--text2);max-width:560px;margin:0 auto 30px;line-height:1.75;}
+.hero-sub{font-size:16px;color:var(--text2);max-width:580px;margin:0 auto 30px;line-height:1.75;}
 
-/* WHAT YOU GET */
-.what-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;max-width:900px;margin:0 auto 50px;padding:0 3.5%;}
-.what-card{background:var(--bg2);border:1px solid var(--bd);border-radius:11px;padding:18px;text-align:center;}
-.wc-ico{font-size:32px;margin-bottom:10px;filter:drop-shadow(0 0 10px rgba(16,185,129,.3));}
-.wc-name{font-family:var(--fh);font-size:11px;font-weight:700;color:var(--white);margin-bottom:4px;}
-.wc-desc{font-size:12px;color:var(--text2);}
-.wc-badge{display:inline-block;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2);color:var(--green);font-size:9px;font-weight:700;padding:2px 8px;border-radius:12px;margin-top:6px;text-transform:uppercase;letter-spacing:1px;}
+/* FREE ITEMS */
+.free-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:48px;}
+.free-card{background:var(--bg2);border:1px solid rgba(74,222,128,.18);border-radius:12px;padding:18px;text-align:center;}
+.free-ico{font-size:30px;margin-bottom:9px;filter:drop-shadow(0 0 8px rgba(74,222,128,.3));}
+.free-name{font-family:var(--fh);font-size:11px;font-weight:700;color:var(--white);margin-bottom:4px;}
+.free-desc{font-size:12px;color:var(--text2);}
+.free-badge{display:inline-block;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.2);color:var(--green);font-size:9px;font-weight:700;padding:2px 9px;border-radius:12px;margin-top:6px;text-transform:uppercase;letter-spacing:1px;}
 
-/* MAIN LAYOUT */
-.main{max-width:980px;margin:0 auto;padding:0 3.5% 80px;display:grid;grid-template-columns:1fr 1fr;gap:28px;}
+/* HOW IT WORKS */
+.how-title{font-family:var(--fh);font-size:18px;font-weight:700;color:var(--white);text-align:center;margin-bottom:28px;}
+.steps-list{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:48px;}
+.step-card{background:var(--bg2);border:1px solid var(--bd);border-radius:13px;padding:22px 18px;text-align:center;}
+.step-num{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--blue2),#0369a1);color:#fff;font-family:var(--fh);font-size:15px;font-weight:900;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;}
+.step-title{font-size:14px;font-weight:700;color:var(--white);margin-bottom:7px;}
+.step-desc{font-size:13px;color:var(--text2);line-height:1.7;}
 
-/* METHOD CARDS */
-.method-card{background:var(--bg2);border:2px solid var(--bd);border-radius:14px;padding:24px;cursor:pointer;transition:all .2s;position:relative;}
-.method-card:hover{border-color:rgba(14,165,233,.35);transform:translateY(-3px);}
-.method-card.selected{border-color:var(--green);background:rgba(16,185,129,.04);}
-.mc-header{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
-.mc-broker{width:44px;height:44px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-size:11px;font-weight:900;flex-shrink:0;}
-.mc-ex{background:linear-gradient(135deg,#1a1a2e,#16213e);color:#e63946;border:1px solid rgba(230,57,70,.3);}
-.mc-rf{background:linear-gradient(135deg,#0a1628,#0d2137);color:#00bfff;border:1px solid rgba(0,191,255,.3);}
-.mc-fbs{background:linear-gradient(135deg,#1a1a1a,#2d2d2d);color:#f0c040;border:1px solid rgba(240,192,64,.3);}
-.mc-ttl{font-family:var(--fh);font-size:13px;font-weight:700;color:var(--white);}
-.mc-sub{font-size:11px;color:var(--text2);}
-.mc-steps{list-style:none;margin-bottom:16px;}
-.mc-steps li{font-size:12px;color:var(--text2);padding:3px 0;display:flex;align-items:flex-start;gap:7px;line-height:1.5;}
-.mc-steps li::before{content:'→';color:var(--blue);font-weight:700;flex-shrink:0;font-size:10px;margin-top:2px;}
-.mc-steps li strong{color:var(--text);}
-.mc-steps li a{color:var(--blue);}
-.mc-cta{display:block;text-align:center;background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;padding:10px;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;transition:all .2s;}
-.mc-cta:hover{opacity:.9;transform:translateY(-1px);}
-.mc-cta.g{background:linear-gradient(135deg,var(--green),#059669);color:#000;}
-.mc-cta.r{background:linear-gradient(135deg,#e63946,#c1121f);color:#fff;}
-.mc-cta.y{background:linear-gradient(135deg,#f0c040,#d4a017);color:#000;}
-.mc-selected-badge{position:absolute;top:12px;right:12px;background:var(--green);color:#000;font-size:9px;font-weight:800;padding:2px 8px;border-radius:10px;letter-spacing:1px;display:none;}
-.method-card.selected .mc-selected-badge{display:block;}
+/* BROKER CARDS */
+.brokers-title{font-family:var(--fh);font-size:18px;font-weight:700;color:var(--white);text-align:center;margin-bottom:8px;}
+.brokers-sub{font-size:14px;color:var(--text2);text-align:center;margin-bottom:24px;}
+.broker-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:40px;}
+.broker-card{background:var(--bg2);border:2px solid var(--bd);border-radius:14px;padding:20px;text-align:center;cursor:pointer;transition:all .2s;}
+.broker-card:hover{border-color:var(--bd2);transform:translateY(-3px);}
+.broker-card.selected{border-color:var(--green);}
+.broker-logo{font-family:var(--fh);font-size:16px;font-weight:900;margin-bottom:8px;}
+.broker-logo.ex{color:#e63946;}
+.broker-logo.rf{color:#00bfff;}
+.broker-logo.fbs{color:var(--gold);}
+.broker-desc{font-size:12px;color:var(--text2);margin-bottom:12px;line-height:1.65;}
+.broker-tags{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;margin-bottom:12px;}
+.btag{font-size:10px;padding:2px 8px;border-radius:4px;border:1px solid var(--bd);color:var(--text2);}
+.btag.g{border-color:rgba(74,222,128,.2);color:var(--green);}
+.broker-cta{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,var(--blue2),#0369a1);color:#fff;padding:9px 18px;border-radius:8px;font-size:12px;font-weight:700;text-decoration:none;transition:all .2s;}
+.broker-cta:hover{opacity:.9;transform:scale(1.03);}
+.broker-cta.ex{background:linear-gradient(135deg,#e63946,#c1121f);}
+.broker-cta.rf{background:linear-gradient(135deg,#1d9bd1,#1370a0);}
+.broker-cta.fbs{background:linear-gradient(135deg,#ca8a04,#a16207);color:#000;}
+.sel-badge{display:none;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:1px;background:var(--green);color:#000;padding:2px 9px;border-radius:10px;margin-top:8px;}
+.broker-card.selected .sel-badge{display:inline-block;}
 
-/* FORM SECTION */
-.form-section{grid-column:1/-1;background:var(--bg2);border:1px solid var(--bd2);border-radius:14px;padding:26px;}
-.form-section h3{font-family:var(--fh);font-size:14px;font-weight:700;color:var(--white);margin-bottom:18px;display:flex;align-items:center;gap:8px;}
-.frow{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-.fg{margin-bottom:15px;}
-.fg label{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text2);margin-bottom:5px;}
-.fi{width:100%;background:var(--bg3);border:1px solid var(--bd2);color:var(--text);padding:11px 13px;border-radius:8px;font-size:14px;font-family:var(--fb);outline:none;transition:border-color .2s;}
-.fi:focus{border-color:var(--blue);}
-.fsel{width:100%;background:var(--bg3);border:1px solid var(--bd2);color:var(--text);padding:11px 13px;border-radius:8px;font-size:13px;font-family:var(--fb);outline:none;}
+/* FORM */
+.form-box{background:var(--bg2);border:1px solid var(--bd2);border-radius:14px;padding:28px;margin-bottom:24px;}
+.form-box h3{font-family:var(--fh);font-size:14px;font-weight:700;color:var(--white);margin-bottom:6px;}
+.form-box .form-sub{font-size:13px;color:var(--text2);margin-bottom:20px;line-height:1.7;}
+.fg{margin-bottom:16px;}
+.fg label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text2);margin-bottom:6px;}
+.fi,.fsel{width:100%;background:var(--bg3);border:1px solid var(--bd2);color:var(--white);padding:12px 14px;border-radius:9px;font-size:14px;font-family:var(--fb);outline:none;transition:border-color .2s;}
+.fi:focus,.fsel:focus{border-color:var(--blue);}
+.fi::placeholder{color:var(--text3);}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:13px;}
+.fsel option{background:var(--bg3);}
 
-/* PROOF UPLOAD */
-.proof-zone{border:2px dashed var(--bd2);border-radius:9px;padding:20px;text-align:center;cursor:pointer;transition:all .2s;}
-.proof-zone:hover{border-color:var(--blue);}
-.proof-zone.loaded{border-color:var(--green);}
-.proof-ico{font-size:28px;margin-bottom:7px;}
-.proof-ttl{font-size:13px;font-weight:600;color:var(--text);}
-.proof-sub{font-size:12px;color:var(--text2);}
-.proof-name{font-size:12px;color:var(--green);font-weight:600;margin-top:5px;}
+/* INFO BLOCK */
+.info-block{background:rgba(56,189,248,.06);border:1px solid var(--bd2);border-radius:9px;padding:13px 16px;margin-top:8px;}
+.info-block p{font-size:12px;color:var(--text2);line-height:1.75;}
+.info-block strong{color:var(--white);}
+.info-block a{color:var(--blue);}
 
-/* NOTICE */
-.notice{background:rgba(14,165,233,.06);border:1px solid var(--bd2);border-radius:9px;padding:13px 16px;margin-bottom:15px;}
-.notice p{font-size:13px;color:var(--text);line-height:1.7;}
-.notice strong{color:var(--white);}
-.notice.g{background:rgba(16,185,129,.06);border-color:rgba(16,185,129,.2);}
-.notice.g p{color:var(--green);}
-.notice.warn{background:rgba(234,179,8,.06);border-color:rgba(234,179,8,.2);}
-.notice.warn p{color:var(--gold);}
+.notice-box{background:rgba(74,222,128,.06);border:1px solid rgba(74,222,128,.2);border-radius:9px;padding:13px 16px;margin-bottom:16px;}
+.notice-box p{font-size:13px;color:var(--green);line-height:1.7;}
 
-/* BTN */
-.btn-submit{width:100%;background:linear-gradient(135deg,var(--green),#059669);color:#000;border:none;padding:15px;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;transition:all .25s;box-shadow:0 5px 20px rgba(16,185,129,.3);margin-top:6px;}
-.btn-submit:hover{box-shadow:0 8px 28px rgba(16,185,129,.5);transform:translateY(-1px);}
+.btn-submit{width:100%;background:linear-gradient(135deg,var(--green2),#15803d);color:#fff;border:none;padding:15px;border-radius:11px;font-size:16px;font-weight:700;transition:all .25s;box-shadow:0 5px 20px rgba(34,197,94,.3);margin-top:6px;}
+.btn-submit:hover{box-shadow:0 8px 28px rgba(34,197,94,.5);transform:translateY(-1px);}
 .btn-submit:disabled{opacity:.4;cursor:not-allowed;transform:none;}
 
-/* SUCCESS PAGE */
+/* SUCCESS */
 #success-page{display:none;}
-#success-page .s-wrap{max-width:640px;margin:80px auto;padding:0 3.5%;text-align:center;}
-#success-page .s-ico{font-size:80px;display:block;margin-bottom:18px;animation:pop .5s ease;}
+.success-wrap{max-width:620px;margin:80px auto;padding:0 4%;text-align:center;}
+.s-ico{font-size:80px;display:block;margin-bottom:18px;animation:pop .5s ease;}
 @keyframes pop{0%{transform:scale(0);}70%{transform:scale(1.1);}100%{transform:scale(1);}}
-#success-page h2{font-family:var(--fh);font-size:26px;color:var(--green);margin-bottom:12px;}
-#success-page p{font-size:15px;color:var(--text2);margin-bottom:14px;line-height:1.75;}
-.dl-links{display:flex;flex-direction:column;gap:10px;margin:22px 0;}
-.dl-link{display:flex;align-items:center;justify-content:space-between;background:var(--bg2);border:1px solid rgba(16,185,129,.25);border-radius:10px;padding:14px 18px;}
-.dl-link .dl-name{font-size:14px;font-weight:700;color:var(--white);}
-.dl-link .dl-desc{font-size:12px;color:var(--text2);}
-.dl-link a{background:linear-gradient(135deg,var(--green),#059669);color:#000;padding:9px 18px;border-radius:7px;font-size:13px;font-weight:700;text-decoration:none;flex-shrink:0;transition:all .2s;}
+.success-wrap h2{font-family:var(--fh);font-size:26px;color:var(--green);margin-bottom:12px;}
+.success-wrap p{font-size:15px;color:var(--text2);margin-bottom:14px;line-height:1.75;}
+.confirm-box{background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.2);border-radius:11px;padding:16px;margin-bottom:18px;font-size:13px;color:var(--text);text-align:left;line-height:1.8;}
+.dl-links{display:flex;flex-direction:column;gap:11px;margin:22px 0;}
+.dl-link{display:flex;align-items:center;justify-content:space-between;background:var(--bg2);border:1px solid rgba(74,222,128,.22);border-radius:11px;padding:14px 18px;gap:12px;}
+.dl-link-info .dl-name{font-size:14px;font-weight:700;color:var(--white);}
+.dl-link-info .dl-desc{font-size:12px;color:var(--text2);}
+.dl-link a{background:linear-gradient(135deg,var(--green2),#15803d);color:#fff;padding:9px 18px;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;flex-shrink:0;transition:all .2s;display:inline-block;}
 .dl-link a:hover{opacity:.9;transform:scale(1.03);}
 
-@media(max-width:800px){.main{grid-template-columns:1fr;}.frow{grid-template-columns:1fr;}}
+@media(max-width:700px){.steps-list,.broker-grid{grid-template-columns:1fr;}.free-grid{grid-template-columns:1fr 1fr;}.frow{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
 
 <nav>
-  <div class="nav-logo">🤖 RoboTradingRatuit</div>
-  <div style="margin-left:auto;"><a href="index.html" style="font-size:13px;color:var(--text2);">← Retour à l'accueil</a></div>
+  <img class="nav-logo-img" src="logo.jpg" alt="Logo" onerror="this.style.display='none'">
+  <div class="nav-brand-name">Robo<span>Trading</span>Ratuit</div>
+  <a href="index.html" class="back-link">← Retour à l'accueil</a>
 </nav>
 
-<!-- MAIN PAGE -->
+<a href="https://t.me/salomonryn" target="_blank" class="float-btn"><span class="fdot"></span>💬 Support</a>
+
+<!-- PAGE PRINCIPALE -->
 <div id="main-page">
-  <div class="hero">
-    <div class="hero-kicker">🎁 Accès 100% Gratuit</div>
-    <h1>Réclamez vos outils <span>gratuits</span></h1>
-    <p>Pour accéder gratuitement à nos robots EA, indicateurs et signaux, il vous suffit d'ouvrir un compte chez l'un de nos brokers partenaires via nos liens officiels. C'est rapide, gratuit et sans engagement.</p>
+<div class="page-wrap">
+
+  <!-- HERO -->
+  <div class="hero-box">
+    <div class="hero-kicker">🎁 100% Gratuit</div>
+    <h1>Recevez vos outils <span>gratuitement</span></h1>
+    <p class="hero-sub">C'est simple : ouvrez un compte de trading chez l'un de nos brokers partenaires. C'est gratuit, ça ne vous engage à rien. En échange, vous recevez nos outils sans payer.</p>
   </div>
 
-  <!-- WHAT YOU GET -->
-  <div class="what-grid">
-    <div class="what-card">
-      <div class="wc-ico">🌸</div>
-      <div class="wc-name">Fiona V.01 EA</div>
-      <div class="wc-desc">Indicateur MT4 de tendance visuel</div>
-      <span class="wc-badge">✓ Gratuit</span>
+  <!-- CE QUE VOUS RECEVEZ -->
+  <div class="free-grid">
+    <div class="free-card"><div class="free-ico">🌸</div><div class="free-name">Fiona V.01</div><div class="free-desc">Indicateur MT4 de tendance</div><span class="free-badge">✓ Gratuit</span></div>
+    <div class="free-card"><div class="free-ico">📣</div><div class="free-name">Signaux Forex</div><div class="free-desc">Signaux quotidiens sur Telegram</div><span class="free-badge">✓ Gratuit</span></div>
+    <div class="free-card"><div class="free-ico">📙</div><div class="free-name">Guide Installation EA</div><div class="free-desc">PDF 40 pages — Installer votre robot</div><span class="free-badge">✓ Gratuit</span></div>
+    <div class="free-card"><div class="free-ico">📊</div><div class="free-name">Analyses marché</div><div class="free-desc">XAUUSD, EUR/USD quotidien</div><span class="free-badge">✓ Gratuit</span></div>
+  </div>
+
+  <!-- COMMENT ÇA MARCHE -->
+  <div class="how-title">Comment ça fonctionne ?</div>
+  <div class="steps-list">
+    <div class="step-card"><div class="step-num">1</div><div class="step-title">Choisissez un broker</div><div class="step-desc">Cliquez sur un broker ci-dessous et créez un compte. C'est gratuit et prend 3 minutes. Pas besoin de déposer de l'argent tout de suite.</div></div>
+    <div class="step-card"><div class="step-num">2</div><div class="step-title">Remplissez ce formulaire</div><div class="step-desc">Entrez votre adresse email et dites-nous quel broker vous avez choisi. Rien de compliqué.</div></div>
+    <div class="step-card"><div class="step-num">3</div><div class="step-title">Recevez vos accès</div><div class="step-desc">Nous vérifions votre compte en 1 à 4 heures et vous envoyons vos outils gratuits par email et Telegram.</div></div>
+  </div>
+
+  <!-- BROKERS -->
+  <div class="brokers-title">Étape 1 — Choisissez votre broker</div>
+  <p class="brokers-sub">Cliquez sur "Créer mon compte" — c'est gratuit. Puis revenez remplir le formulaire ci-dessous.</p>
+  <div class="broker-grid">
+    <div class="broker-card" id="bc-exness" onclick="selBroker('exness')">
+      <div class="broker-logo ex">Exness</div>
+      <p class="broker-desc">Le broker n°1 mondial Forex. Très populaire en Afrique. Simple et rapide à ouvrir.</p>
+      <div class="broker-tags"><span class="btag g">Le + recommandé</span><span class="btag">Dépôt min $10</span><span class="btag">MT4/MT5</span></div>
+      <a href="https://one.exnesstrack.org/a/3518wl75nc" target="_blank" class="broker-cta ex" onclick="selBroker('exness')">🔗 Créer mon compte Exness</a>
+      <div class="sel-badge">✓ Broker sélectionné</div>
     </div>
-    <div class="what-card">
-      <div class="wc-ico">📣</div>
-      <div class="wc-name">Signaux Forex</div>
-      <div class="wc-desc">Signaux quotidiens Forex & Or sur Telegram</div>
-      <span class="wc-badge">✓ Gratuit</span>
+    <div class="broker-card" id="bc-roboforex" onclick="selBroker('roboforex')">
+      <div class="broker-logo rf">RoboForex</div>
+      <p class="broker-desc">Broker sérieux avec spreads très bas. Idéal pour les robots EA MT4/MT5.</p>
+      <div class="broker-tags"><span class="btag g">Spreads 0.0</span><span class="btag">Levier 1:2000</span><span class="btag">CySEC</span></div>
+      <a href="https://my.roboforex.com/en/?a=nwln" target="_blank" class="broker-cta rf" onclick="selBroker('roboforex')">🔗 Créer mon compte RoboForex</a>
+      <div class="sel-badge">✓ Broker sélectionné</div>
     </div>
-    <div class="what-card">
-      <div class="wc-ico">📙</div>
-      <div class="wc-name">Guide Installation EA</div>
-      <div class="wc-desc">40 pages — Comment installer vos robots</div>
-      <span class="wc-badge">✓ Gratuit</span>
-    </div>
-    <div class="what-card">
-      <div class="wc-ico">📊</div>
-      <div class="wc-name">Analyses de marché</div>
-      <div class="wc-desc">Analyses quotidiennes XAUUSD, EUR/USD</div>
-      <span class="wc-badge">✓ Gratuit</span>
+    <div class="broker-card" id="bc-fbs" onclick="selBroker('fbs')">
+      <div class="broker-logo fbs">FBS</div>
+      <p class="broker-desc">Très populaire en Afrique et Asie. Bonus 100% sur votre premier dépôt.</p>
+      <div class="broker-tags"><span class="btag g">Bonus 100%</span><span class="btag">Support FR</span><span class="btag">IFSC</span></div>
+      <a href="https://fbs.partners?ibl=756168&ibp=18597762" target="_blank" class="broker-cta fbs" onclick="selBroker('fbs')">🔗 Créer mon compte FBS</a>
+      <div class="sel-badge">✓ Broker sélectionné</div>
     </div>
   </div>
 
-  <!-- BROKER METHODS -->
-  <div class="main">
-    <div class="method-card" id="mc-exness" onclick="selBroker('exness')">
-      <div class="mc-selected-badge">✓ SÉLECTIONNÉ</div>
-      <div class="mc-header">
-        <div class="mc-broker mc-ex">EX</div>
-        <div><div class="mc-ttl">Exness</div><div class="mc-sub">Recommandé • Spreads 0.0 • Min $10</div></div>
-      </div>
-      <ul class="mc-steps">
-        <li><strong>Étape 1 :</strong> Cliquez "Ouvrir compte Exness" ci-dessous</li>
-        <li>Inscrivez-vous avec votre email (le lien enregistre automatiquement votre partenariat IB)</li>
-        <li><strong>Étape 2 :</strong> Notez votre <strong>Login MT4/MT5</strong> (affiché après inscription)</li>
-        <li><strong>Étape 3 :</strong> Entrez votre Login dans le formulaire ci-dessous pour vérification</li>
-        <li>Déposez minimum $10 pour activer le compte et recevoir vos accès gratuits</li>
-      </ul>
-      <a href="https://one.exnesstrack.org/a/3518wl75nc" target="_blank" class="mc-cta r" onclick="selBroker('exness')">🔗 Ouvrir compte Exness →</a>
+  <!-- FORMULAIRE -->
+  <div class="form-box">
+    <h3>📋 Étape 2 — Dites-nous qui vous êtes</h3>
+    <p class="form-sub">Remplissez ce formulaire simple. Nous avons juste besoin de votre email pour vous envoyer vos accès gratuits.</p>
+
+    <div class="notice-box">
+      <p>✅ <strong>Rapide et simple :</strong> Ce formulaire prend moins de 2 minutes. Vous recevrez vos outils par email sous 1 à 4 heures après vérification.</p>
     </div>
 
-    <div class="method-card" id="mc-roboforex" onclick="selBroker('roboforex')">
-      <div class="mc-selected-badge">✓ SÉLECTIONNÉ</div>
-      <div class="mc-header">
-        <div class="mc-broker mc-rf">RF</div>
-        <div><div class="mc-ttl">RoboForex</div><div class="mc-sub">Spreads 0.0 • Levier 1:2000</div></div>
-      </div>
-      <ul class="mc-steps">
-        <li><strong>Étape 1 :</strong> Cliquez "Ouvrir compte RoboForex" ci-dessous</li>
-        <li>Inscrivez-vous (le code IB <strong>nwln</strong> est automatiquement ajouté)</li>
-        <li><strong>Étape 2 :</strong> Notez votre <strong>ID client RoboForex</strong> (email de bienvenue)</li>
-        <li><strong>Étape 3 :</strong> Entrez votre ID dans le formulaire ci-dessous</li>
-        <li>Déposez pour activer et recevoir vos accès gratuits immédiatement</li>
-      </ul>
-      <a href="https://my.roboforex.com/en/?a=nwln" target="_blank" class="mc-cta" onclick="selBroker('roboforex')">🔗 Ouvrir compte RoboForex →</a>
+    <div class="frow">
+      <div class="fg"><label>Votre prénom *</label><input type="text" class="fi" id="f-name" placeholder="Jean" oninput="checkForm()"></div>
+      <div class="fg"><label>Votre adresse email *</label><input type="email" class="fi" id="f-email" placeholder="jean@gmail.com" oninput="checkForm()"></div>
     </div>
 
-    <div class="method-card" id="mc-fbs" onclick="selBroker('fbs')">
-      <div class="mc-selected-badge">✓ SÉLECTIONNÉ</div>
-      <div class="mc-header">
-        <div class="mc-broker mc-fbs">FBS</div>
-        <div><div class="mc-ttl">FBS</div><div class="mc-sub">Bonus 100% • Populaire en Afrique</div></div>
-      </div>
-      <ul class="mc-steps">
-        <li><strong>Étape 1 :</strong> Cliquez "Ouvrir compte FBS" ci-dessous</li>
-        <li>Inscrivez-vous via notre lien partenaire officiel</li>
-        <li><strong>Étape 2 :</strong> Notez votre <strong>ID de compte FBS</strong></li>
-        <li><strong>Étape 3 :</strong> Entrez votre ID dans le formulaire ci-dessous pour vérification</li>
-        <li>Bonus 100% sur votre premier dépôt disponible</li>
-      </ul>
-      <a href="https://fbs.partners?ibl=756168&ibp=18597762" target="_blank" class="mc-cta y" onclick="selBroker('fbs')">🔗 Ouvrir compte FBS →</a>
+    <div class="fg">
+      <label>Chez quel broker avez-vous créé votre compte ? *</label>
+      <select class="fsel" id="f-broker" onchange="onBrokerSelect();checkForm()">
+        <option value="">-- Choisissez votre broker --</option>
+        <option value="exness">Exness</option>
+        <option value="roboforex">RoboForex</option>
+        <option value="fbs">FBS</option>
+        <option value="other">Autre broker (avec code IB)</option>
+      </select>
     </div>
 
-    <!-- FORM -->
-    <div class="form-section" id="form-section">
-      <h3>📋 Soumettez votre demande d'accès gratuit</h3>
-      <div class="notice warn">
-        <p>⚠️ <strong>Important :</strong> Vous devez d'abord ouvrir votre compte broker via l'un de nos liens ci-dessus. Votre ID de compte sera visible dans votre espace client broker ou dans l'email de bienvenue que vous avez reçu.</p>
+    <!-- Champ email broker — optionnel, bien expliqué -->
+    <div class="fg" id="broker-email-fg" style="display:none;">
+      <label>Email utilisé pour créer votre compte broker (optionnel)</label>
+      <input type="email" class="fi" id="f-broker-email" placeholder="L'email que vous avez utilisé chez ce broker">
+      <div class="info-block">
+        <p>🔍 <strong>Pourquoi on vous demande ça ?</strong> Cela nous aide à confirmer que vous avez bien ouvert votre compte via notre lien partenaire. C'est facultatif — si vous ne souhaitez pas l'indiquer, on vérifiera autrement et vous contacterons sur <a href="https://t.me/salomonryn" target="_blank">@salomonryn</a> si besoin.</p>
       </div>
-      <div class="frow">
-        <div class="fg">
-          <label>Votre prénom *</label>
-          <input type="text" class="fi" id="f-name" placeholder="Jean" oninput="checkForm()">
-        </div>
-        <div class="fg">
-          <label>Votre email *</label>
-          <input type="email" class="fi" id="f-email" placeholder="votre@email.com" oninput="checkForm()">
-        </div>
-      </div>
-      <div class="frow">
-        <div class="fg">
-          <label>Broker sélectionné *</label>
-          <select class="fsel" id="f-broker" onchange="checkForm()">
-            <option value="">-- Choisissez votre broker --</option>
-            <option value="exness">Exness</option>
-            <option value="roboforex">RoboForex</option>
-            <option value="fbs">FBS</option>
-          </select>
-        </div>
-        <div class="fg">
-          <label>Votre Login / ID de compte MT4/MT5 *</label>
-          <input type="text" class="fi" id="f-broker-id" placeholder="Ex: 12345678 ou votre Login MT4" oninput="checkForm()">
-        </div>
-      </div>
-      <div class="fg">
-        <label>Preuve — Screenshot de votre espace client broker (recommandé)</label>
-        <div class="proof-zone" id="f-proof-zone" onclick="document.getElementById('f-proof-file').click()">
-          <div class="proof-ico">📸</div>
-          <div class="proof-ttl">Cliquez pour joindre un screenshot</div>
-          <div class="proof-sub">Screenshot de votre espace client ou email de bienvenue du broker</div>
-          <div class="proof-name" id="f-proof-name" style="display:none;"></div>
-        </div>
-        <input type="file" id="f-proof-file" accept="image/*,.pdf" style="display:none" onchange="onProofFile(this)">
-      </div>
-      <div class="fg">
-        <label>Message / informations supplémentaires (optionnel)</label>
-        <input type="text" class="fi" id="f-msg" placeholder="Avez-vous des questions ? Précisez ici...">
-      </div>
-      <div class="notice">
-        <p>📧 <strong>Délai de vérification :</strong> Votre demande sera examinée sous <strong>1 à 4 heures</strong>. Vous recevrez un email avec vos liens d'accès dès confirmation. Pour plus de rapidité, envoyez également votre demande directement sur Telegram à <strong>@salomonryn</strong>.</p>
-      </div>
-      <button class="btn-submit" id="btn-submit" onclick="submitRequest()" disabled>
-        🎁 Soumettre ma demande d'accès gratuit
-      </button>
-      <p style="text-align:center;font-size:12px;color:var(--text2);margin-top:10px;">Ou contactez directement <a href="https://t.me/salomonryn" target="_blank" style="color:var(--blue);">@salomonryn</a> sur Telegram pour une vérification instantanée</p>
     </div>
+
+    <!-- Telegram — fortement recommandé -->
+    <div class="fg">
+      <label>Votre pseudo Telegram (fortement recommandé)</label>
+      <input type="text" class="fi" id="f-telegram" placeholder="@monpseudo — pour recevoir vos accès plus vite">
+      <div class="info-block">
+        <p>💬 <strong>Conseil :</strong> Si vous nous donnez votre Telegram, on peut vous envoyer vos accès en quelques minutes au lieu d'attendre l'email. Rejoignez aussi notre groupe gratuit : <a href="https://t.me/robotradingratuit" target="_blank">t.me/robotradingratuit</a></p>
+      </div>
+    </div>
+
+    <div class="fg">
+      <label>Message ou question (optionnel)</label>
+      <input type="text" class="fi" id="f-msg" placeholder="Avez-vous des questions ? Écrivez ici...">
+    </div>
+
+    <button class="btn-submit" id="btn-submit" onclick="submitForm()" disabled>
+      🎁 Recevoir mes outils gratuits
+    </button>
+    <p style="text-align:center;font-size:12px;color:var(--text3);margin-top:12px;">Ou contactez directement <a href="https://t.me/salomonryn" target="_blank" style="color:var(--blue);">@salomonryn</a> sur Telegram pour une activation instantanée</p>
   </div>
+
+</div>
 </div>
 
-<!-- SUCCESS PAGE -->
+<!-- PAGE SUCCÈS -->
 <div id="success-page">
-  <div class="s-wrap">
+  <div class="success-wrap">
     <span class="s-ico">🎉</span>
     <h2>Demande envoyée !</h2>
-    <p>Merci <strong id="suc-name" style="color:var(--white)"></strong> ! Votre demande d'accès gratuit a été enregistrée.</p>
-    <div style="background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);border-radius:10px;padding:16px;margin-bottom:18px;font-size:13px;color:var(--text);text-align:left;line-height:1.8;">
-      📧 Confirmations envoyées à : <strong id="suc-email" style="color:var(--cyan)"></strong><br>
-      🏦 Broker : <strong id="suc-broker" style="color:var(--white)"></strong><br>
-      🕐 Vérification sous : <strong style="color:var(--green)">1 à 4 heures</strong>
+    <p>Merci <strong id="suc-name" style="color:var(--white)"></strong> ! Votre demande a bien été reçue.</p>
+    <div class="confirm-box">
+      📧 Nous vous contacterons à : <strong id="suc-email" style="color:var(--cyan)"></strong><br>
+      🏦 Broker choisi : <strong id="suc-broker" style="color:var(--white)"></strong><br>
+      ⏱️ Délai de vérification : <strong style="color:var(--green)">1 à 4 heures</strong><br>
+      <span style="font-size:12px;color:var(--text3);">En attendant, rejoignez nos groupes Telegram pour recevoir des signaux et analyses gratuites dès maintenant.</span>
     </div>
-
-    <p style="font-size:14px;color:var(--text2);margin-bottom:16px;">En attendant la vérification, vous pouvez rejoindre notre canal Telegram pour recevoir les signaux gratuits immédiatement :</p>
-
     <div class="dl-links">
       <div class="dl-link">
-        <div>
-          <div class="dl-name">✈ Canal Telegram Signaux</div>
-          <div class="dl-desc">Signaux gratuits quotidiens Forex & Or</div>
-        </div>
+        <div class="dl-link-info"><div class="dl-name">✈ Canal Signaux Gratuits</div><div class="dl-desc">Signaux Forex & Or quotidiens</div></div>
         <a href="https://t.me/lementorforexgroup" target="_blank">Rejoindre →</a>
       </div>
       <div class="dl-link">
-        <div>
-          <div class="dl-name">📦 Groupe Telegram Produits Gratuits</div>
-          <div class="dl-desc">Robots EA & indicateurs gratuits disponibles ici</div>
-        </div>
+        <div class="dl-link-info"><div class="dl-name">📦 Groupe Produits Gratuits</div><div class="dl-desc">Robots EA & indicateurs gratuits</div></div>
         <a href="https://t.me/robotradingratuit" target="_blank">Rejoindre →</a>
       </div>
       <div class="dl-link">
-        <div>
-          <div class="dl-name">💬 Support & Vérification Rapide</div>
-          <div class="dl-desc">Accélèrez votre vérification sur Telegram</div>
-        </div>
+        <div class="dl-link-info"><div class="dl-name">💬 Support Prioritaire</div><div class="dl-desc">Activation rapide de vos accès</div></div>
         <a href="https://t.me/salomonryn" target="_blank">Contacter →</a>
       </div>
     </div>
-
-    <div style="background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.2);border-radius:10px;padding:16px;margin-bottom:20px;text-align:left;">
-      <p style="font-size:13px;color:var(--text);line-height:1.8;">💡 <strong style="color:var(--white)">Envie d'accéder à TOUT immédiatement ?</strong><br>
-      L'offre <strong style="color:var(--purple)">VIP à $200</strong> vous donne accès à vie à tous les robots EA, indicateurs, ebooks et signaux — sans attendre de vérification.</p>
+    <div style="background:rgba(168,85,247,.08);border:1px solid rgba(168,85,247,.2);border-radius:11px;padding:16px;margin-bottom:20px;text-align:left;">
+      <p style="font-size:13px;color:var(--text);line-height:1.8;">💡 <strong style="color:var(--white)">Voulez-vous tout immédiatement ?</strong><br>L'offre <strong style="color:var(--purple)">VIP à $200</strong> donne accès à vie à TOUS les robots EA, indicateurs, ebooks — sans attendre de vérification.</p>
     </div>
-    <a href="index.html#vip-section" style="display:inline-flex;align-items:center;gap:7px;background:linear-gradient(135deg,var(--purple),#6d28d9);color:#fff;padding:12px 24px;border-radius:9px;font-size:14px;font-weight:700;text-decoration:none;margin-bottom:12px;margin-right:8px;">👑 Devenir VIP — $200 à vie</a>
-    <a href="index.html" style="display:inline-flex;align-items:center;gap:7px;background:rgba(14,165,233,.1);border:1px solid var(--bd2);color:var(--blue);padding:12px 20px;border-radius:9px;font-size:14px;font-weight:700;text-decoration:none;">🏠 Retour à l'accueil</a>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
+      <a href="index.html#vip-section" style="display:inline-flex;align-items:center;gap:7px;background:linear-gradient(135deg,#a855f7,#7c3aed);color:#fff;padding:12px 22px;border-radius:9px;font-size:14px;font-weight:700;text-decoration:none;">👑 VIP $200 à vie</a>
+      <a href="index.html" style="display:inline-flex;align-items:center;gap:7px;background:rgba(56,189,248,.1);border:1px solid var(--bd2);color:var(--blue);padding:12px 20px;border-radius:9px;font-size:14px;font-weight:700;text-decoration:none;">🏠 Retour à l'accueil</a>
+    </div>
   </div>
 </div>
 
 <script>
-var selectedBroker = '';
-var proofFile = null;
+var selectedBroker='';
+var brokerLabels={exness:'Exness',roboforex:'RoboForex',fbs:'FBS',other:'Autre broker'};
 
-function selBroker(b) {
-  selectedBroker = b;
-  ['exness','roboforex','fbs'].forEach(function(x){ document.getElementById('mc-'+x).classList.remove('selected'); });
-  document.getElementById('mc-'+b).classList.add('selected');
-  document.getElementById('f-broker').value = b;
-  checkForm();
-  document.getElementById('form-section').scrollIntoView({behavior:'smooth', block:'start'});
+function selBroker(b){
+  selectedBroker=b;
+  ['exness','roboforex','fbs'].forEach(function(x){document.getElementById('bc-'+x).classList.remove('selected');});
+  var el=document.getElementById('bc-'+b);if(el)el.classList.add('selected');
+  var sel=document.getElementById('f-broker');if(sel)sel.value=b;
+  onBrokerSelect();checkForm();
+  document.getElementById('form-box')||document.querySelector('.form-box').scrollIntoView({behavior:'smooth',block:'start'});
 }
 
-function onProofFile(input) {
-  var file = input.files[0];
-  if(!file) return;
-  proofFile = file;
-  var zone = document.getElementById('f-proof-zone');
-  var name = document.getElementById('f-proof-name');
-  zone.classList.add('loaded');
-  name.textContent = '✅ ' + file.name;
-  name.style.display = 'block';
+function onBrokerSelect(){
+  var b=document.getElementById('f-broker').value;
+  selectedBroker=b;
+  // Montrer le champ email broker uniquement si un broker est sélectionné
+  document.getElementById('broker-email-fg').style.display=b?'block':'none';
+  // Sélectionner visuellement le broker
+  ['exness','roboforex','fbs'].forEach(function(x){
+    var el=document.getElementById('bc-'+x);
+    if(el)el.classList.toggle('selected',x===b);
+  });
 }
 
-function checkForm() {
-  var name = document.getElementById('f-name').value.trim();
-  var email = document.getElementById('f-email').value.trim();
-  var broker = document.getElementById('f-broker').value;
-  var bId = document.getElementById('f-broker-id').value.trim();
-  var valid = name.length > 1 && email.includes('@') && email.includes('.') && broker && bId.length > 3;
-  document.getElementById('btn-submit').disabled = !valid;
+function checkForm(){
+  var name=document.getElementById('f-name').value.trim();
+  var email=document.getElementById('f-email').value.trim();
+  var broker=document.getElementById('f-broker').value;
+  var ok=name.length>1&&email.includes('@')&&email.includes('.')&&broker;
+  document.getElementById('btn-submit').disabled=!ok;
 }
 
-function submitRequest() {
-  var name = document.getElementById('f-name').value.trim();
-  var email = document.getElementById('f-email').value.trim();
-  var broker = document.getElementById('f-broker').value;
-  var bId = document.getElementById('f-broker-id').value.trim();
-  var msg = document.getElementById('f-msg').value.trim();
+function submitForm(){
+  var name=document.getElementById('f-name').value.trim();
+  var email=document.getElementById('f-email').value.trim();
+  var broker=document.getElementById('f-broker').value;
+  var brokerEmail=document.getElementById('f-broker-email').value.trim();
+  var telegram=document.getElementById('f-telegram').value.trim();
+  var msg=document.getElementById('f-msg').value.trim();
 
-  var brokerLabels = {exness:'Exness', roboforex:'RoboForex', fbs:'FBS'};
-
-  // Sauvegarder localement (pour votre référence)
-  var req = {
-    date: new Date().toISOString(),
-    name: name,
-    email: email,
-    broker: broker,
-    brokerId: bId,
-    message: msg,
-    status: 'pending'
-  };
-  try {
-    var pending = JSON.parse(localStorage.getItem('pending_requests') || '[]');
+  // Sauvegarder la demande localement (visible depuis admin via console)
+  try{
+    var req={date:new Date().toISOString(),name:name,email:email,broker:broker,brokerEmail:brokerEmail,telegram:telegram,message:msg,status:'pending'};
+    var pending=JSON.parse(localStorage.getItem('pending_requests')||'[]');
     pending.push(req);
-    localStorage.setItem('pending_requests', JSON.stringify(pending));
-  } catch(e) {}
+    localStorage.setItem('pending_requests',JSON.stringify(pending));
+  }catch(e){}
 
   // Afficher la page succès
-  document.getElementById('suc-name').textContent = name;
-  document.getElementById('suc-email').textContent = email;
-  document.getElementById('suc-broker').textContent = brokerLabels[broker] || broker;
-  document.getElementById('main-page').style.display = 'none';
-  document.getElementById('success-page').style.display = 'block';
-  window.scrollTo({top:0, behavior:'smooth'});
+  document.getElementById('suc-name').textContent=name;
+  document.getElementById('suc-email').textContent=email;
+  document.getElementById('suc-broker').textContent=brokerLabels[broker]||broker;
+  document.getElementById('main-page').style.display='none';
+  document.getElementById('success-page').style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 
-// Pour vous (Leo) — Accéder aux demandes en attente dans la console :
-// JSON.parse(localStorage.getItem('pending_requests'))
+// Charger le logo sauvegardé
+(function(){var saved=localStorage.getItem('rtr_logo');if(saved){var imgs=document.querySelectorAll('.nav-logo-img');imgs.forEach(function(el){if(el)el.src=saved;});}})();
 </script>
 </body>
 </html>
