@@ -1,522 +1,475 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" id="html-root">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Commander — RoboTradingRatuit</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <!-- EmailJS SDK -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <style>
-:root{--bg:#04060c;--bg2:#07090f;--bg3:#0a0d16;--blue:#0ea5e9;--blue2:#0284c7;--cyan:#22d3ee;--white:#e0f2fe;--text:#8dafc8;--text2:#3f6080;--text3:#1a3048;--green:#10b981;--red:#f43f5e;--gold:#eab308;--purple:#8b5cf6;--bd:rgba(14,165,233,.12);--bd2:rgba(14,165,233,.22);--fh:'Orbitron',sans-serif;--fb:'DM Sans',sans-serif;}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:smooth;}
-body{font-family:var(--fb);background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;padding:30px 16px 60px;}
-.wrap{max-width:760px;margin:0 auto;}
-.back{display:inline-flex;align-items:center;gap:7px;color:var(--text2);font-size:13px;margin-bottom:22px;transition:color .2s;}
+:root{--bg:#04060c;--bg2:#0d1117;--bg3:#161b22;--blue:#38bdf8;--blue2:#0ea5e9;--cyan:#67e8f9;--white:#f0f9ff;--text:#e2e8f0;--text2:#94a3b8;--text3:#475569;--green:#4ade80;--green2:#22c55e;--red:#f87171;--gold:#fcd34d;--purple:#c084fc;--purple2:#a855f7;--bd:rgba(56,189,248,.14);--bd2:rgba(56,189,248,.28);--fh:'Orbitron',sans-serif;--fb:'DM Sans',sans-serif;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;padding:24px 16px 60px;}
+::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-thumb{background:var(--blue2);}
+.wrap{max-width:680px;margin:0 auto;}
+.back{display:inline-flex;align-items:center;gap:6px;color:var(--text2);font-size:13px;margin-bottom:20px;transition:color .2s;}
 .back:hover{color:var(--blue);}
-h1{font-family:var(--fh);font-size:clamp(18px,2.5vw,26px);color:var(--white);margin-bottom:6px;}
-h1 span{color:var(--blue);}
-.sub-ttl{font-size:13px;color:var(--text2);margin-bottom:30px;}
+h1{font-family:var(--fh);font-size:clamp(16px,2.4vw,24px);color:var(--white);margin-bottom:6px;}
+.page-sub{font-size:13px;color:var(--text2);margin-bottom:26px;}
 
-/* PRODUCT SUMMARY */
-.prod-summary{background:var(--bg2);border:1px solid var(--bd2);border-radius:12px;padding:18px;display:flex;align-items:center;gap:16px;margin-bottom:24px;}
-.prod-img{width:60px;height:60px;border-radius:9px;background:var(--bg3);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;overflow:hidden;}
-.prod-img img{width:100%;height:100%;object-fit:cover;}
-.prod-info .pname{font-family:var(--fh);font-size:14px;font-weight:700;color:var(--white);margin-bottom:3px;}
-.prod-info .pcat{font-size:11px;color:var(--text2);}
+/* CONFIG NOTICE — affiché si EmailJS pas configuré */
+.config-notice{background:rgba(252,211,77,.07);border:1px solid rgba(252,211,77,.22);border-radius:10px;padding:14px 17px;margin-bottom:18px;display:none;}
+.config-notice p{font-size:13px;color:var(--gold);line-height:1.7;}
+.config-notice code{background:rgba(0,0,0,.3);padding:2px 6px;border-radius:4px;font-size:12px;color:var(--cyan);}
+
+/* PRODUCT CARD */
+.prod-card{background:var(--bg2);border:1px solid var(--bd2);border-radius:12px;padding:16px;display:flex;align-items:center;gap:14px;margin-bottom:20px;}
+.prod-thumb{width:64px;height:64px;border-radius:9px;background:var(--bg3);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;overflow:hidden;}
+.prod-thumb img{width:100%;height:100%;object-fit:cover;}
+.prod-nm{font-family:var(--fh);font-size:13px;font-weight:700;color:var(--white);margin-bottom:3px;}
+.prod-cat{font-size:11px;color:var(--text2);}
 .prod-price{margin-left:auto;font-family:var(--fh);font-size:26px;font-weight:900;color:var(--blue);flex-shrink:0;}
 .prod-price .ps{font-size:14px;vertical-align:super;}
-.prod-price.free{color:var(--green);font-size:18px;}
+.prod-price.fp{color:var(--green);font-size:16px;}
 
-/* STEPS NAV */
-.steps-nav{display:flex;gap:0;margin-bottom:28px;background:var(--bg2);border:1px solid var(--bd);border-radius:10px;overflow:hidden;}
-.snav-item{flex:1;padding:12px 10px;text-align:center;font-size:12px;font-weight:600;color:var(--text2);border-right:1px solid var(--bd);cursor:pointer;transition:all .2s;position:relative;}
-.snav-item:last-child{border-right:none;}
-.snav-item.on{color:var(--white);background:rgba(14,165,233,.08);}
-.snav-item.done{color:var(--green);}
-.snav-item .sn{display:block;font-family:var(--fh);font-size:10px;margin-bottom:2px;}
+/* STEPS */
+.steps-nav{display:flex;background:var(--bg2);border:1px solid var(--bd);border-radius:9px;overflow:hidden;margin-bottom:24px;}
+.step-btn{flex:1;padding:11px 8px;text-align:center;font-size:11px;font-weight:700;color:var(--text2);border-right:1px solid var(--bd);cursor:default;}
+.step-btn:last-child{border-right:none;}
+.step-btn.on{background:rgba(56,189,248,.08);color:var(--white);}
+.step-btn.done{color:var(--green);}
+.step-lbl{font-size:9px;font-family:var(--fh);display:block;margin-bottom:2px;}
 
 /* PANELS */
-.panel{display:none;}
-.panel.on{display:block;}
+.panel{display:none;}.panel.on{display:block;}
 
-/* PAYMENT METHODS */
-.pay-methods{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:20px;}
-.pm{background:var(--bg2);border:2px solid var(--bd);border-radius:10px;padding:16px;text-align:center;cursor:pointer;transition:all .2s;}
-.pm:hover{border-color:var(--bd2);}
-.pm.sel{border-color:var(--blue);background:rgba(14,165,233,.06);}
-.pm-ico{font-size:28px;margin-bottom:7px;display:block;}
-.pm-name{font-family:var(--fh);font-size:10px;font-weight:700;color:var(--white);margin-bottom:3px;}
-.pm-addr{font-size:11px;color:var(--text2);word-break:break-all;}
-
-/* FORM */
-.fg{margin-bottom:16px;}
-.fg label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text2);margin-bottom:5px;}
-.fi{width:100%;background:var(--bg3);border:1px solid var(--bd2);color:var(--text);padding:11px 13px;border-radius:8px;font-size:14px;font-family:var(--fb);outline:none;transition:border-color .2s;}
-.fi:focus{border-color:var(--blue);}
-.fi.err{border-color:var(--red);}
-.err-msg{font-size:12px;color:var(--red);margin-top:4px;display:none;}
-.err-msg.show{display:block;}
-
-/* UPLOAD PROOF */
-.proof-zone{border:2px dashed var(--bd2);border-radius:9px;padding:22px;text-align:center;cursor:pointer;transition:all .2s;position:relative;}
-.proof-zone:hover{border-color:var(--blue);background:rgba(14,165,233,.03);}
-.proof-zone.loaded{border-style:solid;border-color:var(--green);}
-.proof-ico{font-size:32px;margin-bottom:8px;}
-.proof-txt{font-size:14px;color:var(--text);font-weight:600;}
-.proof-sub{font-size:12px;color:var(--text2);}
-.proof-name{font-size:13px;color:var(--green);font-weight:600;margin-top:7px;}
-
-/* BUTTONS */
-.btn-next{width:100%;background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;border:none;padding:14px;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;transition:all .25s;box-shadow:0 5px 20px rgba(14,165,233,.3);margin-top:8px;}
-.btn-next:hover{box-shadow:0 8px 28px rgba(14,165,233,.5);transform:translateY(-1px);}
-.btn-next:disabled{opacity:.5;cursor:not-allowed;transform:none;}
-.btn-back-step{background:transparent;border:1px solid var(--bd2);color:var(--text2);padding:11px 20px;border-radius:9px;font-size:13px;cursor:pointer;margin-right:9px;transition:all .2s;}
-.btn-back-step:hover{border-color:var(--red);color:var(--red);}
+/* PAY METHODS */
+.pay-methods{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px;}
+.pm-card{background:var(--bg2);border:2px solid var(--bd);border-radius:10px;padding:14px;text-align:center;cursor:pointer;transition:all .2s;}
+.pm-card:hover{border-color:var(--bd2);}
+.pm-card.sel{border-color:var(--blue);background:rgba(56,189,248,.05);}
+.pm-ico{font-size:26px;margin-bottom:6px;display:block;}
+.pm-nm{font-family:var(--fh);font-size:9px;font-weight:700;color:var(--white);margin-bottom:3px;}
+.pm-addr{font-size:10px;color:var(--text2);}
 
 /* NOTICE */
-.notice{background:rgba(234,179,8,.06);border:1px solid rgba(234,179,8,.18);border-radius:9px;padding:13px 15px;margin-bottom:16px;}
-.notice p{font-size:13px;color:var(--gold);line-height:1.7;}
+.notice-box{background:rgba(252,211,77,.06);border:1px solid rgba(252,211,77,.18);border-radius:9px;padding:12px 15px;margin-bottom:14px;}
+.notice-box p{font-size:13px;color:var(--gold);line-height:1.7;}
+.notice-box code{background:rgba(0,0,0,.3);padding:1px 5px;border-radius:3px;font-size:12px;}
 
-/* SUCCESS */
-.success-box{text-align:center;padding:30px 20px;}
-.success-ico{font-size:70px;margin-bottom:16px;display:block;animation:pop .5s ease;}
-@keyframes pop{0%{transform:scale(0);}70%{transform:scale(1.1);}100%{transform:scale(1);}}
-.success-box h2{font-family:var(--fh);font-size:22px;color:var(--green);margin-bottom:10px;}
-.success-box p{font-size:14px;color:var(--text2);margin-bottom:16px;line-height:1.75;}
-.success-box .email-sent{background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);border-radius:10px;padding:14px;margin-bottom:16px;font-size:13px;color:var(--text);}
-.btn-home{display:inline-flex;align-items:center;gap:7px;background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;padding:12px 24px;border-radius:9px;font-size:14px;font-weight:700;text-decoration:none;transition:all .2s;}
-.btn-home:hover{opacity:.9;transform:translateY(-1px);}
+.ok-box{background:rgba(74,222,128,.06);border:1px solid rgba(74,222,128,.18);border-radius:9px;padding:12px 15px;margin-bottom:14px;}
+.ok-box p{font-size:13px;color:var(--green);line-height:1.7;}
+
+/* FORM */
+.fg{margin-bottom:15px;}
+.fg label{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text2);margin-bottom:5px;}
+.fi{width:100%;background:var(--bg3);border:1px solid var(--bd2);color:var(--white);padding:11px 13px;border-radius:8px;font-size:14px;font-family:var(--fb);outline:none;transition:border-color .2s;}
+.fi:focus{border-color:var(--blue);}
+.fi::placeholder{color:var(--text3);}
+.fi.err{border-color:var(--red);}
+
+/* PROOF UPLOAD */
+.proof-zone{border:2px dashed var(--bd2);border-radius:9px;padding:20px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:7px;}
+.proof-zone:hover{border-color:var(--blue);}
+.proof-zone.loaded{border-style:solid;border-color:var(--green);}
+.pz-ico{font-size:28px;margin-bottom:7px;}
+.pz-txt{font-size:13px;font-weight:600;color:var(--text);}
+.pz-sub{font-size:11px;color:var(--text2);}
+.pz-name{font-size:12px;color:var(--green);font-weight:600;margin-top:6px;}
+
+/* RECAP */
+.recap-box{background:var(--bg2);border:1px solid var(--bd2);border-radius:11px;padding:16px;margin-bottom:16px;}
+.recap-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;font-size:13px;}
+.recap-row:not(:last-child){border-bottom:1px solid var(--bd);}
+.rk{color:var(--text2);}
+.rv{color:var(--white);font-weight:600;}
+
+/* BTN */
+.btn-next{width:100%;background:linear-gradient(135deg,var(--blue2),#0369a1);color:#fff;border:none;padding:14px;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;transition:all .22s;margin-top:7px;box-shadow:0 4px 18px rgba(14,165,233,.28);}
+.btn-next:hover:not(:disabled){box-shadow:0 7px 26px rgba(14,165,233,.5);transform:translateY(-1px);}
+.btn-next:disabled{opacity:.4;cursor:not-allowed;transform:none;}
+.btn-back{background:transparent;border:1px solid var(--bd2);color:var(--text2);padding:11px 18px;border-radius:9px;font-size:13px;cursor:pointer;margin-right:9px;}
+.btn-back:hover{border-color:var(--red);color:var(--red);}
 
 /* LOADING */
-.loading{display:none;text-align:center;padding:20px;}
-.loading .spinner{width:36px;height:36px;border:3px solid rgba(14,165,233,.2);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px;}
+.loading{text-align:center;padding:18px;display:none;}
+.spinner{width:34px;height:34px;border:3px solid rgba(56,189,248,.18);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 11px;}
 @keyframes spin{100%{transform:rotate(360deg);}}
-.loading p{font-size:14px;color:var(--text2);}
+.loading p{font-size:13px;color:var(--text2);}
 
-/* DIVIDER */
-hr{border:none;border-top:1px solid var(--bd);margin:18px 0;}
+/* SUCCESS */
+#panel-4 .success-ico{font-size:68px;display:block;text-align:center;margin-bottom:14px;animation:pop .5s ease;}
+@keyframes pop{0%{transform:scale(0);}70%{transform:scale(1.1);}100%{transform:scale(1);}}
+.success-ttl{font-family:var(--fh);font-size:20px;color:var(--green);text-align:center;margin-bottom:10px;}
+.success-box{background:rgba(74,222,128,.07);border:1px solid rgba(74,222,128,.2);border-radius:10px;padding:14px;margin-bottom:14px;font-size:13px;color:var(--text);line-height:1.8;}
+.tg-box{background:rgba(29,155,209,.07);border:1px solid rgba(29,155,209,.2);border-radius:9px;padding:13px 15px;margin-bottom:14px;}
+.tg-box p{font-size:13px;color:var(--text2);line-height:1.7;}
+.a-tg{display:inline-flex;align-items:center;gap:6px;background:#1d9bd1;color:#fff;padding:9px 18px;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;margin-top:9px;}
+.a-home{display:inline-flex;align-items:center;gap:6px;background:rgba(56,189,248,.1);border:1px solid var(--bd2);color:var(--blue);padding:9px 15px;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;margin-top:9px;margin-left:8px;}
 
-/* COPY BTN */
-.copy-field{display:flex;gap:8px;align-items:center;}
-.copy-field input{flex:1;}
-.btn-copy{background:var(--bg3);border:1px solid var(--bd2);color:var(--blue);padding:11px 14px;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .2s;}
-.btn-copy:hover{background:var(--blue);color:#fff;}
-.btn-copy.copied{background:rgba(16,185,129,.15);color:var(--green);border-color:rgba(16,185,129,.3);}
+/* COPY */
+.copy-row{display:flex;gap:7px;margin-top:7px;}
+.copy-inp{flex:1;background:var(--bg3);border:1px solid var(--bd2);color:var(--cyan);padding:9px 11px;border-radius:7px;font-size:12px;font-family:monospace;outline:none;}
+.copy-btn{background:rgba(56,189,248,.1);border:1px solid var(--bd2);color:var(--blue);padding:9px 13px;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;}
+.copy-btn:hover{background:var(--blue2);color:#fff;}
+.copy-btn.c{background:rgba(74,222,128,.12);color:var(--green);border-color:rgba(74,222,128,.3);}
 
-@media(max-width:600px){.pay-methods{grid-template-columns:1fr;}.steps-nav{flex-direction:column;}.snav-item{border-right:none;border-bottom:1px solid var(--bd);}}
+@media(max-width:500px){.pay-methods{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <a href="javascript:history.back()" class="back">← Retour au produit</a>
-  <h1>Commander votre <span id="ttl-product">produit</span></h1>
-  <p class="sub-ttl">Livraison automatique par email · Sécurisé · Sous 5 minutes</p>
+  <a href="javascript:history.back()" class="back">← <span id="t-back">Retour au produit</span></a>
+  <h1 id="t-h1">Finaliser votre commande</h1>
+  <p class="page-sub" id="t-sub">Livraison automatique par email · Sécurisé · Sous 5 minutes</p>
 
-  <!-- PRODUCT SUMMARY -->
-  <div class="prod-summary">
-    <div class="prod-img" id="co-img">🤖</div>
-    <div class="prod-info">
-      <div class="pname" id="co-name">Chargement...</div>
-      <div class="pcat" id="co-cat">Expert Advisor MT4/MT5</div>
+  <!-- AVERTISSEMENT SI EMAILJS PAS CONFIGURÉ -->
+  <div class="config-notice" id="config-notice">
+    <p>⚙️ <strong>EmailJS pas encore configuré.</strong> Le site fonctionne en <strong>mode manuel</strong> : la commande est enregistrée et vous recevez un email de Leo sous 24h. Pour activer la livraison <strong>100% automatique</strong>, configurez les 3 valeurs dans le fichier <code>checkout.html</code> : <code>EMAILJS_PUBLIC_KEY</code>, <code>EMAILJS_SERVICE_ID</code>, <code>EMAILJS_TEMPLATE_ID</code>. Voir le fichier GUIDE-EMAIL.html pour les instructions.</p>
+  </div>
+
+  <!-- PRODUIT -->
+  <div class="prod-card">
+    <div class="prod-thumb" id="co-thumb">🤖</div>
+    <div>
+      <div class="prod-nm" id="co-name">Produit</div>
+      <div class="prod-cat" id="co-cat">Expert Advisor MT4/MT5</div>
     </div>
-    <div class="prod-price" id="co-price"><span class="ps">$</span>30</div>
+    <div class="prod-price" id="co-price"><span class="ps">$</span>0</div>
   </div>
 
-  <!-- STEPS NAV -->
+  <!-- STEPS -->
   <div class="steps-nav">
-    <div class="snav-item on" id="snav-1"><span class="sn">ÉTAPE 1</span> Paiement</div>
-    <div class="snav-item" id="snav-2"><span class="sn">ÉTAPE 2</span> Vos infos</div>
-    <div class="snav-item" id="snav-3"><span class="sn">ÉTAPE 3</span> Confirmation</div>
-    <div class="snav-item" id="snav-4"><span class="sn">ÉTAPE 4</span> Réception</div>
+    <div class="step-btn on" id="sn-1"><span class="step-lbl">ÉTAPE 1</span>Paiement</div>
+    <div class="step-btn" id="sn-2"><span class="step-lbl">ÉTAPE 2</span>Vos infos</div>
+    <div class="step-btn" id="sn-3"><span class="step-lbl">ÉTAPE 3</span>Confirmer</div>
+    <div class="step-btn" id="sn-4"><span class="step-lbl">ÉTAPE 4</span>Reçu ✓</div>
   </div>
 
-  <!-- PANEL 1 — CHOISIR PAIEMENT -->
+  <!-- PANEL 1 — PAIEMENT -->
   <div class="panel on" id="panel-1">
-    <h3 style="font-family:var(--fh);font-size:14px;color:var(--white);margin-bottom:14px;">1. Choisissez votre mode de paiement</h3>
+    <h3 style="font-family:var(--fh);font-size:13px;color:var(--white);margin-bottom:13px;" id="t-choose-pay">1. Choisissez votre mode de paiement</h3>
     <div class="pay-methods">
-      <div class="pm" id="pm-paypal" onclick="selPay('paypal')">
+      <div class="pm-card" id="pmc-paypal" onclick="selPay('paypal')">
         <span class="pm-ico">🅿️</span>
-        <div class="pm-name">PayPal</div>
+        <div class="pm-nm">PayPal</div>
         <div class="pm-addr">capor51@gmail.com</div>
       </div>
-      <div class="pm" id="pm-binance" onclick="selPay('binance')">
+      <div class="pm-card" id="pmc-binance" onclick="selPay('binance')">
         <span class="pm-ico">🟡</span>
-        <div class="pm-name">Binance USDT</div>
+        <div class="pm-nm">Binance USDT</div>
         <div class="pm-addr">TRC20</div>
       </div>
-      <div class="pm" id="pm-bpay" onclick="selPay('bpay')">
+      <div class="pm-card" id="pmc-bpay" onclick="selPay('bpay')">
         <span class="pm-ico">💛</span>
-        <div class="pm-name">Binance Pay</div>
-        <div class="pm-addr">ID : 798651100</div>
+        <div class="pm-nm">Binance Pay</div>
+        <div class="pm-addr">ID: 798651100</div>
       </div>
     </div>
 
-    <div id="paypal-details" style="display:none;" class="notice">
-      <p>📧 <strong>Envoyez <span id="pp-amount">$30</span> sur PayPal à :</strong></p>
-      <div class="copy-field" style="margin-top:8px;">
-        <input type="text" class="fi" value="capor51@gmail.com" readonly id="pp-addr">
-        <button class="btn-copy" onclick="copy('pp-addr',this)">Copier</button>
+    <!-- DÉTAILS PAIEMENT -->
+    <div id="pd-paypal" style="display:none;">
+      <div class="notice-box">
+        <p>📧 <strong>Envoyez <span id="pp-amt"></span> sur PayPal à :</strong></p>
+        <div class="copy-row">
+          <input type="text" class="copy-inp" id="pp-addr" value="capor51@gmail.com" readonly>
+          <button class="copy-btn" onclick="doCopy('pp-addr',this)">Copier</button>
+        </div>
+        <p style="margin-top:8px;font-size:12px;">Note PayPal : <strong id="pp-note">RTR - Produit</strong></p>
       </div>
-      <p style="margin-top:8px;font-size:12px;">Note PayPal : <strong id="pp-note">RTR - Gold Hunter V8</strong></p>
     </div>
-    <div id="binance-details" style="display:none;" class="notice">
-      <p>💱 <strong>Envoyez <span id="bn-amount">$30</span> USDT (TRC20) à :</strong></p>
-      <div class="copy-field" style="margin-top:8px;">
-        <input type="text" class="fi" value="TQ8JunUjkWu3rv1PyVjmPSEVHh6fD4kFGe" readonly id="bn-addr" style="font-size:11px;">
-        <button class="btn-copy" onclick="copy('bn-addr',this)">Copier</button>
+    <div id="pd-binance" style="display:none;">
+      <div class="notice-box">
+        <p>💱 <strong>Envoyez <span id="bn-amt"></span> USDT (TRC20) à :</strong></p>
+        <div class="copy-row">
+          <input type="text" class="copy-inp" id="bn-addr" value="TQ8JunUjkWu3rv1PyVjmPSEVHh6fD4kFGe" readonly style="font-size:10px;">
+          <button class="copy-btn" onclick="doCopy('bn-addr',this)">Copier</button>
+        </div>
+        <p style="margin-top:7px;font-size:11px;color:var(--red);">⚠️ Réseau TRC20 uniquement — ne pas utiliser ERC20 ou BEP20</p>
       </div>
-      <p style="margin-top:8px;font-size:12px;color:var(--red);">⚠️ Réseau TRC20 uniquement — ne pas utiliser ERC20 ou BEP20</p>
     </div>
-    <div id="bpay-details" style="display:none;" class="notice">
-      <p>💛 <strong>Envoyez <span id="bp-amount">$30</span> via Binance Pay à l'ID :</strong></p>
-      <div class="copy-field" style="margin-top:8px;">
-        <input type="text" class="fi" value="798651100" readonly id="bp-id">
-        <button class="btn-copy" onclick="copy('bp-id',this)">Copier</button>
+    <div id="pd-bpay" style="display:none;">
+      <div class="notice-box">
+        <p>💛 <strong>Envoyez <span id="bp-amt"></span> via Binance Pay à l'ID :</strong></p>
+        <div class="copy-row">
+          <input type="text" class="copy-inp" id="bp-id" value="798651100" readonly>
+          <button class="copy-btn" onclick="doCopy('bp-id',this)">Copier</button>
+        </div>
       </div>
     </div>
 
-    <button class="btn-next" id="btn-p1" onclick="goStep(2)" disabled>Suivant — J'ai effectué le paiement →</button>
+    <button class="btn-next" id="btn-1" onclick="goStep(2)" disabled id="t-btn-paid">✓ J'ai effectué le paiement — Suivant →</button>
   </div>
 
-  <!-- PANEL 2 — INFOS CLIENT + PREUVE -->
+  <!-- PANEL 2 — INFOS -->
   <div class="panel" id="panel-2">
-    <h3 style="font-family:var(--fh);font-size:14px;color:var(--white);margin-bottom:14px;">2. Vos informations & preuve de paiement</h3>
+    <h3 style="font-family:var(--fh);font-size:13px;color:var(--white);margin-bottom:13px;" id="t-your-info">2. Vos informations</h3>
+    <div class="ok-box">
+      <p>📧 <strong>Email important :</strong> Entrez votre vraie adresse email — c'est là que vous recevrez votre fichier automatiquement.</p>
+    </div>
     <div class="fg">
-      <label>Votre prénom *</label>
+      <label id="t-lbl-name">Votre prénom *</label>
       <input type="text" class="fi" id="cl-name" placeholder="Jean" oninput="checkP2()">
-      <div class="err-msg" id="err-name">Veuillez entrer votre prénom</div>
     </div>
     <div class="fg">
-      <label>Votre email (livraison automatique ici) *</label>
+      <label id="t-lbl-email">Votre email — livraison automatique ici *</label>
       <input type="email" class="fi" id="cl-email" placeholder="votre@email.com" oninput="checkP2()">
-      <div class="err-msg" id="err-email">Email invalide</div>
     </div>
     <div class="fg">
-      <label>Preuve de paiement — Screenshot ou référence de transaction *</label>
+      <label id="t-lbl-proof">Preuve de paiement (screenshot ou ID de transaction) *</label>
       <div class="proof-zone" id="proof-zone" onclick="document.getElementById('proof-file').click()">
-        <div class="proof-ico">📸</div>
-        <div class="proof-txt">Cliquez pour joindre votre screenshot</div>
-        <div class="proof-sub">Photo, capture d'écran, PDF — Max 5 Mo</div>
-        <div class="proof-name" id="proof-name" style="display:none;"></div>
+        <div class="pz-ico">📸</div>
+        <div class="pz-txt" id="t-pz-txt">Cliquer pour joindre un screenshot</div>
+        <div class="pz-sub" id="t-pz-sub">Photo, capture d'écran, PDF — max 5 Mo</div>
+        <div class="pz-name" id="proof-name" style="display:none;"></div>
       </div>
       <input type="file" id="proof-file" accept="image/*,.pdf" style="display:none" onchange="onProof(this)">
-      <p style="font-size:12px;color:var(--text2);margin-top:7px;">OU entrez la référence/transaction ID de votre paiement :</p>
-      <input type="text" class="fi" id="cl-ref" placeholder="Ex: 4G123456789 ou txhash..." style="margin-top:6px;" oninput="checkP2()">
+      <p style="font-size:12px;color:var(--text2);margin-top:7px;" id="t-or-ref">OU entrez l'ID de transaction :</p>
+      <input type="text" class="fi" id="cl-ref" placeholder="Référence PayPal, TxHash Binance..." style="margin-top:5px;" oninput="checkP2()">
     </div>
     <div style="display:flex;align-items:center;gap:8px;margin-top:10px;">
-      <button class="btn-back-step" onclick="goStep(1)">← Retour</button>
-      <button class="btn-next" id="btn-p2" onclick="goStep(3)" disabled style="flex:1;">Suivant → Confirmer</button>
+      <button class="btn-back" onclick="goStep(1)">← Retour</button>
+      <button class="btn-next" id="btn-2" onclick="goStep(3)" disabled style="flex:1;">Suivant → Vérifier</button>
     </div>
   </div>
 
-  <!-- PANEL 3 — RÉCAPITULATIF -->
+  <!-- PANEL 3 — RECAP -->
   <div class="panel" id="panel-3">
-    <h3 style="font-family:var(--fh);font-size:14px;color:var(--white);margin-bottom:14px;">3. Vérifiez votre commande</h3>
-    <div style="background:var(--bg2);border:1px solid var(--bd2);border-radius:11px;padding:18px;margin-bottom:18px;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-        <span style="color:var(--text2);font-size:13px;">Produit</span>
-        <strong style="color:var(--white);font-size:14px;" id="recap-product"></strong>
-      </div>
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-        <span style="color:var(--text2);font-size:13px;">Montant payé</span>
-        <strong style="color:var(--blue);font-size:18px;font-family:var(--fh);" id="recap-price"></strong>
-      </div>
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-        <span style="color:var(--text2);font-size:13px;">Mode paiement</span>
-        <strong style="color:var(--white);font-size:13px;" id="recap-pay"></strong>
-      </div>
-      <hr>
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-        <span style="color:var(--text2);font-size:13px;">Livraison vers</span>
-        <strong style="color:var(--cyan);font-size:13px;" id="recap-email"></strong>
-      </div>
-      <div style="display:flex;justify-content:space-between;align-items:center;">
-        <span style="color:var(--text2);font-size:13px;">Preuve soumise</span>
-        <strong style="color:var(--green);font-size:13px;" id="recap-proof">✓ Fournie</strong>
-      </div>
+    <h3 style="font-family:var(--fh);font-size:13px;color:var(--white);margin-bottom:13px;" id="t-confirm">3. Confirmer votre commande</h3>
+    <div class="recap-box">
+      <div class="recap-row"><span class="rk" id="t-rk-prod">Produit</span><span class="rv" id="recap-product"></span></div>
+      <div class="recap-row"><span class="rk" id="t-rk-price">Montant</span><span class="rv" id="recap-price" style="color:var(--blue);font-family:var(--fh);font-size:18px;"></span></div>
+      <div class="recap-row"><span class="rk" id="t-rk-pay">Paiement</span><span class="rv" id="recap-pay"></span></div>
+      <div class="recap-row"><span class="rk" id="t-rk-email">Livraison vers</span><span class="rv" id="recap-email" style="color:var(--cyan);"></span></div>
+      <div class="recap-row"><span class="rk" id="t-rk-proof">Preuve</span><span class="rv" id="recap-proof" style="color:var(--green);"></span></div>
     </div>
-    <div class="notice">
-      <p>⏱️ <strong>Livraison automatique :</strong> Dès confirmation, vous recevrez un email avec le lien de téléchargement de votre produit. Vérifiez vos spams si vous ne le recevez pas dans les 5 minutes.</p>
+    <div class="ok-box">
+      <p>⏱️ <span id="t-delivery-note">Après confirmation, vous recevrez un email avec votre lien de téléchargement automatiquement.</span></p>
     </div>
-    <div id="loading" class="loading">
+    <div class="loading" id="loading">
       <div class="spinner"></div>
-      <p>Envoi de votre commande en cours...</p>
+      <p id="t-sending">Envoi de votre commande...</p>
     </div>
     <div style="display:flex;align-items:center;gap:8px;">
-      <button class="btn-back-step" onclick="goStep(2)">← Retour</button>
-      <button class="btn-next" id="btn-p3" onclick="submitOrder()" style="flex:1;">✅ Confirmer et recevoir mon produit</button>
+      <button class="btn-back" onclick="goStep(2)">← Retour</button>
+      <button class="btn-next" id="btn-3" onclick="submitOrder()" style="flex:1;" id="t-confirm-btn">✅ Confirmer et recevoir mon produit</button>
     </div>
   </div>
 
   <!-- PANEL 4 — SUCCÈS -->
   <div class="panel" id="panel-4">
+    <span class="success-ico">✅</span>
+    <div class="success-ttl" id="t-success-h">Commande reçue !</div>
     <div class="success-box">
-      <span class="success-ico">✅</span>
-      <h2>Commande reçue !</h2>
-      <p>Merci <strong id="success-name" style="color:var(--white)"></strong> ! Votre commande a été enregistrée.</p>
-      <div class="email-sent">
-        📧 Un email de confirmation a été envoyé à <strong id="success-email" style="color:var(--cyan)"></strong><br>
-        <span style="font-size:12px;color:var(--text2);">Votre fichier sera livré sous quelques minutes après vérification de votre paiement.<br>Vérifiez vos spams si vous ne le recevez pas.</span>
-      </div>
-      <div class="notice" style="text-align:left;margin-bottom:20px;">
-        <p>💬 Pour accélérer la livraison, envoyez également votre preuve de paiement à <strong>@salomonryn</strong> sur Telegram. C'est plus rapide !</p>
-      </div>
-      <a href="https://t.me/salomonryn" target="_blank" style="display:inline-flex;align-items:center;gap:7px;background:#1d9bd1;color:#fff;padding:11px 20px;border-radius:9px;font-size:13px;font-weight:700;text-decoration:none;margin-bottom:12px;margin-right:8px;">💬 Contacter @salomonryn</a>
-      <a href="index.html" class="btn-home">🏠 Retour à l'accueil</a>
+      📧 <span id="t-email-sent">Email envoyé à</span> <strong id="success-email" style="color:var(--cyan)"></strong><br>
+      <span id="t-file-coming">Votre fichier sera livré automatiquement à cette adresse. Vérifiez vos spams si vous ne le recevez pas dans les 10 minutes.</span>
+    </div>
+    <div class="tg-box">
+      <p>💬 <span id="t-tg-note">Pour accélérer la livraison ou en cas de problème, envoyez également votre preuve de paiement à</span> <strong>@salomonryn</strong> <span id="t-on-tg">sur Telegram.</span></p>
+      <a href="https://t.me/salomonryn" target="_blank" class="a-tg">💬 @salomonryn</a>
+      <a href="index.html" class="a-home" id="t-back-home">🏠 Retour à l'accueil</a>
     </div>
   </div>
 </div>
 
 <script>
 /*
-════════════════════════════════════════════════
-  ⚙️ CONFIGURATION EMAILJS — À modifier
-  
-  1. Créez un compte sur emailjs.com
-  2. Connectez votre Gmail (Service ID)
-  3. Créez un template (Template ID)
-  4. Copiez votre Public Key
-  
-  REMPLACEZ LES 3 VALEURS CI-DESSOUS :
-════════════════════════════════════════════════
+═══════════════════════════════════════════════
+⚙️ CONFIGURATION EMAILJS — À remplir
+═══════════════════════════════════════════════
+1. Créez un compte sur emailjs.com (gratuit)
+2. Connectez votre Gmail (capor51@gmail.com)
+3. Créez un template email
+4. Remplacez les 3 valeurs ci-dessous
+
+TEMPLATE EmailJS — Collez ce contenu :
+Subject: ✅ Votre produit RoboTradingRatuit — {{product_name}}
+
+Bonjour {{client_name}},
+Merci pour votre achat !
+
+📦 Produit : {{product_name}}
+💰 Prix : {{price}}
+💳 Paiement : {{payment_method}}
+
+📥 VOTRE LIEN DE TÉLÉCHARGEMENT :
+{{download_link}}
+
+📚 Guide d'installation :
+{{guide_link}}
+
+Pour toute question : Telegram @salomonryn
+Merci et bon trading !
+RoboTradingRatuit
+═══════════════════════════════════════════════
 */
-var EMAILJS_PUBLIC_KEY  = 'VOTRE_PUBLIC_KEY';    // Depuis emailjs.com → Account → General
-var EMAILJS_SERVICE_ID  = 'VOTRE_SERVICE_ID';    // Depuis emailjs.com → Email Services
-var EMAILJS_TEMPLATE_ID = 'VOTRE_TEMPLATE_ID';   // Depuis emailjs.com → Email Templates
+var EMAILJS_PUBLIC_KEY  = 'VOTRE_PUBLIC_KEY';
+var EMAILJS_SERVICE_ID  = 'VOTRE_SERVICE_ID';
+var EMAILJS_TEMPLATE_ID = 'VOTRE_TEMPLATE_ID';
 
 /*
-════════════════════════════════════════════════
-  📦 LIENS DE TÉLÉCHARGEMENT DE VOS PRODUITS
-  
-  Uploadez chaque fichier EA sur Google Drive :
-  1. drive.google.com → Uploadez le fichier EX4/EX5
-  2. Clic droit → Partager → "Tout le monde avec le lien"
-  3. Copiez le lien → remplacez ci-dessous
-  
-  FORMAT : ID_PRODUIT: { file: 'lien_drive', guide: 'lien_guide' }
-════════════════════════════════════════════════
+═══════════════════════════════════════════════
+📦 LIENS DE TÉLÉCHARGEMENT
+Uploadez vos fichiers EA sur Google Drive :
+1. drive.google.com → Upload fichier EX4/EX5
+2. Clic droit → Partager → "Tout le monde avec le lien"
+3. Copiez le lien → collez ici
+═══════════════════════════════════════════════
 */
+var GUIDE_LINK = 'https://drive.google.com/file/d/VOTRE_ID_GUIDE/view';
 var PRODUCTS_LINKS = {
-  '1': { // Gold Hunter V8
-    file: 'https://drive.google.com/file/d/VOTRE_ID_FICHIER_1/view',
-    guide: 'https://drive.google.com/file/d/VOTRE_ID_GUIDE/view',
-    name: 'Gold Hunter V8',
-    desc: 'EA MT4/MT5 — Or/XAUUSD'
-  },
-  '2': { // AI Gold Sniper
-    file: 'https://drive.google.com/file/d/VOTRE_ID_FICHIER_2/view',
-    guide: 'https://drive.google.com/file/d/VOTRE_ID_GUIDE/view',
-    name: 'AI Gold Sniper MT4 V1.4',
-    desc: 'EA MT4 — Or/XAUUSD'
-  },
-  '3': { // Dominant EA
-    file: 'https://drive.google.com/file/d/VOTRE_ID_FICHIER_3/view',
-    guide: 'https://drive.google.com/file/d/VOTRE_ID_GUIDE/view',
-    name: 'Dominant EA MT5',
-    desc: 'EA MT5 — Forex Multi-paires'
-  },
-  '4': {
-    file: 'https://drive.google.com/file/d/VOTRE_ID_FICHIER_4/view',
-    guide: 'https://drive.google.com/file/d/VOTRE_ID_GUIDE/view',
-    name: 'AI Golden Jet Fighter GTX MT4',
-    desc: 'EA MT4 — Forex'
-  },
-  '5': {
-    file: 'https://drive.google.com/file/d/VOTRE_ID_FICHIER_5/view',
-    guide: 'https://drive.google.com/file/d/VOTRE_ID_GUIDE/view',
-    name: 'AiMaxPro EA V2',
-    desc: 'EA MT4 — Indices'
-  },
-  '6': {
-    file: 'https://drive.google.com/file/d/VOTRE_ID_FICHIER_6/view',
-    guide: 'https://drive.google.com/file/d/VOTRE_ID_GUIDE/view',
-    name: 'Alpha Scalper Pro MT5',
-    desc: 'EA MT5 — Forex'
-  },
-  '7': {
-    file: 'https://drive.google.com/file/d/VOTRE_ID_FICHIER_7/view',
-    guide: 'https://drive.google.com/file/d/VOTRE_ID_GUIDE/view',
-    name: 'ICT Venom XAUUSD MT5',
-    desc: 'EA MT5 — Or/XAUUSD'
-  },
-  'vip': {
-    file: 'https://drive.google.com/drive/folders/VOTRE_DOSSIER_VIP',
-    guide: 'https://drive.google.com/file/d/VOTRE_ID_GUIDE/view',
-    name: 'Accès VIP Illimité',
-    desc: 'Tous les produits — À vie'
-  }
+  '1': {name:'Gold Hunter V8',              file:'https://drive.google.com/file/d/ID1/view'},
+  '2': {name:'AI Gold Sniper MT4 V1.4',     file:'https://drive.google.com/file/d/ID2/view'},
+  '3': {name:'Dominant EA MT5',             file:'https://drive.google.com/file/d/ID3/view'},
+  '4': {name:'AI Golden Jet Fighter GTX',   file:'https://drive.google.com/file/d/ID4/view'},
+  '5': {name:'AiMaxPro EA V2',              file:'https://drive.google.com/file/d/ID5/view'},
+  '6': {name:'Alpha Scalper Pro MT5',       file:'https://drive.google.com/file/d/ID6/view'},
+  '7': {name:'ICT Venom XAUUSD MT5',        file:'https://drive.google.com/file/d/ID7/view'},
+  'vip':{name:'Accès VIP Illimité',         file:'https://drive.google.com/drive/folders/ID_VIP'},
 };
 
-/* ─── INIT ─── */
-var state = { pay: '', productId: '', productName: '', price: '', proofFile: null };
+/* ════ INIT ════ */
+var isEmailJSConfigured = (EMAILJS_PUBLIC_KEY !== 'VOTRE_PUBLIC_KEY');
+if(isEmailJSConfigured && typeof emailjs !== 'undefined'){
+  emailjs.init({publicKey: EMAILJS_PUBLIC_KEY});
+} else {
+  document.getElementById('config-notice').style.display = 'block';
+}
 
-(function init(){
-  if(typeof emailjs !== 'undefined') {
-    emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
-  }
-  // Lire les params URL
+var curLang = localStorage.getItem('rtr_lang') || 'fr';
+var state = {pay:'', proofFile:null};
+
+/* ════ LIRE PRODUIT DEPUIS URL ════ */
+(function(){
   var qs = new URLSearchParams(window.location.search);
   var id = qs.get('id') || '1';
   var type = qs.get('type') || 'robot';
   var price = qs.get('price') || '30';
+  var name = qs.get('name') ? decodeURIComponent(qs.get('name')) : (PRODUCTS_LINKS[id]||{}).name||'Produit';
   state.productId = id;
+  state.productName = name;
   state.price = price;
-
-  var prod = PRODUCTS_LINKS[id] || PRODUCTS_LINKS['1'];
-  state.productName = prod.name;
-
-  // Afficher les infos produit
-  document.getElementById('ttl-product').textContent = prod.name;
-  document.getElementById('co-name').textContent = prod.name;
-  document.getElementById('co-cat').textContent = prod.desc;
-
+  state.type = type;
+  document.getElementById('co-name').textContent = name;
+  document.getElementById('co-cat').textContent = type === 'robot' ? 'Expert Advisor MT4/MT5' : type;
   var priceEl = document.getElementById('co-price');
-  if(price === '0' || price === 'GRATUIT') {
-    priceEl.className = 'prod-price free';
-    priceEl.textContent = 'GRATUIT';
+  if(price === '0' || price === 'FREE'){
+    priceEl.className = 'prod-price fp'; priceEl.textContent = 'FREE';
   } else {
     priceEl.innerHTML = '<span class="ps">$</span>' + price;
   }
-
-  // Montants dans les méthodes de paiement
-  var amtDisplay = price === '0' ? 'GRATUIT' : '$' + price;
-  ['pp-amount','bn-amount','bp-amount'].forEach(function(id){
-    var el = document.getElementById(id);
-    if(el) el.textContent = amtDisplay;
-  });
-
-  // Note PayPal
-  var noteEl = document.getElementById('pp-note');
-  if(noteEl) noteEl.textContent = 'RTR - ' + prod.name.substring(0,20);
+  // Mettre le montant dans les méthodes de paiement
+  var amtDisplay = (price === '0') ? 'GRATUIT' : '$' + price;
+  ['pp-amt','bn-amt','bp-amt'].forEach(function(i){var el=document.getElementById(i);if(el)el.textContent=amtDisplay;});
+  document.getElementById('pp-note').textContent = 'RTR - ' + name.substring(0,25);
 })();
 
-/* ─── PAIEMENT SELECTION ─── */
-function selPay(method) {
+/* ════ PAIEMENT ════ */
+function selPay(method){
   state.pay = method;
   ['paypal','binance','bpay'].forEach(function(m){
-    document.getElementById('pm-'+m).classList.remove('sel');
-    document.getElementById(m === 'paypal' ? 'paypal' : m === 'binance' ? 'binance' : 'bpay' )+'-details';
+    document.getElementById('pmc-'+m).classList.remove('sel');
+    document.getElementById('pd-'+m).style.display = 'none';
   });
-  document.getElementById('pm-'+method).classList.add('sel');
-  ['paypal-details','binance-details','bpay-details'].forEach(function(id){ document.getElementById(id).style.display='none'; });
-  var map = {paypal:'paypal-details', binance:'binance-details', bpay:'bpay-details'};
-  document.getElementById(map[method]).style.display = 'block';
-  document.getElementById('btn-p1').disabled = false;
+  document.getElementById('pmc-'+method).classList.add('sel');
+  document.getElementById('pd-'+method).style.display = 'block';
+  document.getElementById('btn-1').disabled = false;
 }
 
-/* ─── COPY ─── */
-function copy(inputId, btn) {
+function doCopy(inputId, btn){
   var el = document.getElementById(inputId);
   navigator.clipboard.writeText(el.value).then(function(){
-    btn.textContent = '✓ Copié !';
-    btn.className = 'btn-copy copied';
-    setTimeout(function(){ btn.textContent = 'Copier'; btn.className = 'btn-copy'; }, 2000);
-  }).catch(function(){
-    el.select(); document.execCommand('copy');
-    btn.textContent = '✓ Copié !';
-    setTimeout(function(){ btn.textContent = 'Copier'; }, 2000);
-  });
+    btn.textContent = '✓ Copié'; btn.className = 'copy-btn c';
+    setTimeout(function(){ btn.textContent = 'Copier'; btn.className = 'copy-btn'; }, 2000);
+  }).catch(function(){ el.select(); document.execCommand('copy'); });
 }
 
-/* ─── PROOF FILE ─── */
-function onProof(input) {
-  var file = input.files[0];
-  if(!file) return;
+/* ════ PROOF ════ */
+function onProof(input){
+  var file = input.files[0]; if(!file) return;
   state.proofFile = file;
-  var zone = document.getElementById('proof-zone');
-  var name = document.getElementById('proof-name');
-  zone.classList.add('loaded');
-  name.textContent = '✅ ' + file.name;
-  name.style.display = 'block';
+  document.getElementById('proof-zone').classList.add('loaded');
+  var n = document.getElementById('proof-name');
+  n.textContent = '✅ ' + file.name; n.style.display = 'block';
   checkP2();
 }
 
-/* ─── VALIDATION P2 ─── */
-function checkP2() {
+/* ════ VALIDATION ════ */
+function checkP2(){
   var name = document.getElementById('cl-name').value.trim();
   var email = document.getElementById('cl-email').value.trim();
   var ref = document.getElementById('cl-ref').value.trim();
-  var valid = name.length > 1 && email.includes('@') && email.includes('.') && (state.proofFile || ref.length > 3);
-  document.getElementById('btn-p2').disabled = !valid;
+  document.getElementById('btn-2').disabled = !(name.length > 1 && email.includes('@') && email.includes('.') && (state.proofFile || ref.length > 3));
 }
 
-/* ─── NAVIGATION STEPS ─── */
-function goStep(n) {
+/* ════ NAVIGATION ════ */
+function goStep(n){
   for(var i=1;i<=4;i++){
     document.getElementById('panel-'+i).classList.remove('on');
-    var sn = document.getElementById('snav-'+i);
-    sn.classList.remove('on','done');
-    if(i < n) sn.classList.add('done');
+    var sb = document.getElementById('sn-'+i);
+    sb.classList.remove('on','done');
+    if(i < n) sb.classList.add('done');
   }
   document.getElementById('panel-'+n).classList.add('on');
-  document.getElementById('snav-'+n).classList.add('on');
-
-  if(n === 3) {
-    // Remplir récap
-    var payLabels = {paypal:'🅿️ PayPal', binance:'🟡 Binance USDT', bpay:'💛 Binance Pay'};
-    document.getElementById('recap-product').textContent = state.productName;
-    document.getElementById('recap-price').textContent = state.price === '0' ? 'GRATUIT' : '$' + state.price;
-    document.getElementById('recap-pay').textContent = payLabels[state.pay] || state.pay;
-    document.getElementById('recap-email').textContent = document.getElementById('cl-email').value;
-    document.getElementById('recap-proof').textContent = state.proofFile ? '✅ ' + state.proofFile.name : '✅ Référence: ' + document.getElementById('cl-ref').value;
-  }
+  document.getElementById('sn-'+n).classList.add('on');
+  if(n === 3) fillRecap();
   window.scrollTo({top:0, behavior:'smooth'});
 }
 
-/* ─── SUBMIT ─── */
-function submitOrder() {
-  var btn = document.getElementById('btn-p3');
+function fillRecap(){
+  var payLabels = {paypal:'🅿️ PayPal',binance:'🟡 Binance USDT',bpay:'💛 Binance Pay'};
+  document.getElementById('recap-product').textContent = state.productName;
+  document.getElementById('recap-price').textContent = state.price === '0' ? 'FREE' : '$' + state.price;
+  document.getElementById('recap-pay').textContent = payLabels[state.pay] || state.pay;
+  document.getElementById('recap-email').textContent = document.getElementById('cl-email').value;
+  document.getElementById('recap-proof').textContent = state.proofFile ? '✅ ' + state.proofFile.name : '✅ Réf: ' + document.getElementById('cl-ref').value;
+}
+
+/* ════ SUBMIT + EMAILJS ════ */
+function submitOrder(){
+  var btn = document.getElementById('btn-3');
   var loading = document.getElementById('loading');
   btn.disabled = true;
-  btn.textContent = '⏳ Envoi en cours...';
+  btn.textContent = '⏳ Envoi...';
   loading.style.display = 'block';
 
   var clientName = document.getElementById('cl-name').value.trim();
   var clientEmail = document.getElementById('cl-email').value.trim();
   var ref = document.getElementById('cl-ref').value.trim();
   var prod = PRODUCTS_LINKS[state.productId] || PRODUCTS_LINKS['1'];
-  var payLabels = {paypal:'PayPal (capor51@gmail.com)', binance:'Binance USDT TRC20', bpay:'Binance Pay ID 798651100'};
+  var payLabels = {paypal:'PayPal (capor51@gmail.com)',binance:'Binance USDT TRC20',bpay:'Binance Pay ID 798651100'};
 
-  // Paramètres pour le template EmailJS
   var templateParams = {
     client_name: clientName,
     client_email: clientEmail,
-    product_name: prod.name,
-    product_desc: prod.desc,
+    to_email: clientEmail,
+    product_name: state.productName,
     price: state.price === '0' ? 'GRATUIT' : '$' + state.price,
     payment_method: payLabels[state.pay] || state.pay,
-    payment_ref: ref || 'Screenshot joint',
-    download_link: prod.file,
-    guide_link: prod.guide,
-    to_email: clientEmail,
-    // Email de notification pour vous (Leo)
-    admin_email: 'capor51@gmail.com'
+    payment_ref: ref || (state.proofFile ? 'Screenshot: ' + state.proofFile.name : 'Voir justificatif'),
+    download_link: (prod && prod.file) ? prod.file : 'Lien envoyé par @salomonryn sous 24h',
+    guide_link: GUIDE_LINK,
+    admin_email: 'capor51@gmail.com',
   };
 
-  // Envoyer l'email via EmailJS
-  if(typeof emailjs !== 'undefined' && EMAILJS_PUBLIC_KEY !== 'VOTRE_PUBLIC_KEY') {
+  if(isEmailJSConfigured && typeof emailjs !== 'undefined'){
     emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
-      .then(function(response) {
-        console.log('EmailJS SUCCESS:', response.status);
-        showSuccess(clientName, clientEmail);
-      }, function(error) {
-        console.error('EmailJS FAILED:', error);
-        // Même en cas d'erreur EmailJS, on affiche le succès
-        // La preuve de paiement sera envoyée sur Telegram manuellement
-        showSuccess(clientName, clientEmail);
+      .then(function(r){
+        console.log('EmailJS SUCCESS', r.status);
+        showSuccess(clientEmail);
+      }, function(err){
+        console.error('EmailJS ERROR', err);
+        showSuccess(clientEmail); // Show success anyway, manual fallback
       });
   } else {
-    // Mode test (EmailJS pas encore configuré)
-    console.log('EmailJS pas configuré — mode test. Paramètres:', templateParams);
-    setTimeout(function(){ showSuccess(clientName, clientEmail); }, 1500);
+    // Mode manuel — pas encore configuré
+    setTimeout(function(){ showSuccess(clientEmail); }, 1500);
   }
 }
 
-function showSuccess(name, email) {
+function showSuccess(email){
   document.getElementById('loading').style.display = 'none';
-  document.getElementById('success-name').textContent = name;
   document.getElementById('success-email').textContent = email;
   goStep(4);
 }

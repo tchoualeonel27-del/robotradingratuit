@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Robots EA MT4/MT5 — RoboTradingRatuit</title>
+<title>Ebooks Forex — RoboTradingRatuit</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#04060c;--bg2:#0d1117;--bg3:#161b22;--bg4:#1c2330;--blue:#38bdf8;--blue2:#0ea5e9;--cyan:#67e8f9;--white:#f0f9ff;--text:#e2e8f0;--text2:#94a3b8;--text3:#475569;--green:#4ade80;--green2:#22c55e;--red:#f87171;--gold:#fcd34d;--orange:#fb923c;--purple:#c084fc;--purple2:#a855f7;--bd:rgba(56,189,248,.14);--bd2:rgba(56,189,248,.28);--fh:'Orbitron',sans-serif;--fb:'DM Sans',sans-serif;}
@@ -130,9 +130,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(4,6,12,.97);
   <div><div class="brand-nm">Robo<span>Trading</span>Ratuit</div></div>
   <div class="nav-links">
     <a href="index.html" id="t-nav-home">🏠 Accueil</a>
-    <a href="catalog-robots.html" class="on" id="t-nav-robots">🤖 Robots EA</a>
+    <a href="catalog-robots.html" id="t-nav-robots">🤖 Robots EA</a>
     <a href="catalog-indicators.html" id="t-nav-indics">📡 Indicateurs</a>
-    <a href="catalog-ebooks.html" id="t-nav-ebooks">📘 Ebooks</a>
+    <a href="catalog-ebooks.html" class="on" id="t-nav-ebooks">📘 Ebooks</a>
     <a href="acces-gratuit.html" id="t-nav-free" style="color:var(--green)">🎁 Gratuit</a>
   </div>
   <div class="nav-right">
@@ -145,7 +145,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(4,6,12,.97);
   <!-- BREADCRUMB -->
   <div class="bc">
     <a href="index.html" id="t-bc-home">Accueil</a><span>›</span>
-    <span id="t-bc-page" style="color:var(--white)">Robots EA</span>
+    <span id="t-bc-page" style="color:var(--white)">Ebooks</span>
   </div>
 
   <!-- PAGE HEADER -->
@@ -215,9 +215,9 @@ var TL = {
   fr:{
     't-nav-home':'🏠 Accueil','t-nav-robots':'🤖 Robots EA','t-nav-indics':'📡 Indicateurs',
     't-nav-ebooks':'📘 Ebooks','t-nav-free':'🎁 Gratuit',
-    't-bc-home':'Accueil','t-bc-page':'Robots EA',
-    't-page-h':'🤖 Robots EA MT4/MT5',
-    't-page-sub':'Classés par catégorie • Pagination • Plus de 10 000 produits à venir',
+    't-bc-home':'Accueil','t-bc-page':'Ebooks',
+    't-page-h':'📘 Ebooks PDF de Trading',
+    't-page-sub':'Formation Forex • SMC/ICT • Gestion du risque • Plus de 500 ebooks',
     't-plat-all':'Toutes plateformes',
     't-sort-def':'Défaut','t-sort-pa':'Prix ↑','t-sort-pd':'Prix ↓','t-sort-st':'Mieux notés',
     't-pm-s':'Choisissez votre mode de paiement','t-pm-btn':'💬 Envoyer justificatif @salomonryn',
@@ -232,9 +232,9 @@ var TL = {
   en:{
     't-nav-home':'🏠 Home','t-nav-robots':'🤖 EA Robots','t-nav-indics':'📡 Indicators',
     't-nav-ebooks':'📘 Ebooks','t-nav-free':'🎁 Free',
-    't-bc-home':'Home','t-bc-page':'EA Robots',
-    't-page-h':'🤖 EA Robots MT4/MT5',
-    't-page-sub':'Sorted by category • Paginated • 10,000+ products coming',
+    't-bc-home':'Home','t-bc-page':'Ebooks',
+    't-page-h':'📘 Trading PDF Ebooks',
+    't-page-sub':'Forex Training • SMC/ICT • Risk Management • 500+ ebooks coming',
     't-plat-all':'All platforms',
     't-sort-def':'Default','t-sort-pa':'Price ↑','t-sort-pd':'Price ↓','t-sort-st':'Top rated',
     't-pm-s':'Choose your payment method','t-pm-btn':'💬 Send proof @salomonryn',
@@ -265,7 +265,7 @@ function toggleLang(){curLang=curLang==='fr'?'en':'fr';localStorage.setItem('rtr
 var K='rtr_products';
 function getDB(){try{var d=localStorage.getItem(K);return d?JSON.parse(d):null;}catch(e){return null;}}
 var DB=getDB()||{};
-var ALL_ROBOTS=(DB.robots)||[
+var ALL_ROBOTS=(DB.ebooks||[]).map(function(e){return Object.assign({},e,{name:e.title||e.name,plat:e.cat||'PDF'});});var _dummy=null||[
   {id:1,name:'Gold Hunter V8',plat:'MT4/MT5',cat:'or',price:30,badge:'bs',free:false,stars:5,desc:'EA de référence pour XAUUSD. Détection des zones de liquidité, drawdown contrôlé.',img:'',imgs:[]},
   {id:2,name:'AI Gold Sniper MT4 V1.4',plat:'MT4',cat:'or',price:20,badge:'hot',free:false,stars:5,desc:'IA sniper sur l\'Or. Entrées chirurgicales XAUUSD haute précision.',img:'',imgs:[]},
   {id:3,name:'Dominant EA MT5',plat:'MT5',cat:'forex',price:50,oldPrice:299,badge:'sale',free:false,stars:5,desc:'EA complet 3 modes de risque. EUR/USD, GBP/USD, USD/JPY, XAU/USD.',img:'',imgs:[]},
@@ -282,12 +282,10 @@ var PER_PAGE = 12;
 /* ═══ CATÉGORIES ═══ */
 var CATS = [
   {key:'all',label_fr:'🌐 Tous',label_en:'🌐 All'},
-  {key:'or',label_fr:'🥇 Or/XAUUSD',label_en:'🥇 Gold/XAUUSD'},
-  {key:'forex',label_fr:'💱 Forex',label_en:'💱 Forex'},
-  {key:'prop',label_fr:'🏆 Prop Firms',label_en:'🏆 Prop Firms'},
-  {key:'indices',label_fr:'📈 Indices',label_en:'📈 Indices'},
-  {key:'crypto',label_fr:'₿ Crypto',label_en:'₿ Crypto'},
-  {key:'hft',label_fr:'⚡ HFT',label_en:'⚡ HFT'},
+  {key:'formation',label_fr:'📚 Formation Forex',label_en:'📚 Forex Training'},
+  {key:'smc',label_fr:'📐 SMC / ICT',label_en:'📐 SMC / ICT'},
+  {key:'ea',label_fr:'🤖 Automatisation EA',label_en:'🤖 EA Automation'},
+  {key:'risk',label_fr:'🛡️ Gestion risque',label_en:'🛡️ Risk Management'},
 ];
 
 function renderCats(){
