@@ -77,7 +77,19 @@ nav{position:fixed;top:34px;left:0;right:0;z-index:100;background:rgba(4,6,12,.9
 @keyframes bk{0%,100%{opacity:1;}50%{opacity:.15;}}
 
 /* ── HERO ── */
-.hero{margin-top:94px;background:linear-gradient(180deg,rgba(14,165,233,.04) 0%,transparent 100%);border-bottom:1px solid var(--bd);padding:56px 3.5% 48px;text-align:center;position:relative;overflow:hidden;}
+.hero{margin-top:94px;background:linear-gradient(180deg,rgba(14,165,233,.04) 0%,transparent 100%);border-bottom:1px solid var(--bd);padding:56px 3.5% 48px;text-align:center;position:relative;overflow:hidden;z-index:1;}
+
+/* ── HERO LOGO ORBIT ── */
+.hero-logo-wrap{display:flex;justify-content:center;margin-bottom:20px;position:relative;}
+.orbit-ring{position:absolute;top:50%;left:50%;border-radius:50%;border:1px solid rgba(56,189,248,.15);}
+.or1{width:170px;height:170px;margin-top:-85px;margin-left:-85px;animation:sp 20s linear infinite;}
+.or2{width:130px;height:130px;margin-top:-65px;margin-left:-65px;animation:sp 13s linear infinite reverse;}
+.or1::before{content:'';position:absolute;width:8px;height:8px;border-radius:50%;background:var(--blue);box-shadow:0 0 14px var(--blue);top:-4px;left:50%;transform:translateX(-50%);}
+.or2::before{content:'';position:absolute;width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan);bottom:-3px;left:50%;transform:translateX(-50%);}
+@keyframes sp{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
+.hero-logo-glow{position:absolute;top:50%;left:50%;width:120px;height:120px;margin-top:-60px;margin-left:-60px;border-radius:50%;background:radial-gradient(circle,rgba(56,189,248,.12),transparent 65%);pointer-events:none;}
+.hero-logo-img{width:90px;height:90px;border-radius:16px;object-fit:cover;border:2px solid rgba(56,189,248,.3);box-shadow:0 0 28px rgba(56,189,248,.18);position:relative;z-index:2;animation:hfl 4s ease-in-out infinite;}
+@keyframes hfl{0%,100%{transform:translateY(0);}50%{transform:translateY(-7px);}}
 .hero::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:700px;height:250px;background:radial-gradient(ellipse,rgba(56,189,248,.07),transparent 70%);pointer-events:none;}
 .hero-kicker{display:inline-flex;align-items:center;gap:7px;background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.26);color:var(--purple);padding:5px 15px;border-radius:20px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:18px;}
 .hero-kicker-dot{width:6px;height:6px;border-radius:50%;background:var(--purple);animation:bk 1.5s infinite;}
@@ -260,6 +272,9 @@ footer{background:var(--bg2);border-top:1px solid var(--bd2);padding:44px 3.5% 2
 </head>
 <body>
 
+<!-- CANVAS BOUGIES JAPONAISES -->
+<canvas id="cv" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;"></canvas>
+
 <a href="https://t.me/salomonryn" target="_blank" class="float-tg"><span class="fdot"></span>💬 Support</a>
 
 <!-- TICKER -->
@@ -341,6 +356,13 @@ footer{background:var(--bg2);border-top:1px solid var(--bd2);padding:44px 3.5% 2
 
 <!-- HERO -->
 <section class="hero">
+  <!-- LOGO AVEC ANIMATION ORBITALE -->
+  <div class="hero-logo-wrap">
+    <div class="orbit-ring or1"></div>
+    <div class="orbit-ring or2"></div>
+    <div class="hero-logo-glow"></div>
+    <img class="hero-logo-img" id="hero-logo-img" src="logo.jpg" alt="RoboTradingRatuit" onerror="this.outerHTML='<div style=\'width:90px;height:90px;border-radius:16px;background:linear-gradient(135deg,#070b14,#111827);border:2px solid rgba(56,189,248,.2);display:flex;align-items:center;justify-content:center;font-size:42px;position:relative;z-index:2;\'>🤖</div>'">
+  </div>
   <div class="hero-kicker"><span class="hero-kicker-dot"></span><span id="t-hero-kicker">Accès VIP Illimité · $200 Paiement Unique · À Vie</span></div>
   <h1 id="t-hero-h1"><span class="h1b">RoboTradingRatuit</span><br>Free Trading Tools</h1>
   <p class="hero-sub" id="t-hero-sub">Robots EA MT4/MT5, signaux Forex, indicateurs, ebooks. Téléchargements gratuits pour nos membres IB.</p>
@@ -814,6 +836,92 @@ document.querySelectorAll('.mvo').forEach(function(m){m.addEventListener('click'
 })();
 
 /* ═══ INIT ═══ */
+/* ═══ LOGO HERO SYNC ═══ */
+(function(){
+  var saved = localStorage.getItem('rtr_logo');
+  if(saved){
+    var els = [document.getElementById('nav-logo'), document.getElementById('hero-logo-img')];
+    els.forEach(function(el){if(el){el.src=saved;el.style.display='block';}});
+  }
+})();
+
+/* ═══ BOUGIES JAPONAISES ═══ */
+(function(){
+  var cv = document.getElementById('cv');
+  if(!cv) return;
+  var ctx = cv.getContext('2d');
+  var W, H, cs = [];
+
+  function rsz(){
+    W = cv.width = window.innerWidth;
+    H = cv.height = window.innerHeight;
+  }
+  window.addEventListener('resize', rsz);
+  rsz();
+
+  function mkCandle(y0){
+    var up = Math.random() > 0.42;
+    return {
+      x: 20 + Math.random() * (W - 40),
+      y: y0 !== undefined ? y0 : H + 30,
+      th: 50 + Math.random() * 110,   // hauteur mèche totale
+      bh: 18 + Math.random() * 55,    // hauteur corps
+      bw: 6  + Math.random() * 9,     // largeur corps
+      up: up,
+      sp: 0.4 + Math.random() * 0.75, // vitesse
+      al: 0,                           // opacité actuelle
+      as: 0.003 + Math.random() * 0.006 // vitesse apparition
+    };
+  }
+
+  // Pré-peupler l'écran
+  for(var i = 0; i < 50; i++){
+    var c = mkCandle(Math.random() * H);
+    c.al = Math.random() * 0.38; // opacité réduite
+    cs.push(c);
+  }
+
+  function draw(){
+    ctx.clearRect(0, 0, W, H);
+
+    // Ajouter de nouvelles bougies
+    if(cs.length < 60 && Math.random() < 0.055) cs.push(mkCandle());
+
+    // Supprimer les bougies sorties de l'écran
+    cs = cs.filter(function(c){ return c.y + c.th > -20; });
+
+    cs.forEach(function(c){
+      c.y -= c.sp;
+      // Opacité max réduite à 0.42 pour un effet subtil
+      if(c.al < 0.42) c.al = Math.min(0.42, c.al + c.as);
+
+      var col = c.up ? '#4ade80' : '#f87171';
+      ctx.globalAlpha = c.al;
+      ctx.strokeStyle = col;
+      ctx.lineWidth = 1.2;
+      ctx.shadowColor = col;
+      ctx.shadowBlur = 5;
+
+      // Mèche
+      ctx.beginPath();
+      ctx.moveTo(c.x, c.y);
+      ctx.lineTo(c.x, c.y + c.th);
+      ctx.stroke();
+
+      // Corps
+      var by = c.y + (c.th - c.bh) / 2;
+      ctx.fillStyle = col;
+      ctx.shadowBlur = 9;
+      ctx.fillRect(c.x - c.bw / 2, by, c.bw, c.bh);
+      ctx.shadowBlur = 0;
+    });
+
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
 applyLang();
 renderFeat();
 setCounts();
