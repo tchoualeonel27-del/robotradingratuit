@@ -1,46 +1,819 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-  <title>Dashboard</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Admin — RoboTradingRatuit</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#04060c;--bg2:#0d1117;--bg3:#161b22;--bg4:#1c2330;--blue:#38bdf8;--blue2:#0ea5e9;--cyan:#67e8f9;--white:#f0f9ff;--text:#e2e8f0;--text2:#94a3b8;--text3:#475569;--green:#4ade80;--green2:#22c55e;--red:#f87171;--gold:#fcd34d;--orange:#fb923c;--purple:#c084fc;--bd:rgba(56,189,248,.14);--bd2:rgba(56,189,248,.30);--fh:'Orbitron',sans-serif;--fb:'DM Sans',sans-serif;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);min-height:100vh;display:flex;}
+::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-thumb{background:var(--blue2);}
+a{text-decoration:none;color:inherit;}button{cursor:pointer;font-family:var(--fb);}
+/* LOGIN */
+#LS{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;align-items:center;justify-content:center;}
+.lb{background:var(--bg2);border:1px solid var(--bd2);border-radius:16px;padding:40px;width:360px;text-align:center;}
+.lb-logo{width:80px;height:80px;border-radius:14px;object-fit:cover;margin:0 auto 14px;border:2px solid var(--bd2);display:block;}
+.lb h2{font-family:var(--fh);font-size:14px;color:var(--white);margin-bottom:4px;}
+.lb p{font-size:12px;color:var(--text2);margin-bottom:20px;}
+.li{width:100%;background:var(--bg3);border:1px solid var(--bd2);color:var(--white);padding:12px;border-radius:9px;font-size:14px;font-family:var(--fb);outline:none;margin-bottom:10px;display:block;}
+.li:focus{border-color:var(--blue);}
+.li::placeholder{color:var(--text3);}
+.lbtn{width:100%;background:linear-gradient(135deg,var(--blue2),#0369a1);color:#fff;border:none;padding:13px;border-radius:9px;font-size:14px;font-weight:700;}
+.lerr{color:var(--red);font-size:12px;margin-bottom:8px;display:none;}
+/* SIDEBAR */
+.sb{width:226px;min-height:100vh;background:var(--bg2);border-right:1px solid var(--bd);display:flex;flex-direction:column;position:fixed;top:0;left:0;z-index:50;}
+.mn{margin-left:226px;flex:1;min-height:100vh;}
+.sb-top{padding:14px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:9px;}
+.sb-logo{width:34px;height:34px;border-radius:8px;object-fit:cover;border:1px solid var(--bd2);}
+.sb-nm{font-family:var(--fh);font-size:10px;font-weight:900;color:var(--white);}
+.sb-nm span{color:var(--blue);}
+.sb-dot{width:7px;height:7px;border-radius:50%;background:var(--green);margin-left:auto;animation:bk 1.5s infinite;}
+@keyframes bk{0%,100%{opacity:1;}50%{opacity:.2;}}
+.sbnav{flex:1;padding:8px 0;overflow-y:auto;}
+.sbg{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--text3);padding:10px 14px 3px;}
+.sbi{display:flex;align-items:center;gap:9px;padding:10px 14px;font-size:13px;font-weight:500;color:var(--text2);cursor:pointer;border-left:3px solid transparent;transition:all .15s;}
+.sbi:hover,.sbi.on{color:var(--blue);background:rgba(56,189,248,.07);border-left-color:var(--blue);}
+.sbi i{font-size:15px;width:18px;text-align:center;font-style:normal;}
+.sb-cnt{margin-left:auto;background:var(--blue2);color:#000;font-size:9px;font-weight:700;padding:1px 6px;border-radius:10px;}
+.sb-bot{padding:11px 14px;border-top:1px solid var(--bd);display:flex;align-items:center;gap:9px;}
+.sb-av{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--blue2),var(--cyan));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:#000;}
+.sb-name{font-size:12px;font-weight:600;color:var(--white);}
+.btn-lo{background:transparent;border:1px solid rgba(248,113,113,.3);color:var(--red);padding:3px 8px;border-radius:5px;font-size:10px;cursor:pointer;margin-left:auto;}
+/* TOPBAR */
+.tb{background:var(--bg2);border-bottom:1px solid var(--bd);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:40;}
+.tb-ttl{font-family:var(--fh);font-size:12px;font-weight:700;color:var(--white);}
+.tb-r{display:flex;align-items:center;gap:10px;}
+.tb-time{font-size:11px;color:var(--text2);}
+.btn-site{background:linear-gradient(135deg,var(--green2),#15803d);color:#000;border:none;padding:6px 14px;border-radius:6px;font-size:11px;font-weight:700;text-decoration:none;display:inline-block;}
+/* PAGES */
+.pg{display:none;padding:20px;}.pg.on{display:block;}
+/* CARD */
+.card{background:var(--bg2);border:1px solid var(--bd);border-radius:11px;margin-bottom:16px;}
+.card-hd{padding:12px 17px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;}
+.card-ttl{font-family:var(--fh);font-size:11px;font-weight:700;color:var(--white);}
+.card-bd{padding:17px;}
+/* TABLE */
+.tbl{width:100%;border-collapse:collapse;}
+.tbl th{text-align:left;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3);padding:8px 11px;border-bottom:1px solid var(--bd);background:rgba(255,255,255,.02);}
+.tbl td{padding:10px 11px;font-size:12.5px;border-bottom:1px solid rgba(56,189,248,.04);vertical-align:middle;}
+.tbl tr:hover td{background:rgba(56,189,248,.02);}
+.tbl tr:last-child td{border-bottom:none;}
+.tw{overflow-x:auto;}
+/* THUMB */
+.tthumb{width:46px;height:46px;border-radius:8px;overflow:hidden;border:1px solid var(--bd);background:var(--bg3);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.tthumb img{width:100%;height:100%;object-fit:cover;}
+/* BUTTONS */
+.btn{border:none;padding:8px 14px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--fb);transition:all .2s;display:inline-flex;align-items:center;gap:5px;}
+.btn:hover{transform:translateY(-1px);}
+.b-blue{background:linear-gradient(135deg,var(--blue2),#0369a1);color:#fff;}
+.b-green{background:linear-gradient(135deg,var(--green2),#15803d);color:#000;}
+.b-edit{background:rgba(56,189,248,.1);border:1px solid var(--bd2);color:var(--blue);padding:5px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;}
+.b-del{background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.2);color:var(--red);padding:5px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;}
+.b-save{background:linear-gradient(135deg,var(--blue2),#0369a1);color:#fff;border:none;padding:11px 20px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;}
+.b-save:hover{box-shadow:0 4px 16px rgba(14,165,233,.45);}
+.b-cancel{background:transparent;border:1px solid var(--bd2);color:var(--text2);padding:11px 16px;border-radius:8px;font-size:13px;cursor:pointer;}
+/* FORM */
+.fg{margin-bottom:14px;}
+.fg label{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text2);margin-bottom:4px;}
+.fi,.fsel,.fta{width:100%;background:var(--bg3);border:1px solid var(--bd2);color:var(--white);padding:10px 12px;border-radius:8px;font-size:13px;font-family:var(--fb);outline:none;transition:border-color .2s;}
+.fi:focus,.fsel:focus,.fta:focus{border-color:var(--blue);}
+.fi::placeholder,.fta::placeholder{color:var(--text3);}
+.fta{resize:vertical;min-height:70px;}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.fsel option{background:var(--bg3);}
+/* METRICS */
+.mets{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-bottom:18px;}
+.met{background:var(--bg2);border:1px solid var(--bd);border-radius:10px;padding:14px;}
+.met-i{font-size:20px;margin-bottom:5px;}
+.met-v{font-family:var(--fh);font-size:22px;font-weight:700;color:var(--blue);}
+.met-l{font-size:10px;color:var(--text2);margin-top:2px;text-transform:uppercase;letter-spacing:1px;}
+/* BADGES */
+.bv{display:inline-block;padding:2px 8px;border-radius:4px;font-size:9px;font-weight:700;text-transform:uppercase;}
+.bv-g{background:rgba(74,222,128,.12);color:var(--green);border:1px solid rgba(74,222,128,.22);}
+.bv-b{background:rgba(56,189,248,.12);color:var(--blue);border:1px solid rgba(56,189,248,.22);}
+.bv-r{background:rgba(248,113,113,.1);color:var(--red);border:1px solid rgba(248,113,113,.2);}
+.bv-go{background:rgba(252,211,77,.1);color:var(--gold);border:1px solid rgba(252,211,77,.2);}
+.bv-o{background:rgba(251,146,60,.1);color:var(--orange);border:1px solid rgba(251,146,60,.2);}
+.bv-p{background:rgba(192,132,252,.1);color:var(--purple);border:1px solid rgba(192,132,252,.2);}
+/* TOGGLE */
+.tgw{display:flex;align-items:center;gap:9px;margin-top:6px;}
+.tg{position:relative;width:36px;height:20px;cursor:pointer;}
+.tg input{opacity:0;width:0;height:0;position:absolute;}
+.tsl{position:absolute;inset:0;background:var(--bg4);border-radius:10px;border:1px solid var(--bd2);}
+.tsl::before{content:'';position:absolute;width:14px;height:14px;border-radius:50%;background:var(--text3);bottom:2px;left:2px;transition:all .2s;}
+.tg input:checked+.tsl{background:rgba(74,222,128,.18);border-color:var(--green);}
+.tg input:checked+.tsl::before{transform:translateX(16px);background:var(--green);}
+/* PHOTO SYSTEM */
+.photo-bloc{background:var(--bg3);border:1px solid var(--bd2);border-radius:11px;padding:16px;margin-top:8px;}
+.photo-bloc-title{font-size:12px;font-weight:700;color:var(--white);margin-bottom:13px;padding-bottom:10px;border-bottom:1px solid var(--bd);}
+/* Main cover */
+.cover-preview{width:100%;height:170px;border-radius:10px;background:var(--bg4);border:2px dashed var(--bd2);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:7px;margin-bottom:10px;transition:border-color .2s;}
+.cover-preview:hover{border-color:var(--blue);}
+.cover-preview.loaded{border-style:solid;border-color:var(--blue);}
+.cover-preview img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none;}
+.cover-preview.loaded img{display:block;}
+.cover-preview .cp-ph{font-size:30px;color:var(--text3);}
+.cover-preview .cp-lbl{font-size:12px;color:var(--text3);}
+.cover-preview .cp-ov{position:absolute;inset:0;background:rgba(0,0,0,.75);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;opacity:0;transition:opacity .2s;cursor:pointer;}
+.cover-preview.loaded:hover .cp-ov{opacity:1;}
+.cover-preview .cp-ov span{color:#fff;font-size:12px;font-weight:700;}
+.cp-del{position:absolute;top:7px;right:7px;background:rgba(248,113,113,.92);color:#fff;border:none;border-radius:6px;width:24px;height:24px;font-size:11px;cursor:pointer;display:none;align-items:center;justify-content:center;z-index:3;}
+.cover-preview.loaded .cp-del{display:flex;}
+/* Gallery */
+.gal-slots{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin-bottom:9px;}
+.gs{aspect-ratio:1;border-radius:8px;border:2px dashed var(--bd2);background:var(--bg4);position:relative;overflow:hidden;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:3px;transition:border-color .2s;}
+.gs:hover{border-color:var(--blue);}
+.gs.loaded{border-style:solid;border-color:rgba(56,189,248,.4);}
+.gs img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none;}
+.gs.loaded img{display:block;}
+.gs .gs-ico{font-size:14px;color:var(--text3);}
+.gs .gs-n{font-size:8px;color:var(--text3);font-weight:700;}
+.gs .gs-del{position:absolute;top:3px;right:3px;background:rgba(248,113,113,.92);color:#fff;border:none;border-radius:4px;width:17px;height:17px;font-size:10px;cursor:pointer;display:none;align-items:center;justify-content:center;z-index:3;}
+.gs.loaded .gs-del{display:flex;}
+/* Upload button */
+.upload-btn{display:inline-flex;align-items:center;gap:7px;background:linear-gradient(135deg,var(--blue2),#0369a1);color:#fff;padding:9px 16px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;border:none;}
+.upload-btn.secondary{background:rgba(56,189,248,.1);border:1px solid var(--bd2);color:var(--blue);}
+.photo-tip{font-size:11px;color:var(--text3);padding:9px 12px;background:rgba(56,189,248,.04);border-left:3px solid var(--blue2);border-radius:0 7px 7px 0;line-height:1.7;margin-top:8px;}
+.photo-tip b{color:var(--text2);}
+/* MODAL */
+.mvo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:500;align-items:center;justify-content:center;padding:14px;backdrop-filter:blur(5px);}
+.mvo.on{display:flex;}
+.mpan{background:var(--bg2);border:1px solid var(--bd2);border-radius:14px;width:100%;max-width:660px;max-height:94vh;overflow-y:auto;display:flex;flex-direction:column;}
+.mhd{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--bd);flex-shrink:0;}
+.mhd h3{font-family:var(--fh);font-size:12px;font-weight:700;color:var(--white);}
+.mcls{background:transparent;border:1px solid var(--bd2);color:var(--text2);width:27px;height:27px;border-radius:7px;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;}
+.mcls:hover{border-color:var(--red);color:var(--red);}
+.mbdy{padding:17px;flex:1;}
+.mft{padding:12px 18px;border-top:1px solid var(--bd);display:flex;gap:8px;justify-content:flex-end;flex-shrink:0;}
+/* NOTIF */
+.notif{position:fixed;top:14px;right:14px;z-index:9999;padding:11px 16px;border-radius:9px;font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px;animation:sI .3s ease;max-width:320px;box-shadow:0 8px 26px rgba(0,0,0,.5);}
+@keyframes sI{from{transform:translateX(100%);opacity:0;}to{transform:translateX(0);opacity:1;}}
+.n-ok{background:#040d08;border:1px solid rgba(74,222,128,.28);color:var(--green);}
+.n-err{background:#0d0408;border:1px solid rgba(248,113,113,.28);color:var(--red);}
+.n-inf{background:#04080d;border:1px solid rgba(56,189,248,.28);color:var(--blue);}
+@media(max-width:900px){.sb{width:52px;}.sbi span:not(i){display:none;}.sb-top .sb-nm,.sbg,.sb-name,.btn-lo{display:none;}.mn{margin-left:52px;}.mets{grid-template-columns:1fr 1fr;}.frow{grid-template-columns:1fr;}.gal-slots{grid-template-columns:repeat(3,1fr);}}
+</style>
 </head>
 <body>
 
-<h1>Ajouter produit</h1>
+<!-- LOGIN -->
+<div id="LS">
+  <div class="lb">
+    <img class="lb-logo" src="logo.jpg" alt="Logo" onerror="this.style.display='none'">
+    <h2>RoboTradingRatuit</h2>
+    <p>Tableau de bord administration</p>
+    <div class="lerr" id="lerr">❌ Identifiants incorrects</div>
+    <input type="text" class="li" id="lu" placeholder="Identifiant">
+    <input type="password" class="li" id="lp" placeholder="Mot de passe" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="lbtn" onclick="doLogin()">Accéder →</button>
+  </div>
+</div>
 
-<input id="name" placeholder="Nom"><br>
-<input id="price" placeholder="Prix"><br>
-<input id="image" placeholder="Lien image"><br>
-<input id="description" placeholder="Description"><br>
+<!-- SIDEBAR -->
+<aside class="sb">
+  <div class="sb-top">
+    <img class="sb-logo" id="sb-logo" src="logo.jpg" alt="Logo" onerror="this.style.display='none'">
+    <div class="sb-nm">RTR <span>Admin</span></div>
+    <span class="sb-dot"></span>
+  </div>
+  <nav class="sbnav">
+    <div class="sbg">Principal</div>
+    <div class="sbi on" onclick="gp('dash',this)"><i>📊</i><span>Dashboard</span></div>
+    <div class="sbi" onclick="gp('all',this)"><i>📦</i><span>Tous les produits</span><span class="sb-cnt" id="bdg-all">0</span></div>
+    <div class="sbg">Catégories</div>
+    <div class="sbi" onclick="gp('robots',this)"><i>🤖</i><span>Robots EA</span><span class="sb-cnt" id="bdg-r">0</span></div>
+    <div class="sbi" onclick="gp('indics',this)"><i>📡</i><span>Indicateurs</span></div>
+    <div class="sbi" onclick="gp('systems',this)"><i>⚙️</i><span>Systèmes</span></div>
+    <div class="sbi" onclick="gp('ebooks',this)"><i>📘</i><span>Ebooks</span></div>
+    <div class="sbi" onclick="gp('videos',this)"><i>📺</i><span>Vidéos</span></div>
+    <div class="sbg">Site</div>
+    <div class="sbi" onclick="gp('settings',this)"><i>⚙️</i><span>Paramètres</span></div>
+  </nav>
+  <div class="sb-bot">
+    <div class="sb-av">L</div>
+    <div class="sb-name">Leo — Admin</div>
+    <button class="btn-lo" onclick="doLogout()">⏏</button>
+  </div>
+</aside>
 
-<button onclick="addProduct()">Ajouter</button>
+<!-- MAIN -->
+<div class="mn">
+  <header class="tb">
+    <div class="tb-ttl" id="PT">📊 Dashboard</div>
+    <div class="tb-r">
+      <span class="tb-time" id="CLK"></span>
+      <a href="index.html" target="_blank" class="btn-site">🌐 Voir le site</a>
+    </div>
+  </header>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
-import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
+  <!-- DASHBOARD -->
+  <div class="pg on" id="pg-dash">
+    <div class="mets">
+      <div class="met"><div class="met-i">🤖</div><div class="met-v" id="m-r">0</div><div class="met-l">Robots EA</div></div>
+      <div class="met"><div class="met-i">📡</div><div class="met-v" id="m-i">0</div><div class="met-l">Indicateurs</div></div>
+      <div class="met"><div class="met-i">📘</div><div class="met-v" id="m-e">0</div><div class="met-l">Ebooks</div></div>
+      <div class="met"><div class="met-i">💰</div><div class="met-v">$200</div><div class="met-l">VIP</div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+      <div class="card">
+        <div class="card-hd"><div class="card-ttl">⚡ Actions rapides</div></div>
+        <div class="card-bd" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+          <button class="btn b-blue" onclick="newProd('r')">➕ Robot EA</button>
+          <button class="btn b-blue" onclick="newProd('i')">➕ Indicateur</button>
+          <button class="btn b-blue" onclick="newProd('s')">➕ Système</button>
+          <button class="btn b-blue" onclick="newProd('e')">➕ Ebook</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-hd"><div class="card-ttl">📋 Info</div></div>
+        <div class="card-bd">
+          <p style="font-size:12px;color:var(--text2);line-height:1.75;">Vos produits et photos sont sauvegardés dans ce navigateur. Ils s'affichent sur le site sur <strong style="color:var(--white)">cet appareil</strong>.</p>
+          <a href="https://t.me/salomonryn" target="_blank" style="display:inline-block;margin-top:10px;font-size:12px;color:var(--blue);">💬 @salomonryn</a>
+        </div>
+      </div>
+    </div>
+  </div>
 
-const firebaseConfig = {
-  apiKey: "AIzaSyBx8rLULk1o9TT1SJa7d9O5pHrJHMC_Aos",
-  authDomain: "robotrading-e1bfa.firebaseapp.com",
-  projectId: "robotrading-e1bfa",
-  storageBucket: "robotrading-e1bfa.firebasestorage.app",
-  messagingSenderId: "915826841078",
-  appId: "1:915826841078:web:4e722f035d5e4f05c6a3d7"
-};
+  <!-- ALL PRODUCTS -->
+  <div class="pg" id="pg-all">
+    <div class="card">
+      <div class="card-hd"><div class="card-ttl">📦 Tous les produits</div><div style="display:flex;gap:7px;"><button class="btn b-blue" onclick="newProd('r')">➕ Robot</button><button class="btn b-blue" onclick="newProd('e')">➕ Ebook</button></div></div>
+      <div class="card-bd">
+        <input type="text" style="width:100%;background:var(--bg3);border:1px solid var(--bd2);color:var(--white);padding:9px 12px;border-radius:8px;font-size:12px;font-family:var(--fb);outline:none;margin-bottom:13px;" placeholder="🔍 Rechercher..." oninput="rAllTable(this.value)">
+        <div class="tw"><table class="tbl"><thead><tr><th>Photo</th><th>Nom</th><th>Type</th><th>Prix</th><th>Actions</th></tr></thead><tbody id="TB-all"></tbody></table></div>
+      </div>
+    </div>
+  </div>
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+  <!-- ROBOTS -->
+  <div class="pg" id="pg-robots">
+    <div class="card">
+      <div class="card-hd"><div class="card-ttl">🤖 Robots EA</div><button class="btn b-blue" onclick="newProd('r')">➕ Nouveau Robot</button></div>
+      <div class="card-bd"><div class="tw"><table class="tbl"><thead><tr><th>Photo</th><th>Nom</th><th>Plateforme</th><th>Catégorie</th><th>Prix</th><th>Actions</th></tr></thead><tbody id="TB-r"></tbody></table></div></div>
+    </div>
+  </div>
 
-window.addProduct = async function () {
-  await addDoc(collection(db, "products"), {
-    name: document.getElementById("name").value,
-    price: Number(document.getElementById("price").value),
-    image: document.getElementById("image").value,
-    description: document.getElementById("description").value
+  <!-- INDICATEURS -->
+  <div class="pg" id="pg-indics">
+    <div class="card">
+      <div class="card-hd"><div class="card-ttl">📡 Indicateurs</div><button class="btn b-blue" onclick="newProd('i')">➕ Nouveau</button></div>
+      <div class="card-bd"><div class="tw"><table class="tbl"><thead><tr><th>Photo</th><th>Nom</th><th>Plateforme</th><th>Prix</th><th>Actions</th></tr></thead><tbody id="TB-i"></tbody></table></div></div>
+    </div>
+  </div>
+
+  <!-- SYSTÈMES -->
+  <div class="pg" id="pg-systems">
+    <div class="card">
+      <div class="card-hd"><div class="card-ttl">⚙️ Systèmes</div><button class="btn b-blue" onclick="newProd('s')">➕ Nouveau</button></div>
+      <div class="card-bd"><div class="tw"><table class="tbl"><thead><tr><th>Photo</th><th>Nom</th><th>Plateforme</th><th>Prix</th><th>Actions</th></tr></thead><tbody id="TB-s"></tbody></table></div></div>
+    </div>
+  </div>
+
+  <!-- EBOOKS -->
+  <div class="pg" id="pg-ebooks">
+    <div class="card">
+      <div class="card-hd"><div class="card-ttl">📘 Ebooks</div><button class="btn b-blue" onclick="newProd('e')">➕ Nouveau</button></div>
+      <div class="card-bd"><div class="tw"><table class="tbl"><thead><tr><th>Photo</th><th>Titre</th><th>Catégorie</th><th>Prix</th><th>Actions</th></tr></thead><tbody id="TB-e"></tbody></table></div></div>
+    </div>
+  </div>
+
+  <!-- VIDÉOS -->
+  <div class="pg" id="pg-videos">
+    <div class="card">
+      <div class="card-hd"><div class="card-ttl">📺 Vidéos</div><button class="btn b-blue" onclick="openMod('mv')">➕ Ajouter</button></div>
+      <div class="card-bd"><div class="tw"><table class="tbl"><thead><tr><th>Titre</th><th>Lien</th><th>Durée</th><th>Actions</th></tr></thead><tbody id="TB-v"></tbody></table></div></div>
+    </div>
+  </div>
+
+  <!-- PARAMÈTRES -->
+  <div class="pg" id="pg-settings">
+    <div class="card">
+      <div class="card-hd"><div class="card-ttl">⚙️ Paramètres</div></div>
+      <div class="card-bd">
+        <div class="frow"><div class="fg"><label>Telegram Signaux</label><input class="fi" value="https://t.me/lementorforexgroup"></div><div class="fg"><label>Telegram Support</label><input class="fi" value="https://t.me/salomonryn"></div></div>
+        <div class="frow"><div class="fg"><label>PayPal</label><input class="fi" value="capor51@gmail.com"></div><div class="fg"><label>Binance Pay ID</label><input class="fi" value="798651100"></div></div>
+        <button class="b-save" onclick="notify('Paramètres sauvegardés','n-ok')">💾 Sauvegarder</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL PRODUIT ══ -->
+<div class="mvo" id="m-prod">
+<div class="mpan">
+  <div class="mhd"><h3 id="mp-ttl">Nouveau produit</h3><button class="mcls" onclick="closeMod('m-prod')">✕</button></div>
+  <div class="mbdy">
+    <div class="frow">
+      <div class="fg"><label id="mp-nm-lbl">Nom *</label><input class="fi" id="mp-name" placeholder="Gold Hunter V8 EA MT5"></div>
+      <div class="fg"><label>Prix ($) — 0 = Gratuit</label><input type="number" class="fi" id="mp-price" placeholder="30" min="0"></div>
+    </div>
+    <div class="frow">
+      <div class="fg"><label>Prix barré ($)</label><input type="number" class="fi" id="mp-oldprice" placeholder="299 — vide si aucun"></div>
+      <div class="fg" id="mp-plat-fg"><label>Plateforme</label><select class="fsel" id="mp-plat"><option>MT4/MT5</option><option>MT5</option><option>MT4</option><option>TradingView</option></select></div>
+    </div>
+    <div class="frow">
+      <div class="fg" id="mp-cat-fg"><label>Catégorie</label><select class="fsel" id="mp-cat"><option value="or">🥇 Or / XAUUSD</option><option value="forex">💱 Forex</option><option value="prop">🏆 Prop Firms</option><option value="indices">📈 Indices</option><option value="crypto">₿ Crypto</option><option value="hft">⚡ HFT</option></select></div>
+      <div class="fg" id="mp-badge-fg"><label>Badge</label><select class="fsel" id="mp-badge"><option value="">Aucun</option><option value="bs">⭐ Best Seller</option><option value="hot">🔥 Hot</option><option value="sale">% Promo</option><option value="prop">🏆 Prop</option></select></div>
+    </div>
+    <div class="fg"><label>Description *</label><textarea class="fta" id="mp-desc" placeholder="Description attrayante..."></textarea></div>
+    <div class="fg" id="mp-feats-fg"><label>Caractéristiques (une par ligne)</label><textarea class="fta" id="mp-feats" placeholder="XAUUSD optimisé&#10;Drawdown max 12%&#10;No DLL requis"></textarea></div>
+    <div class="frow">
+      <div class="fg"><label>Note</label><select class="fsel" id="mp-stars"><option value="5">★★★★★</option><option value="4" selected>★★★★☆</option><option value="3">★★★☆☆</option></select></div>
+      <div class="fg"><label>Gratuit ?</label><div class="tgw" style="margin-top:9px;"><label class="tg"><input type="checkbox" id="mp-free"><span class="tsl"></span></label><span style="font-size:12px;color:var(--text2);">Téléchargement gratuit</span></div></div>
+    </div>
+
+    <!-- PHOTOS -->
+    <div class="photo-bloc">
+      <div class="photo-bloc-title">📸 Photos du produit — 1 principale + 5 de description</div>
+
+      <!-- PHOTO PRINCIPALE -->
+      <div class="fg">
+        <label>Photo principale (affichée dans le catalogue)</label>
+        <div class="cover-preview" id="cv-main">
+          <img id="cv-main-img" src="" alt="">
+          <div class="cp-ph">🖼️</div>
+          <div class="cp-lbl">Cliquer pour choisir</div>
+          <div class="cp-ov" onclick="document.getElementById('pf-main').click()"><span>📷 Changer la photo</span></div>
+          <button class="cp-del" onclick="event.stopPropagation();clearMain()">✕</button>
+        </div>
+        <input type="file" id="pf-main" accept="image/*" style="display:none" onchange="onMainFile(this)">
+        <div style="display:flex;gap:8px;margin-top:8px;">
+          <label class="upload-btn" style="cursor:pointer;">
+            📁 Choisir depuis mon appareil
+            <input type="file" accept="image/*" style="display:none" onchange="onMainFile(this)">
+          </label>
+        </div>
+        <div class="photo-tip"><b>💡 Fonctionnement :</b> Choisissez votre photo → elle s'affiche en aperçu → Enregistrez. La photo est compressée automatiquement et stockée. Elle apparaîtra dans le catalogue.</div>
+      </div>
+
+      <!-- GALERIE 5 PHOTOS -->
+      <div class="fg" style="margin-bottom:0;">
+        <label>Photos de description — backtests, performances, captures MT4/MT5</label>
+        <div class="gal-slots" id="gal-slots"></div>
+        <div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap;">
+          <label class="upload-btn secondary" style="cursor:pointer;">
+            📁 Ajouter des photos (plusieurs à la fois)
+            <input type="file" accept="image/*" multiple style="display:none" onchange="onGalFiles(this)">
+          </label>
+        </div>
+        <div class="photo-tip" style="margin-top:7px;">Cliquez sur une case numérotée pour changer une photo. Cliquez sur ✕ pour supprimer.</div>
+      </div>
+    </div>
+  </div>
+  <div class="mft">
+    <button class="b-cancel" onclick="closeMod('m-prod')">Annuler</button>
+    <button class="b-save" onclick="saveProd()">💾 Enregistrer le produit</button>
+  </div>
+</div>
+</div>
+
+<!-- MODAL VIDÉO -->
+<div class="mvo" id="mv">
+<div class="mpan" style="max-width:500px;">
+  <div class="mhd"><h3>📺 Vidéo</h3><button class="mcls" onclick="closeMod('mv')">✕</button></div>
+  <div class="mbdy">
+    <div class="fg"><label>Titre *</label><input class="fi" id="v-t" placeholder="Comment installer un EA..."></div>
+    <div class="fg"><label>Lien YouTube *</label><input class="fi" id="v-u" placeholder="https://youtube.com/watch?v=..."></div>
+    <div class="frow"><div class="fg"><label>Durée</label><input class="fi" id="v-d" placeholder="12:34"></div><div class="fg"><label>Catégorie</label><select class="fsel" id="v-c"><option>Installation EA</option><option>Stratégie</option><option>Analyse</option></select></div></div>
+  </div>
+  <div class="mft"><button class="b-cancel" onclick="closeMod('mv')">Annuler</button><button class="b-save" onclick="saveVid()">💾</button></div>
+</div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════════════
+   STOCKAGE HYBRIDE:
+   - Données produits → localStorage (texte léger)
+   - Images → IndexedDB (supporte les grandes images)
+   
+   IndexedDB = comme une vraie base de données dans
+   votre navigateur. Pas de limite de taille.
+   Les données PERSISTENT entre les sessions.
+══════════════════════════════════════════════════ */
+
+var DB_NAME = 'RoboTradingRatuit';
+var DB_VER = 1;
+var STORE_IMAGES = 'images';
+var STORE_PRODUCTS = 'products';
+var idb = null; // IndexedDB instance
+
+/* ── OPEN INDEXEDDB ── */
+function openIDB(cb){
+  if(idb){cb(idb);return;}
+  var req = indexedDB.open(DB_NAME, DB_VER);
+  req.onupgradeneeded = function(e){
+    var db = e.target.result;
+    if(!db.objectStoreNames.contains(STORE_IMAGES))db.createObjectStore(STORE_IMAGES);
+    if(!db.objectStoreNames.contains(STORE_PRODUCTS))db.createObjectStore(STORE_PRODUCTS);
+  };
+  req.onsuccess = function(e){idb=e.target.result;cb(idb);};
+  req.onerror = function(){notify('Erreur base de données','n-err');};
+}
+
+function idbSet(store, key, val, cb){
+  openIDB(function(db){
+    var tx=db.transaction(store,'readwrite');
+    tx.objectStore(store).put(val,key);
+    tx.oncomplete=function(){if(cb)cb();};
+    tx.onerror=function(){notify('Erreur sauvegarde','n-err');};
   });
+}
+function idbGet(store, key, cb){
+  openIDB(function(db){
+    var tx=db.transaction(store,'readonly');
+    var req=tx.objectStore(store).get(key);
+    req.onsuccess=function(){cb(req.result);};
+    req.onerror=function(){cb(null);};
+  });
+}
+function idbGetAll(store, cb){
+  openIDB(function(db){
+    var tx=db.transaction(store,'readonly');
+    var req=tx.objectStore(store).getAll();
+    req.onsuccess=function(){cb(req.result||[]);};
+    req.onerror=function(){cb([]);};
+  });
+}
+function idbDel(store, key, cb){
+  openIDB(function(db){
+    var tx=db.transaction(store,'readwrite');
+    tx.objectStore(store).delete(key);
+    tx.oncomplete=function(){if(cb)cb();};
+  });
+}
 
-  alert("Produit ajouté !");
+/* ── PRODUITS ── */
+var PROD_KEY = 'rtr_products_v3';
+function loadProds(){
+  try{var d=localStorage.getItem(PROD_KEY);return d?JSON.parse(d):null;}catch(e){return null;}
+}
+function saveProds(){
+  try{localStorage.setItem(PROD_KEY,JSON.stringify(PRODUCTS));}catch(e){notify('Erreur sauvegarde','n-err');}
+}
+
+function defaultProds(){return{
+  robots:[
+    {id:1,name:'Gold Hunter V8',plat:'MT4/MT5',cat:'or',price:30,badge:'bs',free:false,stars:5,desc:'EA de référence pour XAUUSD. Détection zones de liquidité, drawdown contrôlé.',feats:['XAUUSD/Gold optimisé','Drawdown max < 12%','No DLL requis']},
+    {id:2,name:'AI Gold Sniper MT4 V1.4',plat:'MT4',cat:'or',price:20,badge:'hot',free:false,stars:5,desc:'IA sniper sur l\'Or. Entrées chirurgicales XAUUSD haute précision.',feats:['IA-powered XAU/USD','Haute précision']},
+    {id:3,name:'Dominant EA MT5',plat:'MT5',cat:'forex',price:50,oldPrice:299,badge:'sale',free:false,stars:5,desc:'EA complet 3 modes de risque. EUR/USD, GBP/USD, XAU/USD.',feats:['3 niveaux de risque','Presets Exness fournis']},
+    {id:4,name:'AI Golden Jet Fighter GTX MT4',plat:'MT4',cat:'forex',price:15,badge:'',free:false,stars:4,desc:'EA Forex agressif — scalping rapide.',feats:['Scalping rapide','EUR/USD, GBP/USD']},
+    {id:5,name:'AiMaxPro EA V2',plat:'MT4',cat:'indices',price:15,badge:'',free:false,stars:4,desc:'EA pour indices US30, NAS100, SP500.',feats:['US30, NAS100, SP500']},
+    {id:6,name:'Alpha Scalper Pro MT5',plat:'MT5',cat:'forex',price:50,oldPrice:500,badge:'sale',free:false,stars:5,desc:'Scalper professionnel ultra-rapide MT5.',feats:['Scalping milliseconde']},
+    {id:7,name:'ICT Venom XAUUSD MT5',plat:'MT5',cat:'or',price:35,badge:'',free:false,stars:4,desc:'EA basé sur la méthodologie ICT. Order Blocks & FVG.',feats:['Méthodologie ICT 100%']},
+  ],
+  indicators:[
+    {id:1,name:'V2 Price Action Volumetric OB',compat:'TradingView',price:15,free:false,stars:4,desc:'Order Blocks volumétriques + force tendance.'},
+    {id:2,name:'100% Pine Script Complet',compat:'TradingView',price:20,free:false,stars:4,desc:'Script Pine complet signaux entrée/sortie.'},
+    {id:3,name:'Fiona V.01',compat:'MT4',price:0,free:true,stars:4,desc:'Indicateur tendance MT4 gratuit.'},
+  ],
+  systems:[{id:1,name:'100% Winrate System MT4 (MQ4)',plat:'MT4',price:25,free:false,stars:5,desc:'Code source MQ4 complet.'}],
+  ebooks:[
+    {id:1,title:'Maîtriser le Forex de A à Z',cat:'formation',price:29,free:false,stars:5,desc:'120 pages formation complète.'},
+    {id:2,title:'Smart Money Concepts (SMC)',cat:'smc',price:39,free:false,stars:5,desc:'95 pages stratégies institutionnelles.'},
+    {id:3,title:'Guide Installation EA',cat:'ea',price:0,free:true,stars:4,desc:'Manuel illustré installation robots.'},
+  ],
+  videos:[{id:1,title:'Comment installer un EA',url:'https://youtu.be/example',dur:'12:34',cat:'Installation EA'}]
+};}
+
+var PRODUCTS = loadProds() || defaultProds();
+
+/* ── IMAGE STATE ── */
+var EP = {type:'',id:null,mainImg:'',galImgs:['','','','','']};
+
+/* ── LOGIN ── */
+function doLogin(){
+  var u=document.getElementById('lu').value.trim();
+  var p=document.getElementById('lp').value;
+  if(u==='Leo'&&p==='Salvation1993'){
+    document.getElementById('LS').style.display='none';
+    init();
+  }else{
+    document.getElementById('lerr').style.display='block';
+    setTimeout(function(){document.getElementById('lerr').style.display='none';},2500);
+  }
+}
+function doLogout(){document.getElementById('LS').style.display='flex';}
+
+/* ── INIT ── */
+function init(){
+  buildGalSlots();
+  openIDB(function(){
+    renderAll();
+    clock();
+    updMets();
+    notify('✓ '+PRODUCTS.robots.length+' robots chargés','n-ok');
+  });
+}
+function clock(){function t(){document.getElementById('CLK').textContent=new Date().toLocaleString('fr-FR',{dateStyle:'short',timeStyle:'short'});}t();setInterval(t,60000);}
+function updMets(){
+  document.getElementById('m-r').textContent=PRODUCTS.robots.length;
+  document.getElementById('m-i').textContent=PRODUCTS.indicators.length;
+  document.getElementById('m-e').textContent=PRODUCTS.ebooks.length;
+  document.getElementById('bdg-r').textContent=PRODUCTS.robots.length;
+  document.getElementById('bdg-all').textContent=PRODUCTS.robots.length+PRODUCTS.indicators.length+PRODUCTS.systems.length+PRODUCTS.ebooks.length;
+}
+
+/* ── NAV ── */
+var PTITLES={dash:'📊 Dashboard',all:'📦 Tous',robots:'🤖 Robots EA',indics:'📡 Indicateurs',systems:'⚙️ Systèmes',ebooks:'📘 Ebooks',videos:'📺 Vidéos',settings:'⚙️ Paramètres'};
+function gp(id,el){
+  document.querySelectorAll('.pg').forEach(function(p){p.classList.remove('on');});
+  var pg=document.getElementById('pg-'+id);if(pg)pg.classList.add('on');
+  document.querySelectorAll('.sbi').forEach(function(s){s.classList.remove('on');});
+  if(el)el.classList.add('on');
+  document.getElementById('PT').textContent=PTITLES[id]||id;
+}
+
+/* ── LOAD IMAGE FROM IDB FOR THUMBNAIL ── */
+function loadThumbForRow(prodId, imgEl){
+  idbGet(STORE_IMAGES, 'main_'+prodId, function(data){
+    if(data&&data.main&&imgEl){
+      imgEl.src=data.main;
+      imgEl.parentElement.classList.add('has-img');
+    }
+  });
+}
+
+/* ── RENDER TABLES ── */
+function renderAll(){rRobots();rIndics();rSystems();rEbooks();rVideos();rAllTable();updMets();}
+
+function badgeH(b){var bm={bs:'<span class="bv bv-b">BEST</span>',hot:'<span class="bv bv-o">HOT</span>',sale:'<span class="bv bv-r">PROMO</span>',prop:'<span class="bv bv-p">PROP</span>'};return b&&bm[b]?bm[b]||'';}
+
+function makeThumb(id,type){return'<div class="tthumb" id="th-'+type+'-'+id+'" style="font-size:18px;">📦</div>';}
+
+function rRobots(){
+  var h='';
+  PRODUCTS.robots.forEach(function(r){
+    var px=r.free?'<span class="bv bv-g">FREE</span>':'<b style="color:var(--blue)">$'+r.price+'</b>'+(r.oldPrice?'<s style="color:var(--text3);font-size:11px;margin-left:2px">$'+r.oldPrice+'</s>':'');
+    h+='<tr><td>'+makeThumb(r.id,'r')+'</td><td><b style="color:var(--white)">'+r.name+'</b></td><td><span class="bv bv-b">'+r.plat+'</span></td><td><span class="bv bv-go">'+r.cat+'</span></td><td>'+px+' '+(badgeH(r.badge)||'')+'</td><td><div style="display:flex;gap:5px;"><button class="b-edit" onclick="editProd(\'r\','+r.id+')">✏️ Modifier</button><button class="b-del" onclick="delProd(\'r\','+r.id+')">🗑</button></div></td></tr>';
+  });
+  document.getElementById('TB-r').innerHTML=h||noItem('Aucun robot.',6);
+  loadThumbsForTable('r',PRODUCTS.robots);
+}
+function rIndics(){
+  var h='';
+  PRODUCTS.indicators.forEach(function(d){
+    h+='<tr><td>'+makeThumb(d.id,'i')+'</td><td><b style="color:var(--white)">'+d.name+'</b></td><td><span class="bv bv-p">'+d.compat+'</span></td><td>'+(d.price===0?'<span class="bv bv-g">FREE</span>':'<b style="color:var(--blue)">$'+d.price+'</b>')+'</td><td><div style="display:flex;gap:5px;"><button class="b-edit" onclick="editProd(\'i\','+d.id+')">✏️</button><button class="b-del" onclick="delProd(\'i\','+d.id+')">🗑</button></div></td></tr>';
+  });
+  document.getElementById('TB-i').innerHTML=h||noItem('Aucun.',5);
+  loadThumbsForTable('i',PRODUCTS.indicators);
+}
+function rSystems(){
+  var h='';
+  PRODUCTS.systems.forEach(function(s){
+    h+='<tr><td>'+makeThumb(s.id,'s')+'</td><td><b style="color:var(--white)">'+s.name+'</b></td><td><span class="bv bv-b">'+s.plat+'</span></td><td><b style="color:var(--blue)">$'+s.price+'</b></td><td><div style="display:flex;gap:5px;"><button class="b-edit" onclick="editProd(\'s\','+s.id+')">✏️</button><button class="b-del" onclick="delProd(\'s\','+s.id+')">🗑</button></div></td></tr>';
+  });
+  document.getElementById('TB-s').innerHTML=h||noItem('Aucun.',5);
+  loadThumbsForTable('s',PRODUCTS.systems);
+}
+function rEbooks(){
+  var h='';
+  PRODUCTS.ebooks.forEach(function(e){
+    h+='<tr><td>'+makeThumb(e.id,'e')+'</td><td><b style="color:var(--white)">'+e.title+'</b></td><td><span class="bv bv-p">'+e.cat+'</span></td><td>'+(e.price===0?'<span class="bv bv-g">FREE</span>':'<b style="color:var(--blue)">$'+e.price+'</b>')+'</td><td><div style="display:flex;gap:5px;"><button class="b-edit" onclick="editProd(\'e\','+e.id+')">✏️</button><button class="b-del" onclick="delProd(\'e\','+e.id+')">🗑</button></div></td></tr>';
+  });
+  document.getElementById('TB-e').innerHTML=h||noItem('Aucun.',5);
+  loadThumbsForTable('e',PRODUCTS.ebooks);
+}
+function rVideos(){
+  var h='';
+  PRODUCTS.videos.forEach(function(v){
+    h+='<tr><td><b style="color:var(--white)">'+v.title+'</b></td><td><a href="'+v.url+'" target="_blank" style="color:var(--blue);font-size:11px;">'+v.url.substring(0,40)+'</a></td><td style="color:var(--text2)">'+v.dur+'</td><td><div style="display:flex;gap:5px;"><button class="b-edit" onclick="editVid('+v.id+')">✏️</button><button class="b-del" onclick="delProd(\'v\','+v.id+')">🗑</button></div></td></tr>';
+  });
+  document.getElementById('TB-v').innerHTML=h||noItem('Aucune vidéo.',4);
+}
+function rAllTable(q){
+  var all=[].concat(
+    PRODUCTS.robots.map(function(r){return{t:'r',it:r,nm:r.name};}),
+    PRODUCTS.indicators.map(function(d){return{t:'i',it:d,nm:d.name};}),
+    PRODUCTS.systems.map(function(s){return{t:'s',it:s,nm:s.name};}),
+    PRODUCTS.ebooks.map(function(e){return{t:'e',it:e,nm:e.title||e.name};})
+  );
+  if(q)all=all.filter(function(o){return o.nm.toLowerCase().includes((q||'').toLowerCase());});
+  var tn={r:'🤖 Robot',i:'📡 Indicateur',s:'⚙️ Système',e:'📘 Ebook'};
+  var h='';
+  all.forEach(function(o){
+    var px=o.it.price===0?'<span class="bv bv-g">FREE</span>':'<b style="color:var(--blue)">$'+o.it.price+'</b>';
+    h+='<tr><td>'+makeThumb(o.it.id,'a')+'</td><td><b style="color:var(--white)">'+o.nm+'</b></td><td><span class="bv bv-b">'+tn[o.t]+'</span></td><td>'+px+'</td><td><div style="display:flex;gap:5px;"><button class="b-edit" onclick="editProd(\''+o.t+'\','+o.it.id+')">✏️</button><button class="b-del" onclick="delProd(\''+o.t+'\','+o.it.id+')">🗑</button></div></td></tr>';
+  });
+  document.getElementById('TB-all').innerHTML=h||noItem('Aucun produit.',5);
+  loadThumbsForTable('a',all.map(function(o){return o.it;}));
+}
+
+function loadThumbsForTable(prefix, items){
+  items.forEach(function(item){
+    idbGet(STORE_IMAGES, 'main_'+(item.id||item), function(data){
+      if(data&&data.main){
+        var el=document.getElementById('th-'+prefix+'-'+(item.id||item));
+        if(el){el.innerHTML='<img src="'+data.main+'" style="width:100%;height:100%;object-fit:cover;border-radius:7px;">';el.style.fontSize='0';}
+      }
+    });
+  });
+}
+function noItem(msg,cols){return'<tr><td colspan="'+cols+'" style="text-align:center;color:var(--text3);padding:26px">'+msg+'</td></tr>';}
+
+/* ── BUILD GALLERY SLOTS ── */
+function buildGalSlots(){
+  var html='';
+  for(var i=0;i<5;i++){
+    html+='<div class="gs" id="gs-'+i+'" onclick="clickGal('+i+')">'
+      +'<img id="gs-img-'+i+'" src="" alt="">'
+      +'<div class="gs-ico">📷</div>'
+      +'<div class="gs-n">Photo '+(i+1)+'</div>'
+      +'<button class="gs-del" onclick="event.stopPropagation();delGal('+i+')">✕</button>'
+      +'</div>';
+  }
+  document.getElementById('gal-slots').innerHTML=html;
+}
+
+/* ── MODAL PRODUIT ── */
+var CFG={
+  r:{ttl_n:'🤖 Nouveau Robot EA',ttl_e:'✏️ Modifier Robot',nm:'Nom *',pl:true,ca:true,ba:true,fe:true},
+  i:{ttl_n:'📡 Nouvel Indicateur',ttl_e:'✏️ Modifier Indicateur',nm:'Nom *',pl:false,ca:false,ba:false,fe:false},
+  s:{ttl_n:'⚙️ Nouveau Système',ttl_e:'✏️ Modifier Système',nm:'Nom *',pl:true,ca:false,ba:false,fe:true},
+  e:{ttl_n:'📘 Nouvel Ebook',ttl_e:'✏️ Modifier Ebook',nm:'Titre *',pl:false,ca:false,ba:false,fe:false}
 };
-</script>
 
+function newProd(type){
+  EP={type:type,id:null,mainImg:'',galImgs:['','','','','']};
+  var c=CFG[type];
+  document.getElementById('mp-ttl').textContent=c.ttl_n;
+  document.getElementById('mp-nm-lbl').textContent=c.nm;
+  showHide('mp-plat-fg',c.pl);showHide('mp-cat-fg',c.ca);showHide('mp-badge-fg',c.ba);showHide('mp-feats-fg',c.fe);
+  clearForm();refreshPhotos();
+  openMod('m-prod');
+}
+
+function editProd(type,id){
+  var lists={r:PRODUCTS.robots,i:PRODUCTS.indicators,s:PRODUCTS.systems,e:PRODUCTS.ebooks};
+  var item=lists[type].find(function(x){return x.id===id;});if(!item)return;
+  EP={type:type,id:id,mainImg:'',galImgs:['','','','','']};
+  var c=CFG[type];
+  document.getElementById('mp-ttl').textContent=c.ttl_e;
+  document.getElementById('mp-nm-lbl').textContent=c.nm;
+  showHide('mp-plat-fg',c.pl);showHide('mp-cat-fg',c.ca);showHide('mp-badge-fg',c.ba);showHide('mp-feats-fg',c.fe);
+  document.getElementById('mp-name').value=item.name||item.title||'';
+  document.getElementById('mp-price').value=item.price||0;
+  document.getElementById('mp-oldprice').value=item.oldPrice||'';
+  document.getElementById('mp-desc').value=item.desc||'';
+  document.getElementById('mp-feats').value=(item.feats||[]).join('\n');
+  document.getElementById('mp-free').checked=item.free||false;
+  try{document.getElementById('mp-stars').value=item.stars||4;}catch(e){}
+  if(c.pl)try{document.getElementById('mp-plat').value=item.plat||item.compat||'MT4/MT5';}catch(e){}
+  if(c.ca)try{document.getElementById('mp-cat').value=item.cat||'or';}catch(e){}
+  if(c.ba)try{document.getElementById('mp-badge').value=item.badge||'';}catch(e){}
+  // Load images from IDB
+  idbGet(STORE_IMAGES,'main_'+id,function(data){
+    if(data){EP.mainImg=data.main||'';EP.galImgs=data.gal||['','','','',''];}
+    refreshPhotos();
+  });
+  openMod('m-prod');
+}
+
+function showHide(id,show){var el=document.getElementById(id);if(el)el.style.display=show?'':'none';}
+
+function clearForm(){
+  ['mp-name','mp-price','mp-oldprice','mp-desc','mp-feats'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('mp-free').checked=false;
+}
+
+/* ── PHOTO FUNCTIONS ── */
+function refreshPhotos(){
+  // Main
+  var zone=document.getElementById('cv-main');
+  var img=document.getElementById('cv-main-img');
+  var ph=zone.querySelector('.cp-ph');
+  var lbl=zone.querySelector('.cp-lbl');
+  if(EP.mainImg&&EP.mainImg.length>0){
+    img.src=EP.mainImg;zone.classList.add('loaded');
+    if(ph)ph.style.display='none';if(lbl)lbl.style.display='none';
+  }else{
+    img.src='';zone.classList.remove('loaded');
+    if(ph)ph.style.display='';if(lbl)lbl.style.display='';
+  }
+  // Gallery
+  for(var i=0;i<5;i++){
+    var cell=document.getElementById('gs-'+i);
+    var gimg=document.getElementById('gs-img-'+i);
+    if(!cell)continue;
+    var src=EP.galImgs[i]||'';
+    if(src&&src.length>0){
+      gimg.src=src;cell.classList.add('loaded');
+      cell.querySelector('.gs-ico').style.display='none';
+      cell.querySelector('.gs-n').style.display='none';
+    }else{
+      gimg.src='';cell.classList.remove('loaded');
+      cell.querySelector('.gs-ico').style.display='';
+      cell.querySelector('.gs-n').style.display='';
+    }
+  }
+}
+
+function resizeImg(file,cb){
+  var reader=new FileReader();
+  reader.onload=function(e){
+    var img=new Image();
+    img.onload=function(){
+      var MAX=900,q=0.75;
+      var w=img.width,h=img.height;
+      if(w>MAX){h=Math.round(h*MAX/w);w=MAX;}
+      var c=document.createElement('canvas');c.width=w;c.height=h;
+      c.getContext('2d').drawImage(img,0,0,w,h);
+      cb(c.toDataURL('image/jpeg',q));
+    };
+    img.src=e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function onMainFile(input){
+  var file=input.files[0];if(!file)return;
+  resizeImg(file,function(data){EP.mainImg=data;refreshPhotos();notify('📸 Photo principale chargée !','n-ok');});
+}
+function clearMain(){EP.mainImg='';refreshPhotos();}
+
+function clickGal(idx){
+  var inp=document.createElement('input');inp.type='file';inp.accept='image/*';
+  inp.onchange=function(){
+    var file=inp.files[0];if(!file)return;
+    resizeImg(file,function(data){
+      if(!EP.galImgs)EP.galImgs=['','','','',''];
+      EP.galImgs[idx]=data;refreshPhotos();
+      notify('📸 Photo '+(idx+1)+' chargée !','n-ok');
+    });
+  };inp.click();
+}
+
+function onGalFiles(input){
+  var files=input.files;if(!files||!files.length)return;
+  if(!EP.galImgs)EP.galImgs=['','','','',''];
+  var free=[];for(var i=0;i<5;i++){if(!EP.galImgs[i]||!EP.galImgs[i].length)free.push(i);}
+  if(!free.length){notify('Maximum 5 photos de description','n-err');return;}
+  var n=Math.min(files.length,free.length);
+  for(var j=0;j<n;j++){
+    (function(f,slot){resizeImg(f,function(data){EP.galImgs[slot]=data;refreshPhotos();});})(files[j],free[j]);
+  }
+  notify('📸 '+n+' photo(s) chargée(s) !','n-ok');
+}
+function delGal(idx){EP.galImgs[idx]='';refreshPhotos();}
+
+/* ── SAUVEGARDER ── */
+function saveProd(){
+  var nm=document.getElementById('mp-name').value.trim();
+  if(!nm){notify('Le nom est requis !','n-err');return;}
+  var price=parseInt(document.getElementById('mp-price').value)||0;
+  var oldPrice=parseInt(document.getElementById('mp-oldprice').value)||null;
+  var desc=document.getElementById('mp-desc').value;
+  var feats=(document.getElementById('mp-feats').value||'').split('\n').filter(function(x){return x.trim();});
+  var stars=parseInt(document.getElementById('mp-stars').value)||4;
+  var free=document.getElementById('mp-free').checked;
+  var type=EP.type;var c=CFG[type];
+
+  var obj={id:EP.id||Date.now(),price:price,oldPrice:oldPrice,free:free,stars:stars,desc:desc,feats:feats};
+  if(type==='r'){obj.name=nm;obj.plat=document.getElementById('mp-plat').value;obj.cat=document.getElementById('mp-cat').value;obj.badge=document.getElementById('mp-badge').value;}
+  else if(type==='i'){obj.name=nm;obj.compat=document.getElementById('mp-plat').value||'TradingView';}
+  else if(type==='s'){obj.name=nm;obj.plat=document.getElementById('mp-plat').value;}
+  else if(type==='e'){obj.title=nm;}
+
+  // Save images to IDB
+  idbSet(STORE_IMAGES,'main_'+obj.id,{main:EP.mainImg,gal:EP.galImgs.slice()},function(){
+    // Save product to localStorage
+    var lists={r:PRODUCTS.robots,i:PRODUCTS.indicators,s:PRODUCTS.systems,e:PRODUCTS.ebooks};
+    var arr=lists[type];
+    if(EP.id){var idx=arr.findIndex(function(x){return x.id===EP.id;});if(idx>=0)arr[idx]=obj;}
+    else{arr.unshift(obj);}
+    saveProds();
+    renderAll();
+    closeMod('m-prod');
+    notify('✅ Produit sauvegardé avec photos !','n-ok');
+  });
+}
+
+function delProd(type,id){
+  if(!confirm('Supprimer ?'))return;
+  var map={r:'robots',i:'indicators',s:'systems',e:'ebooks',v:'videos'};
+  var key=map[type];if(!key)return;
+  PRODUCTS[key]=PRODUCTS[key].filter(function(x){return x.id!==id;});
+  idbDel(STORE_IMAGES,'main_'+id);
+  saveProds();renderAll();
+  notify('Supprimé','n-err');
+}
+
+/* ── VIDÉOS ── */
+function saveVid(){var t=document.getElementById('v-t').value.trim();if(!t){notify('Titre requis !','n-err');return;}PRODUCTS.videos.unshift({id:Date.now(),title:t,url:document.getElementById('v-u').value,dur:document.getElementById('v-d').value||'—',cat:document.getElementById('v-c').value});saveProds();rVideos();closeMod('mv');document.getElementById('v-t').value='';document.getElementById('v-u').value='';notify('Vidéo ajoutée !','n-ok');}
+function editVid(id){var v=PRODUCTS.videos.find(function(x){return x.id===id;});if(!v)return;document.getElementById('v-t').value=v.title;document.getElementById('v-u').value=v.url;document.getElementById('v-d').value=v.dur;openMod('mv');}
+
+/* ── MODALS ── */
+function openMod(id){var el=document.getElementById(id);if(el)el.classList.add('on');}
+function closeMod(id){var el=document.getElementById(id);if(el)el.classList.remove('on');}
+document.querySelectorAll('.mvo').forEach(function(m){m.addEventListener('click',function(e){if(e.target===m)m.classList.remove('on');});});
+
+/* ── NOTIF ── */
+function notify(msg,cls){
+  var n=document.createElement('div');n.className='notif '+(cls||'n-inf');
+  n.innerHTML='<span>'+(cls==='n-ok'?'✓':cls==='n-err'?'✕':'ℹ')+'</span><span>'+msg+'</span>';
+  document.body.appendChild(n);setTimeout(function(){n.remove();},3600);
+}
+</script>
 </body>
 </html>
