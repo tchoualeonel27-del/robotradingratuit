@@ -47,6 +47,7 @@
 <body>
 
 <h1>Nos Produits</h1>
+<div id="products-container"></div>
 
 <div class="products" id="products"></div>
 
@@ -88,6 +89,45 @@ async function loadProducts() {
 
 loadProducts();
 </script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
 
+const firebaseConfig = {
+  apiKey: "AIzaSyBx8rLULk1o9TT1SJa7d9O5pHrJHMC_Aos",
+  authDomain: "robotrading-e1bfa.firebaseapp.com",
+  projectId: "robotrading-e1bfa",
+  storageBucket: "robotrading-e1bfa.firebasestorage.app",
+  messagingSenderId: "915826841078",
+  appId: "1:915826841078:web:4e722f035d5e4f05c6a3d7"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// ⚠️ IMPORTANT : tu dois avoir un endroit dans ton HTML avec cet id
+const container = document.getElementById("products-container");
+
+async function loadProducts() {
+  const querySnapshot = await getDocs(collection(db, "products"));
+
+  querySnapshot.forEach((doc) => {
+    const data = doc.data();
+
+    const productHTML = `
+      <div class="product-card">
+        <img src="${data.image}" />
+        <h3>${data.name}</h3>
+        <p>${data.description}</p>
+        <strong>${data.price} FCFA</strong>
+      </div>
+    `;
+
+    container.innerHTML += productHTML;
+  });
+}
+
+loadProducts();
+</script>
 </body>
 </html>
