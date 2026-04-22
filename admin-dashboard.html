@@ -602,65 +602,77 @@ a{text-decoration:none;color:inherit;}
       <div class="photo-bloc-title">
         <span>📸</span>
         <span>Photos du produit</span>
-        <span style="font-size:11px;color:var(--text2);font-weight:400;margin-left:auto;">1 photo principale + jusqu'à 5 photos de description</span>
+        <span style="font-size:11px;color:var(--text2);font-weight:400;margin-left:auto;">Même principe que logo.jpg — uploadez sur GitHub</span>
       </div>
 
-      <!-- Photo principale -->
-      <span class="main-photo-label">📌 Photo principale (affichée dans le catalogue)</span>
-      <div class="main-photo-row">
-        <div class="main-photo-preview" id="mp-cover-zone" onclick="document.getElementById('mp-cover-file').click()">
-          <img id="mp-cover-img" src="" alt="">
-          <div class="ph-ico">🖼️</div>
-          <div class="ph-txt">Cliquer pour ajouter</div>
+      <!-- EXPLICATION CLAIRE -->
+      <div style="background:rgba(56,189,248,.06);border:1px solid var(--bd2);border-radius:9px;padding:13px 15px;margin-bottom:16px;">
+        <div style="font-size:12px;font-weight:700;color:var(--white);margin-bottom:7px;">🔑 Comment ajouter une image qui s'affiche partout (mobile + ordinateur) ?</div>
+        <div style="font-size:12px;color:var(--text2);line-height:1.8;">
+          C'est exactement le même système que votre logo :<br>
+          <strong style="color:var(--white)">1.</strong> Prenez votre screenshot de backtest MT4 sur votre téléphone/ordinateur<br>
+          <strong style="color:var(--white)">2.</strong> Uploadez ce fichier photo sur <strong style="color:var(--cyan)">GitHub</strong> (dans votre repo robotradingratuit)<br>
+          <strong style="color:var(--white)">3.</strong> Notez le nom du fichier (ex: <code style="background:rgba(0,0,0,.3);padding:1px 5px;border-radius:3px;color:var(--cyan)">gold-hunter-backtest.jpg</code>)<br>
+          <strong style="color:var(--white)">4.</strong> Entrez ce nom dans le champ ci-dessous → Enregistrez<br>
+          <strong style="color:var(--green)">✓ L'image s'affiche sur tous les appareils du monde</strong>
         </div>
-        <div class="main-photo-controls">
-          <p>Choisissez la photo principale du produit — elle s'affiche dans le catalogue et sur la fiche produit.</p>
-          <input type="file" id="mp-cover-file" accept="image/jpeg,image/png,image/webp" style="display:none" onchange="onMainPhoto(this)">
-          <label class="photo-file-btn" style="cursor:pointer;">
-            <span>📁</span> Choisir depuis mon appareil (JPEG, PNG)
-            <input type="file" accept="image/jpeg,image/png,image/webp" style="display:none" onchange="onMainPhoto(this)">
-          </label>
-          <div class="url-section">
-            <div class="url-lbl">🔗 OU coller un lien URL d'image directe</div>
-            <div class="url-row">
-              <input type="text" class="url-inp" id="mp-cover-url" placeholder="https://i.imgur.com/votre-image.jpg">
-              <button class="url-apply-btn" onclick="applyMainPhotoUrl()">✓ Appliquer</button>
-            </div>
+      </div>
+
+      <!-- PHOTO PRINCIPALE -->
+      <div style="margin-bottom:18px;">
+        <span class="main-photo-label">📌 Photo principale — Nom du fichier GitHub</span>
+        <div class="main-photo-row">
+          <div class="main-photo-preview" id="mp-cover-zone">
+            <img id="mp-cover-img" src="" alt="">
+            <div class="ph-ico">🖼️</div>
+            <div class="ph-txt">Aperçu</div>
           </div>
-          <button class="photo-remove-btn" id="mp-cover-remove" onclick="removeMainPhoto()">🗑 Supprimer la photo</button>
+          <div class="main-photo-controls">
+            <p style="margin-bottom:10px;font-size:12px;color:var(--text2);">Entrez le nom du fichier que vous avez uploadé sur GitHub :</p>
+            <div class="url-section">
+              <div class="url-lbl">📁 Nom du fichier sur GitHub (ex: gold-backtest.jpg)</div>
+              <div class="url-row">
+                <input type="text" class="url-inp" id="mp-cover-url" placeholder="gold-hunter-backtest.jpg">
+                <button class="url-apply-btn" onclick="applyMainPhotoFilename()">✓ Aperçu</button>
+              </div>
+            </div>
+            <div style="margin-top:9px;background:rgba(56,189,248,.05);border:1px solid var(--bd);border-radius:7px;padding:10px;font-size:11px;color:var(--text2);line-height:1.7;">
+              💡 <strong style="color:var(--white)">Sur GitHub :</strong> Allez dans votre repo → "Add file" → "Upload files" → Uploadez votre photo → "Commit changes". Puis entrez ici le nom exact du fichier.
+            </div>
+            <button class="photo-remove-btn" id="mp-cover-remove" onclick="removeMainPhoto()">🗑 Supprimer</button>
+          </div>
         </div>
       </div>
 
-      <!-- Galerie 5 photos -->
+      <!-- GALERIE 5 PHOTOS -->
       <div class="gallery-section">
         <div class="gallery-section-title">
-          <span>📷 Photos de description (backtests, performances, captures MT4)</span>
-          <span id="mp-gal-count">0 / 5 photos</span>
+          <span>📷 Photos de description — Backtests, performances (5 max)</span>
+          <span id="mp-gal-count">0 / 5</span>
         </div>
-        <div class="gallery-slots" id="mp-gal-slots">
-          <!-- 5 slots générés par JS -->
-        </div>
-        <!-- Ajouter par URL pour galerie -->
-        <div class="gal-url-zone">
-          <div class="lbl">🔗 Ajouter une photo de galerie par URL</div>
+        <div class="gallery-slots" id="mp-gal-slots"></div>
+
+        <div class="gal-url-zone" style="margin-top:12px;">
+          <div class="lbl">📁 Ajouter une photo de description par nom de fichier GitHub</div>
           <select class="gal-url-select" id="mp-gal-slot-select">
-            <option value="0">Photo de description n°1</option>
-            <option value="1">Photo de description n°2</option>
-            <option value="2">Photo de description n°3</option>
-            <option value="3">Photo de description n°4</option>
-            <option value="4">Photo de description n°5</option>
+            <option value="0">Photo description n°1</option>
+            <option value="1">Photo description n°2</option>
+            <option value="2">Photo description n°3</option>
+            <option value="3">Photo description n°4</option>
+            <option value="4">Photo description n°5</option>
           </select>
-          <div class="gal-url-row">
-            <input type="text" class="gal-url-inp" id="mp-gal-url" placeholder="https://i.imgur.com/votre-backtest.jpg">
-            <button class="gal-url-btn" onclick="applyGalUrl()">➕ Ajouter</button>
+          <div class="gal-url-row" style="margin-top:7px;">
+            <input type="text" class="gal-url-inp" id="mp-gal-url" placeholder="gold-hunter-backtest-2.jpg">
+            <button class="gal-url-btn" onclick="applyGalFilename()">➕ Ajouter</button>
           </div>
         </div>
-        <div class="photo-tip">
-          <strong>💡 Comment utiliser Imgur gratuitement :</strong><br>
-          1. Allez sur <strong>imgur.com</strong> (gratuit, pas de compte requis)<br>
-          2. Glissez votre screenshot de backtest MT4/MT5<br>
-          3. Une fois uploadé, clic droit sur l'image → <strong>"Copier l'adresse de l'image"</strong><br>
-          4. Collez ce lien ici — il se termine toujours par <strong>.jpg</strong> ou <strong>.png</strong>
+
+        <div class="photo-tip" style="margin-top:11px;">
+          <strong>📋 Noms de fichiers recommandés :</strong><br>
+          Utilisez des noms simples sans espaces ni accents :<br>
+          <code style="color:var(--cyan)">gold-hunter-v8-backtest.jpg</code> ✅<br>
+          <code style="color:var(--cyan)">dominant-ea-resultat.jpg</code> ✅<br>
+          <code style="color:var(--red)">Gold Hunter V8 résultat.jpg</code> ✗ (espaces et accents à éviter)
         </div>
       </div>
     </div>
@@ -918,42 +930,88 @@ function resetModalForm(){
   setMainPhotoPreview('');
 }
 
-/* ════ PHOTO PRINCIPALE ════ */
+/* ════ PHOTO PRINCIPALE — SYSTÈME FICHIER (comme logo.jpg) ════ */
+function applyMainPhotoFilename(){
+  var val = document.getElementById('mp-cover-url').value.trim();
+  if(!val){notify('Entrez un nom de fichier (ex: gold-backtest.jpg)','n-err');return;}
+  // Accepte nom de fichier simple OU URL complète
+  var src = val.startsWith('http') ? val : val;
+  setMainPhotoPreview(src);
+  notify('Photo principale définie : '+val,'n-ok');
+}
+
+// Garde applyMainPhotoUrl comme alias
+function applyMainPhotoUrl(){ applyMainPhotoFilename(); }
+
+function onMainPhoto(input){
+  // Converti en filename-based: lire le nom du fichier sélectionné
+  var file=input.files[0];if(!file)return;
+  // Afficher un aperçu local temporaire
+  var r=new FileReader();
+  r.onload=function(e){
+    setMainPhotoPreview(e.target.result);
+    // Mettre le nom du fichier dans le champ URL
+    document.getElementById('mp-cover-url').value=file.name;
+    notify('📁 Fichier sélectionné : '+file.name+' — Uploadez ce fichier sur GitHub aussi !','n-inf');
+  };
+  r.readAsDataURL(file);
+}
+
 function setMainPhotoPreview(src){
   var img=document.getElementById('mp-cover-img');
   var zone=document.getElementById('mp-cover-zone');
   var rmBtn=document.getElementById('mp-cover-remove');
   if(src&&src.length>0){
     img.src=src;img.classList.add('loaded');
-    zone.querySelector('.ph-ico').style.display='none';
-    zone.querySelector('.ph-txt').style.display='none';
-    rmBtn.classList.add('show');
+    var phIco=zone.querySelector('.ph-ico');
+    var phTxt=zone.querySelector('.ph-txt');
+    if(phIco)phIco.style.display='none';
+    if(phTxt)phTxt.style.display='none';
+    if(rmBtn)rmBtn.classList.add('show');
   }else{
     img.src='';img.classList.remove('loaded');
-    zone.querySelector('.ph-ico').style.display='';
-    zone.querySelector('.ph-txt').style.display='';
-    rmBtn.classList.remove('show');
+    var phIco2=zone.querySelector('.ph-ico');
+    var phTxt2=zone.querySelector('.ph-txt');
+    if(phIco2)phIco2.style.display='';
+    if(phTxt2)phTxt2.style.display='';
+    if(rmBtn)rmBtn.classList.remove('show');
   }
   EP.cover=src||'';
 }
-
-function onMainPhoto(input){
-  var file=input.files[0];if(!file)return;
-  if(file.size>5*1024*1024){notify('Image trop grande — max 5 Mo','n-err');return;}
-  var r=new FileReader();
-  r.onload=function(e){setMainPhotoPreview(e.target.result);notify('Photo principale chargée ✓','n-ok');};
-  r.readAsDataURL(file);
-}
-function applyMainPhotoUrl(){
-  var url=document.getElementById('mp-cover-url').value.trim();
-  if(!url||!url.startsWith('http')){notify('URL invalide — doit commencer par https://','n-err');return;}
-  setMainPhotoPreview(url);
+function removeMainPhoto(){
+  setMainPhotoPreview('');
   document.getElementById('mp-cover-url').value='';
-  notify('Photo principale appliquée ✓','n-ok');
 }
-function removeMainPhoto(){setMainPhotoPreview('');}
 
-/* ════ GALERIE 5 PHOTOS ════ */
+/* ════ GALERIE — SYSTÈME FICHIER ════ */
+function applyGalFilename(){
+  var url=document.getElementById('mp-gal-url').value.trim();
+  var idx=parseInt(document.getElementById('mp-gal-slot-select').value)||0;
+  if(!url){notify('Entrez un nom de fichier ou URL','n-err');return;}
+  EP.gallery[idx]=url;
+  renderGallerySlots();
+  document.getElementById('mp-gal-url').value='';
+  notify('Photo '+(idx+1)+' définie : '+url,'n-ok');
+}
+// Alias
+function applyGalUrl(){ applyGalFilename(); }
+
+function onGalSlotClick(idx){
+  var inp=document.createElement('input');
+  inp.type='file';inp.accept='image/jpeg,image/png,image/webp';
+  inp.onchange=function(){
+    var file=inp.files[0];if(!file)return;
+    var r=new FileReader();
+    r.onload=function(e){
+      EP.gallery[idx]=e.target.result;
+      renderGallerySlots();
+      notify('📁 Photo '+(idx+1)+' : '+file.name+' — Uploadez aussi ce fichier sur GitHub !','n-inf');
+    };
+    r.readAsDataURL(file);
+  };
+  inp.click();
+}
+
 function renderGallerySlots(){
   var count=0;
   for(var i=0;i<5;i++){
